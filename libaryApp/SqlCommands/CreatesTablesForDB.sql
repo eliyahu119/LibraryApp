@@ -33,7 +33,7 @@ BookID int FOREIGN KEY REFERENCES Books(BookID) NOT NULL,
 
 CREATE TABLE Members (
 MemberID int IDENTITY(1,1) PRIMARY KEY,
-MemberName varchar(100) NOT NULL,
+MemberName nvarchar(100) NOT NULL,
 Phone nvarchar(20) NOT NULL,
 Adress nvarchar(50) NOT NULL
 );
