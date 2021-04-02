@@ -31,7 +31,11 @@ namespace libaryApp
                 Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
         }
-
+        /// <summary>
+        /// search the books base on the Author or the name of the book.
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         static public List<Book> getBooks(string condition="")
         {
             string command = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID "
@@ -39,10 +43,11 @@ namespace libaryApp
                                                     +"LEFT JOIN Genres ON  b.GenreID = Genres.GenreID "
                                                     +"LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID "
                                                     +"LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID";
-           command = $"{command} WHERE b.bookname LIKE N'%{condition}%'  OR Authors.Author LIKE N'%{condition}%'";
+           command = $"{command} WHERE b.bookname LIKE N'%'+@c+'%'  OR Authors.Author LIKE N'%'+@c+'%'";
             var booksList = new List<Book>();
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(command, Connection);
+            sqlCommand.Parameters.AddWithValue("@c", condition);
             SqlDataReader reader = sqlCommand.ExecuteReader();
             while (reader.Read())
             {
