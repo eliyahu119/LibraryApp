@@ -16,39 +16,66 @@ namespace libaryApp
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
         }
-
+        private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                SearchAndDisplayBooks();
+            }
+        }
         private void BookForm_Load(object sender, EventArgs e)
         {
 
-            dataGridView1.DataSource = DataManager.getAllBooks();
-            ChangeHeaders();
+            BookGrid.DataSource = new List<Book>();
+            BookGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(BookGrid_RowPostPaint);
+            ChangeColumnsHeaders();
 
         }
 
-        //translate the header of the Columns to hebrew 
-        private void ChangeHeaders()
+        /// <summary>
+        ///updates rowNumbers of the line the lines
+        /// </summary>
+        private void BookGrid_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+{
+        using (SolidBrush b = new SolidBrush(BookGrid.RowHeadersDefaultCellStyle.ForeColor))
         {
-            dataGridView1.Columns["BookName"].HeaderText = "שם הספר";
-            dataGridView1.Columns["Genre"].HeaderText = "ז'אנר";
-            dataGridView1.Columns["Author"].HeaderText = "סופר";
-            dataGridView1.Columns["Publisher"].HeaderText = "הוצאה לאור";
-            dataGridView1.Columns["PublicationYear"].HeaderText = "שנת יציאה";
+              e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, b, e.RowBounds.Location.X + 10, e.RowBounds.Location.Y + 4);
+        }
+}
+
+        /// <summary>
+        /// translate the header of the Columns to hebrew 
+        /// </summary>
+        private void ChangeColumnsHeaders()
+        {
+            BookGrid.Columns["BookName"].HeaderText = "שם הספר";
+            BookGrid.Columns["Genre"].HeaderText = "ז'אנר";
+            BookGrid.Columns["Author"].HeaderText = "סופר";
+            BookGrid.Columns["Publisher"].HeaderText = "הוצאה לאור";
+            BookGrid.Columns["PublicationYear"].HeaderText = "שנת יציאה";
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(  this, new MainWindow());
+            Utils.SwitchBetweenWindows(this, new MainWindow());
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+     
+
+        private void searchableButton_Click(object sender, EventArgs e)
         {
+            SearchAndDisplayBooks();
 
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void SearchAndDisplayBooks()
         {
-
+            var searchText = searchTextBox.Text;
+            BookGrid.DataSource = DataManager.getBooks(searchText);
         }
+
+     
     }
 }

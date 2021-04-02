@@ -25,22 +25,24 @@ namespace libaryApp
         const string DbLocation = @"C:\Users\eliyahu\source\repos\libaryApp\libaryApp\libaryDb.mdf";
         static DataManager()
         {
-            
+
             string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
                 AttachDbFilename={DbLocation};
                 Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
         }
 
-        static public List<Book> getAllBooks()
+        static public List<Book> getBooks(string condition="")
         {
+            string command = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID "
+                                                    +"FROM Books b "
+                                                    +"LEFT JOIN Genres ON  b.GenreID = Genres.GenreID "
+                                                    +"LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID "
+                                                    +"LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID";
+           command = $"{command} WHERE b.bookname LIKE N'%{condition}%'  OR Authors.Author LIKE N'%{condition}%'";
             var booksList = new List<Book>();
             Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(@"select b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID
-                                                    from Books b 
-                                                    left join Genres on  b.GenreID = Genres.GenreID
-                                                    left join Publishers on  Publishers.PublisherID = b.PublisherID
-                                                    left join Authors on Authors.AuthorID = b.AuthorID ", Connection);
+            SqlCommand sqlCommand = new SqlCommand(command, Connection);
             SqlDataReader reader = sqlCommand.ExecuteReader();
             while (reader.Read())
             {
@@ -51,6 +53,7 @@ namespace libaryApp
                 Book.Publisher = reader[3].ToString();
                 Book.PublicationYear = (short)reader[4];
                 Book.bookId = (int)reader[5];
+
                 booksList.Add(Book);
             }
             Connection.Close();
@@ -58,7 +61,7 @@ namespace libaryApp
 
         }
 
-
+     
     }
 
 }
