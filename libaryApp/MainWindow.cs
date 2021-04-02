@@ -15,6 +15,9 @@ namespace libaryApp
         public MainWindow()
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -35,6 +38,11 @@ namespace libaryApp
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Books_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new BookForm());
         }
     }
 }

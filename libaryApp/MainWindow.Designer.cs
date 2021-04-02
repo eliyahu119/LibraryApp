@@ -74,6 +74,7 @@ namespace libaryApp
             this.Books.TabIndex = 2;
             this.Books.Text = "ספרים";
             this.Books.UseVisualStyleBackColor = true;
+            this.Books.Click += new System.EventHandler(this.Books_Click);
             // 
             // Members
             // 
@@ -133,7 +134,7 @@ namespace libaryApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(831, 489);
+            this.ClientSize = new System.Drawing.Size(892, 472);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.headline);
             this.Controls.Add(this.label1);
