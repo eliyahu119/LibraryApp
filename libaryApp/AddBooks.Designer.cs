@@ -36,9 +36,9 @@ namespace libaryApp
             this.publicationYearLabel = new System.Windows.Forms.Label();
             this.copiesLabel = new System.Windows.Forms.Label();
             this.submit = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.NumberOfCopies = new System.Windows.Forms.TextBox();
-            this.publicationYear = new System.Windows.Forms.TextBox();
+            this.AddBookTxt = new System.Windows.Forms.TextBox();
+            this.NumberOfCopiesTxt = new System.Windows.Forms.TextBox();
+            this.publicationYearTxt = new System.Windows.Forms.TextBox();
             this.authorComboBox = new System.Windows.Forms.ComboBox();
             this.publicationComboBox = new System.Windows.Forms.ComboBox();
             this.GenereComboBox = new System.Windows.Forms.ComboBox();
@@ -104,31 +104,32 @@ namespace libaryApp
             this.submit.Name = "submit";
             this.submit.Size = new System.Drawing.Size(68, 39);
             this.submit.TabIndex = 9;
-            this.submit.Text = "אישור";
+            this.submit.Text = "הוסף ספר";
             this.submit.UseVisualStyleBackColor = true;
+            this.submit.Click += new System.EventHandler(this.submit_Click);
             // 
-            // textBox1
+            // AddBookTxt
             // 
-            this.textBox1.Location = new System.Drawing.Point(114, 46);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(121, 23);
-            this.textBox1.TabIndex = 10;
+            this.AddBookTxt.Location = new System.Drawing.Point(114, 46);
+            this.AddBookTxt.Name = "AddBookTxt";
+            this.AddBookTxt.Size = new System.Drawing.Size(121, 23);
+            this.AddBookTxt.TabIndex = 10;
             // 
-            // NumberOfCopies
+            // NumberOfCopiesTxt
             // 
-            this.NumberOfCopies.Location = new System.Drawing.Point(181, 205);
-            this.NumberOfCopies.Name = "NumberOfCopies";
-            this.NumberOfCopies.Size = new System.Drawing.Size(54, 23);
-            this.NumberOfCopies.TabIndex = 11;
-            this.NumberOfCopies.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
+            this.NumberOfCopiesTxt.Location = new System.Drawing.Point(181, 205);
+            this.NumberOfCopiesTxt.Name = "NumberOfCopiesTxt";
+            this.NumberOfCopiesTxt.Size = new System.Drawing.Size(54, 23);
+            this.NumberOfCopiesTxt.TabIndex = 11;
+            this.NumberOfCopiesTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
             // 
-            // publicationYear
+            // publicationYearTxt
             // 
-            this.publicationYear.Location = new System.Drawing.Point(181, 170);
-            this.publicationYear.Name = "publicationYear";
-            this.publicationYear.Size = new System.Drawing.Size(54, 23);
-            this.publicationYear.TabIndex = 12;
-            this.publicationYear.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
+            this.publicationYearTxt.Location = new System.Drawing.Point(181, 170);
+            this.publicationYearTxt.Name = "publicationYearTxt";
+            this.publicationYearTxt.Size = new System.Drawing.Size(54, 23);
+            this.publicationYearTxt.TabIndex = 12;
+            this.publicationYearTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
             // 
             // authorComboBox
             // 
@@ -162,9 +163,9 @@ namespace libaryApp
             this.Controls.Add(this.GenereComboBox);
             this.Controls.Add(this.publicationComboBox);
             this.Controls.Add(this.authorComboBox);
-            this.Controls.Add(this.publicationYear);
-            this.Controls.Add(this.NumberOfCopies);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.publicationYearTxt);
+            this.Controls.Add(this.NumberOfCopiesTxt);
+            this.Controls.Add(this.AddBookTxt);
             this.Controls.Add(this.submit);
             this.Controls.Add(this.copiesLabel);
             this.Controls.Add(this.publicationYearLabel);
@@ -190,9 +191,9 @@ namespace libaryApp
         private System.Windows.Forms.Label publicationYearLabel;
         private System.Windows.Forms.Label copiesLabel;
         private System.Windows.Forms.Button submit;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox NumberOfCopies;
-        private System.Windows.Forms.TextBox publicationYear;
+        private System.Windows.Forms.TextBox AddBookTxt;
+        private System.Windows.Forms.TextBox NumberOfCopiesTxt;
+        private System.Windows.Forms.TextBox publicationYearTxt;
         private System.Windows.Forms.ComboBox authorComboBox;
         private System.Windows.Forms.ComboBox publicationComboBox;
         private System.Windows.Forms.ComboBox GenereComboBox;

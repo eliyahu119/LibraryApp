@@ -78,5 +78,17 @@ namespace libaryApp
             this.publicationComboBox.DataSource = PublisherList;
             this.publicationComboBox.ValueMember = null;
         }
+
+        private void submit_Click(object sender, EventArgs e)
+        {
+            Generes Genere= (Generes)GenereComboBox.SelectedValue;
+            Authors author = (Authors)authorComboBox.SelectedValue;
+            Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
+            string BookName = this.AddBookTxt.Text;
+            Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
+            int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
+            DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+
+        }
     }
 }

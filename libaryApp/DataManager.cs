@@ -6,7 +6,7 @@ using System.Text;
 
 namespace libaryApp
 {
-   
+
     static public class DataManager
     {
 
@@ -25,7 +25,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        static public List<Book> getBooksFromDB(string condition="")
+        static public List<Book> getBooksFromDB(string condition = "")
         {
             //get the data from the sql
             string query = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID "
@@ -57,7 +57,7 @@ namespace libaryApp
 
         }
 
-         static public int GetNumberOfCopiesAvaible(int bookID)
+        static public int GetNumberOfCopiesAvaible(int bookID)
         {
             Connection.Open();
             string query = "SELECT COUNT(IsAvailable)  FROM  BooksCopies WHERE BookID=@BookID AND IsAvailable=@true";
@@ -67,6 +67,40 @@ namespace libaryApp
             int AvailableBooks = (Int32)sqlCommand.ExecuteScalar();
             Connection.Close();
             return AvailableBooks;
+        }
+
+        /// <summary>
+        /// adds the book to Db
+        /// </summary>
+        /// <param name="bookName"></param>
+        /// <param name="genere"></param>
+        /// <param name="author"></param>
+        /// <param name="publisher"></param>
+        /// <param name="publicationYear"></param>
+        /// <param name="numberOfCopies"></param>
+        internal static void AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
+        {
+            Connection.Open();
+            SqlCommand insertTODB = new SqlCommand("INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )  " +
+               " OUTPUT Inserted.BookID " + "VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
+            insertTODB.Parameters.AddWithValue("@Bookname", bookName);
+            insertTODB.Parameters.AddWithValue("@GenreID", genere.GenereID);
+            insertTODB.Parameters.AddWithValue("@AuthorID", author.AuthorID);
+            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.PublishersID);
+            insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
+            int BookID = (int)insertTODB.ExecuteScalar();
+
+            ///add the copies to db
+            SqlCommand insertCopies = new SqlCommand("INSERT INTO [BooksCopies]([BookID]) VALUES(@bookID)", Connection);
+            insertCopies.Parameters.AddWithValue("@bookID", BookID);
+            for (int j = 0; j < numberOfCopies; j++)
+            {
+                insertCopies.ExecuteNonQuery();
+                
+
+            }
+
+
         }
 
         /// <summary>
@@ -85,8 +119,8 @@ namespace libaryApp
             var bookCopiesList = new List<BookCopies>();
             while (reader.Read())
             {
-                var bookCopy = new BookCopies(bookID,(int)reader[0],(bool)reader[1]) ;
-               
+                var bookCopy = new BookCopies(bookID, (int)reader[0], (bool)reader[1]);
+
                 bookCopiesList.Add(bookCopy);
 
             }
@@ -109,7 +143,7 @@ namespace libaryApp
             var GeneresList = new BindingList<Generes>();
             while (reader.Read())
             {
-                var Generes = new Generes(){ GenereID=(int)reader[0], Genere=(string)reader[1] };
+                var Generes = new Generes() { GenereID = (int)reader[0], Genere = (string)reader[1] };
 
                 GeneresList.Add(Generes);
 
