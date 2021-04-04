@@ -29,6 +29,7 @@ GO
 CREATE TABLE BooksCopies (
 BooksCopyID int IDENTITY(1,1) PRIMARY KEY,
 BookID int FOREIGN KEY REFERENCES Books(BookID) NOT NULL,
+IsAvailable bit DEFAULT 1 NOT NULL
 );
 
 CREATE TABLE Members (

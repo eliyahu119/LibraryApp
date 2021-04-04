@@ -75,6 +75,7 @@ namespace libaryApp
             this.BookGrid.RowTemplate.Height = 25;
             this.BookGrid.Size = new System.Drawing.Size(583, 288);
             this.BookGrid.TabIndex = 3;
+            this.BookGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.BookGrid_CellDoubleClick);
             // 
             // searchableButton
             // 
