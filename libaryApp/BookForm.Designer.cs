@@ -63,6 +63,7 @@ namespace libaryApp
             this.AddBook.TabIndex = 2;
             this.AddBook.Text = "הוסף ספר";
             this.AddBook.UseVisualStyleBackColor = true;
+            this.AddBook.Click += new System.EventHandler(this.AddBook_Click);
             // 
             // BookGrid
             // 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -94,6 +95,74 @@ namespace libaryApp
         }
 
 
+        /// <summary>
+        /// get genere bindingList for comboBox from DB
+        /// </summary>
+        /// <returns></returns>
+        static public BindingList<Generes> GetGeneresFromDB()
+        {
+
+            string query = "SELECT  GenreID, Genre FROM Genres";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var GeneresList = new BindingList<Generes>();
+            while (reader.Read())
+            {
+                var Generes = new Generes(){ GenereID=(int)reader[0], Genere=(string)reader[1] };
+
+                GeneresList.Add(Generes);
+
+            }
+            Connection.Close();
+            return GeneresList;
+        }
+
+        /// <summary>
+        /// get publisher bindingList for comboBox from DB
+        /// </summary>
+        /// <returns></returns>
+        static public BindingList<Publishers> GetPublishersFromDB()
+        {
+
+            string query = "SELECT PublisherID, Publisher  FROM Publishers";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var PublisherList = new BindingList<Publishers>();
+            while (reader.Read())
+            {
+                var Publishers = new Publishers() { PublishersID = (int)reader[0], Publisher = (string)reader[1] };
+
+                PublisherList.Add(Publishers);
+
+            }
+            Connection.Close();
+            return PublisherList;
+        }
+
+        /// <summary>
+        /// get publisher bindingList for comboBox from DB
+        /// </summary>
+        /// <returns></returns>
+        static public BindingList<Authors> GetAuthorsFromDB()
+        {
+
+            string query = "SELECT  AuthorId, Author  FROM Authors";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var List = new BindingList<Authors>();
+            while (reader.Read())
+            {
+                var item = new Authors() { AuthorID = (int)reader[0], Author = (string)reader[1] };
+
+                List.Add(item);
+
+            }
+            Connection.Close();
+            return List;
+        }
 
     }
 

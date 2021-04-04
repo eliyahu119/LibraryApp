@@ -85,11 +85,11 @@ namespace libaryApp
             // 
             // EditBook
             // 
-            this.EditBook.Location = new System.Drawing.Point(12, 148);
+            this.EditBook.Location = new System.Drawing.Point(34, 139);
             this.EditBook.Name = "EditBook";
             this.EditBook.Size = new System.Drawing.Size(95, 38);
             this.EditBook.TabIndex = 4;
-            this.EditBook.Text = "ערוך ספר";
+            this.EditBook.Text = "ערוך  פרטי ספר";
             this.EditBook.UseVisualStyleBackColor = true;
             this.EditBook.Click += new System.EventHandler(this.EditBook_Click);
             // 

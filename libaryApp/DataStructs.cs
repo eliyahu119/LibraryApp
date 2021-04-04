@@ -41,4 +41,21 @@ namespace libaryApp
         }
 
     }
+
+    public struct Generes
+    {
+        public int GenereID { get; set; }
+        public string Genere { get; set; }
+    }
+    public struct Publishers {
+        public int PublishersID { get; set; }
+        public string Publisher { get; set; }
+
+    }
+    public struct Authors
+    {
+        public int AuthorID { get; set; }
+        public string Author { get; set; }
+    }
+
 }
