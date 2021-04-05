@@ -137,30 +137,11 @@ namespace libaryApp
         /// <returns></returns>
         static public BindingList<BookAttributes>  GetAttributesFromDB<T>() where T: BookAttributes
         {
-           //check which subClasses T is.
-            string table="";
-            string idcolumn="";
-            string valuecolumn = "";
-            if (typeof(T).Equals(typeof(Generes)))
-            {
-                table = "Genres";
-                idcolumn = "GenreID";
-                valuecolumn = "Genre";
-            }
-            else if (typeof(T).Equals(typeof(Authors)))
-            {
-                table = "Authors";
-                idcolumn = "AuthorId";
-                valuecolumn = "Author";
-            }
-            else if (typeof(T).Equals(typeof(Publishers)))
-            {
-                table = "Publishers";
-                 idcolumn = "PublisherID";
-                 valuecolumn = "Publisher";
-            }
+            //check which subClasses T is.
+            string table, idcolumn, valuecolumn;
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,typeof(T));
 
-            string query =$"SELECT  {idcolumn}, {valuecolumn}  FROM {table}";
+            string query = $"SELECT  {idcolumn}, {valuecolumn}  FROM {table}";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             SqlDataReader reader = sqlCommand.ExecuteReader();
@@ -168,7 +149,7 @@ namespace libaryApp
             var List = new BindingList<BookAttributes>();
             while (reader.Read())
             {
-                var item = (T)Activator.CreateInstance(typeof(T),new object[] {(int)reader[0],  (string)reader[1] });
+                var item = (T)Activator.CreateInstance(typeof(T), new object[] { (int)reader[0], (string)reader[1] });
                 List.Add(item);
 
             }
@@ -176,6 +157,55 @@ namespace libaryApp
             return List;
         }
 
+        /// <summary>
+        /// insert bookAttirbute to the DB
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        static public void AddBookAttributesToDB(string value ,Type t)
+        {
+            string table, idcolumn, valuecolumn;
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,t);
+            string query = $"INSERT INTO  {table} ( {valuecolumn}) VALUES(@value) ";
+            Connection.Open();
+            SqlCommand insertTODB = new SqlCommand(query, Connection);
+            insertTODB.Parameters.AddWithValue("@value", value);
+            insertTODB.ExecuteNonQuery();
+            Connection.Close();
+
+        }
+
+        /// <summary>
+        /// get db structure data like tableName based on the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="idcolumn"></param>
+        /// <param name="valuecolumn"></param>
+        private static void getDBStructureDataBaseOnType(out string table, out string idcolumn, out string valuecolumn, Type T) 
+        {
+            table = "";
+            idcolumn = "";
+            valuecolumn = "";
+            if (T.Equals(typeof(Generes)))
+            {
+                table = "Genres";
+                idcolumn = "GenreID";
+                valuecolumn = "Genre";
+            }
+            else if (T.Equals(typeof(Authors)))
+            {
+                table = "Authors";
+                idcolumn = "AuthorId";
+                valuecolumn = "Author";
+            }
+            else if (T.Equals(typeof(Publishers)))
+            {
+                table = "Publishers";
+                idcolumn = "PublisherID";
+                valuecolumn = "Publisher";
+            }
+        }
     }
 
 }

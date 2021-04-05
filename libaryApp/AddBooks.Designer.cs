@@ -133,27 +133,33 @@ namespace libaryApp
             // 
             // authorComboBox
             // 
+            this.authorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.authorComboBox.FormattingEnabled = true;
             this.authorComboBox.Location = new System.Drawing.Point(114, 114);
             this.authorComboBox.Name = "authorComboBox";
             this.authorComboBox.Size = new System.Drawing.Size(121, 23);
             this.authorComboBox.TabIndex = 14;
+            this.authorComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
             // publicationComboBox
             // 
+            this.publicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.publicationComboBox.FormattingEnabled = true;
             this.publicationComboBox.Location = new System.Drawing.Point(114, 143);
             this.publicationComboBox.Name = "publicationComboBox";
             this.publicationComboBox.Size = new System.Drawing.Size(121, 23);
             this.publicationComboBox.TabIndex = 15;
+            this.publicationComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
             // GenereComboBox
             // 
+            this.GenereComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GenereComboBox.FormattingEnabled = true;
             this.GenereComboBox.Location = new System.Drawing.Point(114, 83);
             this.GenereComboBox.Name = "GenereComboBox";
             this.GenereComboBox.Size = new System.Drawing.Size(121, 23);
             this.GenereComboBox.TabIndex = 16;
+            this.GenereComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
             // AddBooks
             // 
