@@ -57,7 +57,7 @@ namespace libaryApp
             // 
             // AddBook
             // 
-            this.AddBook.Location = new System.Drawing.Point(301, 413);
+            this.AddBook.Location = new System.Drawing.Point(305, 385);
             this.AddBook.Name = "AddBook";
             this.AddBook.Size = new System.Drawing.Size(259, 47);
             this.AddBook.TabIndex = 2;
@@ -70,7 +70,7 @@ namespace libaryApp
             this.BookGrid.AllowUserToAddRows = false;
             this.BookGrid.AllowUserToDeleteRows = false;
             this.BookGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.BookGrid.Location = new System.Drawing.Point(75, 108);
+            this.BookGrid.Location = new System.Drawing.Point(140, 91);
             this.BookGrid.Name = "BookGrid";
             this.BookGrid.ReadOnly = true;
             this.BookGrid.RowTemplate.Height = 25;
@@ -86,7 +86,7 @@ namespace libaryApp
             this.searchableButton.TabIndex = 4;
             this.searchableButton.Text = "חפש";
             this.searchableButton.UseVisualStyleBackColor = true;
-            this.searchableButton.Click += new System.EventHandler(this.searchableButton_Click);
+            this.searchableButton.Click += new System.EventHandler(this.SearchAndDisplayBooks);
             // 
             // BookForm
             // 

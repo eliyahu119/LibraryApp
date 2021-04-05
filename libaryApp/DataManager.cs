@@ -25,7 +25,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        static public List<Book> getBooksFromDB(string condition = "")
+        static public List<Book> GetBooksFromDB(string condition = "")
         {
             //get the data from the sql
             string query = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID "
@@ -56,6 +56,35 @@ namespace libaryApp
             return booksList;
 
         }
+
+        static public List<Member> GetMemberFromDb(string condition = "")
+        {
+            //get the data from the sql
+            string query = "select MemberID,MemberName,Phone,Adress,PersonID from Members";
+            query = $"{query} WHERE MemberName LIKE N'%'+@c+'%'";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@c", condition);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var memberList = new List<Member>();
+            //turn the data into list Of Books.
+            while (reader.Read())
+            {
+                var member = new Member();
+                member.MemberID = (int)reader[0];
+                member.memberName = reader[1].ToString();
+                member.Phone = reader[2].ToString();
+                member.Adress = reader[3].ToString();
+                member.PersonID = (int)reader[4];
+                memberList.Add(member);
+            }
+            Connection.Close();
+            return memberList;
+        }
+
+
+
+
 
         static public int GetNumberOfCopiesAvaible(int bookID)
         {

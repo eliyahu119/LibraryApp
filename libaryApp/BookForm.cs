@@ -10,10 +10,10 @@ namespace libaryApp
 {
     public partial class BookForm : Form
     {
-       // public List<Book>
+        // public List<Book>
         public BookForm()
         {
-           
+
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -32,21 +32,12 @@ namespace libaryApp
         {
 
             BookGrid.DataSource = new List<Book>();
-            BookGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(BookGrid_RowPostPaint);
+            BookGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
             ChangeColumnsHeaders();
 
         }
 
-        /// <summary>
-        ///updates rowNumbers of the line the lines
-        /// </summary>
-        private void BookGrid_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
-{
-        using (SolidBrush b = new SolidBrush(BookGrid.RowHeadersDefaultCellStyle.ForeColor))
-        {
-              e.Graphics.DrawString((e.RowIndex + 1).ToString(), e.InheritedRowStyle.Font, b, e.RowBounds.Location.X + 10, e.RowBounds.Location.Y + 4);
-        }
-}
+
 
         /// <summary>
         /// translate the header of the Columns to hebrew 
@@ -65,21 +56,14 @@ namespace libaryApp
             Utils.SwitchBetweenWindows(this, new MainWindow());
         }
 
-     
-
-        private void searchableButton_Click(object sender, EventArgs e)
-        {
-            SearchAndDisplayBooks();
-
-        }
 
         /// <summary>
         /// get the search  data from the DB.
         /// </summary>
-        private void SearchAndDisplayBooks()
+        private void SearchAndDisplayBooks(object sender=null, EventArgs e=null)
         {
             var searchText = searchTextBox.Text;
-            BookGrid.DataSource = DataManager.getBooksFromDB(searchText);
+            BookGrid.DataSource = DataManager.GetBooksFromDB(searchText);
         }
 
         private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -99,5 +83,7 @@ namespace libaryApp
             AddBooks addBooks = AddBooks.Instance;
             addBooks.Show();
         }
+
+       
     }
 }

@@ -77,7 +77,7 @@ namespace libaryApp
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+
         private System.Windows.Forms.TextBox bookAttirbuteTextBox;
         private System.Windows.Forms.Label bookAttirbuteLabel;
         private System.Windows.Forms.Button submitButton;

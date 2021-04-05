@@ -85,6 +85,7 @@ namespace libaryApp
             this.Members.TabIndex = 3;
             this.Members.Text = "מנויים";
             this.Members.UseVisualStyleBackColor = true;
+            this.Members.Click += new System.EventHandler(this.Members_Click);
             // 
             // belonging
             // 

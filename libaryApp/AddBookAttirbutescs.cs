@@ -10,9 +10,8 @@ namespace libaryApp
 {
     public partial class AddBookAttirbutes: Form 
     {
-        private string table="";
-        private string idcolumn = "";
-        private Type T;
+        
+        private readonly Type T;
 
         public AddBookAttirbutes(Type t)
         {

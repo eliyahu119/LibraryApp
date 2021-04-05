@@ -4,6 +4,12 @@ using System.Text;
 
 namespace libaryApp
 {
+
+    #region bookClasses
+
+    /// <summary>
+    /// book class and all its propety
+    /// </summary>
     public class Book
     {
         public int bookId { private get; set; }
@@ -41,7 +47,11 @@ namespace libaryApp
         }
 
     }
-    public  abstract class BookAttributes {
+
+    /// <summary>
+    /// book's Attribute abscract structure.
+    /// </summary>
+    public abstract class BookAttributes {
 
          public int ID { get; set; }
         public string Value { get; set; }
@@ -51,6 +61,10 @@ namespace libaryApp
         }
     }
 
+
+    /// <summary>
+    /// one of book's Attribute
+    /// </summary>
     public class Generes: BookAttributes
     {
         public Generes(int id, string value) : base(id, value)
@@ -58,6 +72,9 @@ namespace libaryApp
 
         }
     }
+    /// <summary>
+    /// one of book's Attribute
+    /// </summary>
     public class Publishers :BookAttributes
     {
         public Publishers(int id, string value) : base(id, value)
@@ -66,6 +83,9 @@ namespace libaryApp
         }
 
     }
+    /// <summary>
+    /// one of book's Attribute
+    /// </summary>
     public class Authors : BookAttributes
     {
         public Authors(int id, string value) : base(id, value)
@@ -74,5 +94,18 @@ namespace libaryApp
         }
 
     }
+    #endregion
+
+    #region
+    public class Member
+    {
+        public string memberName { get; set; }
+        public int MemberID { get; set; }
+        public int PersonID { get; set; }
+        public string Phone { get; set; }
+        public string Adress { get; set; }
+
+    }
+    #endregion
 
 }

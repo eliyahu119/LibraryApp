@@ -44,5 +44,10 @@ namespace libaryApp
         {
             Utils.SwitchBetweenWindows(this, new BookForm());
         }
+
+        private void Members_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new MembersForm());
+        }
     }
 }
