@@ -65,29 +65,45 @@ namespace libaryApp
         /// </summary>
         private void setComboBoxes()
         {
-            var GenereList = DataManager.GetGeneresFromDB();
-            var AuthorsList = DataManager.GetAuthorsFromDB();
-            var PublisherList = DataManager.GetPublishersFromDB();
-            this.GenereComboBox.DisplayMember = "Genere";
+            var GenereList = DataManager.GetAttributesFromDB<Generes>();
+            var AuthorsList = DataManager.GetAttributesFromDB<Authors>();
+            var PublisherList = DataManager.GetAttributesFromDB<Publishers>();
+            this.GenereComboBox.DisplayMember = "value";
             this.GenereComboBox.DataSource = GenereList;
             this.GenereComboBox.ValueMember = null;
-            this.authorComboBox.DisplayMember = "Author";
+            this.authorComboBox.DisplayMember = "value";
             this.authorComboBox.DataSource = AuthorsList;
             this.authorComboBox.ValueMember = null;
-            this.publicationComboBox.DisplayMember = "Publisher";
+            this.publicationComboBox.DisplayMember = "value";
             this.publicationComboBox.DataSource = PublisherList;
             this.publicationComboBox.ValueMember = null;
         }
 
+
+        /// <summary>
+        /// when the submit button is click the new book is added to the db.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void submit_Click(object sender, EventArgs e)
         {
-            Generes Genere= (Generes)GenereComboBox.SelectedValue;
-            Authors author = (Authors)authorComboBox.SelectedValue;
-            Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
-            string BookName = this.AddBookTxt.Text;
-            Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
-            int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
-            DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+            if ((AddBookTxt.Text != "") && (publicationYearTxt.Text != "") && (NumberOfCopiesTxt.Text != ""))
+            {
+                Generes Genere = (Generes)GenereComboBox.SelectedValue;
+                Authors author = (Authors)authorComboBox.SelectedValue;
+                Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
+                string BookName = this.AddBookTxt.Text;
+                Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
+                int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
+
+                DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+                MessageBox.Show("הספר נוסף בהצלחה");
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("נא למלא את כל השדות");
+            }
 
         }
     }

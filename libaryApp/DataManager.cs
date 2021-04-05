@@ -84,9 +84,9 @@ namespace libaryApp
             SqlCommand insertTODB = new SqlCommand("INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )  " +
                " OUTPUT Inserted.BookID " + "VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
             insertTODB.Parameters.AddWithValue("@Bookname", bookName);
-            insertTODB.Parameters.AddWithValue("@GenreID", genere.GenereID);
-            insertTODB.Parameters.AddWithValue("@AuthorID", author.AuthorID);
-            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.PublishersID);
+            insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
+            insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);
+            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.ID);
             insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
             int BookID = (int)insertTODB.ExecuteScalar();
 
@@ -129,68 +129,46 @@ namespace libaryApp
         }
 
 
+
+
         /// <summary>
-        /// get genere bindingList for comboBox from DB
+        /// get BookAttributes classes's bindingList from DB
         /// </summary>
         /// <returns></returns>
-        static public BindingList<Generes> GetGeneresFromDB()
+        static public BindingList<BookAttributes>  GetAttributesFromDB<T>() where T: BookAttributes
         {
-
-            string query = "SELECT  GenreID, Genre FROM Genres";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            var GeneresList = new BindingList<Generes>();
-            while (reader.Read())
+           //check which subClasses T is.
+            string table="";
+            string idcolumn="";
+            string valuecolumn = "";
+            if (typeof(T).Equals(typeof(Generes)))
             {
-                var Generes = new Generes() { GenereID = (int)reader[0], Genere = (string)reader[1] };
-
-                GeneresList.Add(Generes);
-
+                table = "Genres";
+                idcolumn = "GenreID";
+                valuecolumn = "Genre";
             }
-            Connection.Close();
-            return GeneresList;
-        }
-
-        /// <summary>
-        /// get publisher bindingList for comboBox from DB
-        /// </summary>
-        /// <returns></returns>
-        static public BindingList<Publishers> GetPublishersFromDB()
-        {
-
-            string query = "SELECT PublisherID, Publisher  FROM Publishers";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            var PublisherList = new BindingList<Publishers>();
-            while (reader.Read())
+            else if (typeof(T).Equals(typeof(Authors)))
             {
-                var Publishers = new Publishers() { PublishersID = (int)reader[0], Publisher = (string)reader[1] };
-
-                PublisherList.Add(Publishers);
-
+                table = "Authors";
+                idcolumn = "AuthorId";
+                valuecolumn = "Author";
             }
-            Connection.Close();
-            return PublisherList;
-        }
+            else if (typeof(T).Equals(typeof(Publishers)))
+            {
+                table = "Publishers";
+                 idcolumn = "PublisherID";
+                 valuecolumn = "Publisher";
+            }
 
-        /// <summary>
-        /// get publisher bindingList for comboBox from DB
-        /// </summary>
-        /// <returns></returns>
-        static public BindingList<Authors> GetAuthorsFromDB()
-        {
-
-            string query = "SELECT  AuthorId, Author  FROM Authors";
+            string query =$"SELECT  {idcolumn}, {valuecolumn}  FROM {table}";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             SqlDataReader reader = sqlCommand.ExecuteReader();
-            var List = new BindingList<Authors>();
+            //using polymorphism and using T as BookAttributes
+            var List = new BindingList<BookAttributes>();
             while (reader.Read())
             {
-                var item = new Authors() { AuthorID = (int)reader[0], Author = (string)reader[1] };
-
+                var item = (T)Activator.CreateInstance(typeof(T),new object[] {(int)reader[0],  (string)reader[1] });
                 List.Add(item);
 
             }
