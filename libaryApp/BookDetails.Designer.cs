@@ -85,7 +85,7 @@ namespace libaryApp
             // 
             // EditBook
             // 
-            this.EditBook.Location = new System.Drawing.Point(34, 139);
+            this.EditBook.Location = new System.Drawing.Point(25, 141);
             this.EditBook.Name = "EditBook";
             this.EditBook.Size = new System.Drawing.Size(95, 38);
             this.EditBook.TabIndex = 4;

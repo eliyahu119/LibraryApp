@@ -84,9 +84,9 @@ namespace libaryApp
             SqlCommand insertTODB = new SqlCommand("INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )  " +
                " OUTPUT Inserted.BookID " + "VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
             insertTODB.Parameters.AddWithValue("@Bookname", bookName);
-            insertTODB.Parameters.AddWithValue("@GenreID", genere.GenereID);
-            insertTODB.Parameters.AddWithValue("@AuthorID", author.AuthorID);
-            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.PublishersID);
+            insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
+            insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);
+            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.ID);
             insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
             int BookID = (int)insertTODB.ExecuteScalar();
 
@@ -129,68 +129,27 @@ namespace libaryApp
         }
 
 
+
+
         /// <summary>
-        /// get genere bindingList for comboBox from DB
+        /// get BookAttributes classes's bindingList from DB
         /// </summary>
         /// <returns></returns>
-        static public BindingList<Generes> GetGeneresFromDB()
+        static public BindingList<BookAttributes>  GetAttributesFromDB<T>() where T: BookAttributes
         {
+            //check which subClasses T is.
+            string table, idcolumn, valuecolumn;
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,typeof(T));
 
-            string query = "SELECT  GenreID, Genre FROM Genres";
+            string query = $"SELECT  {idcolumn}, {valuecolumn}  FROM {table}";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             SqlDataReader reader = sqlCommand.ExecuteReader();
-            var GeneresList = new BindingList<Generes>();
+            //using polymorphism and using T as BookAttributes
+            var List = new BindingList<BookAttributes>();
             while (reader.Read())
             {
-                var Generes = new Generes() { GenereID = (int)reader[0], Genere = (string)reader[1] };
-
-                GeneresList.Add(Generes);
-
-            }
-            Connection.Close();
-            return GeneresList;
-        }
-
-        /// <summary>
-        /// get publisher bindingList for comboBox from DB
-        /// </summary>
-        /// <returns></returns>
-        static public BindingList<Publishers> GetPublishersFromDB()
-        {
-
-            string query = "SELECT PublisherID, Publisher  FROM Publishers";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            var PublisherList = new BindingList<Publishers>();
-            while (reader.Read())
-            {
-                var Publishers = new Publishers() { PublishersID = (int)reader[0], Publisher = (string)reader[1] };
-
-                PublisherList.Add(Publishers);
-
-            }
-            Connection.Close();
-            return PublisherList;
-        }
-
-        /// <summary>
-        /// get publisher bindingList for comboBox from DB
-        /// </summary>
-        /// <returns></returns>
-        static public BindingList<Authors> GetAuthorsFromDB()
-        {
-
-            string query = "SELECT  AuthorId, Author  FROM Authors";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            var List = new BindingList<Authors>();
-            while (reader.Read())
-            {
-                var item = new Authors() { AuthorID = (int)reader[0], Author = (string)reader[1] };
-
+                var item = (T)Activator.CreateInstance(typeof(T), new object[] { (int)reader[0], (string)reader[1] });
                 List.Add(item);
 
             }
@@ -198,6 +157,55 @@ namespace libaryApp
             return List;
         }
 
+        /// <summary>
+        /// insert bookAttirbute to the DB
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        static public void AddBookAttributesToDB(string value ,Type t)
+        {
+            string table, idcolumn, valuecolumn;
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,t);
+            string query = $"INSERT INTO  {table} ( {valuecolumn}) VALUES(@value) ";
+            Connection.Open();
+            SqlCommand insertTODB = new SqlCommand(query, Connection);
+            insertTODB.Parameters.AddWithValue("@value", value);
+            insertTODB.ExecuteNonQuery();
+            Connection.Close();
+
+        }
+
+        /// <summary>
+        /// get db structure data like tableName based on the type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <param name="idcolumn"></param>
+        /// <param name="valuecolumn"></param>
+        private static void getDBStructureDataBaseOnType(out string table, out string idcolumn, out string valuecolumn, Type T) 
+        {
+            table = "";
+            idcolumn = "";
+            valuecolumn = "";
+            if (T.Equals(typeof(Generes)))
+            {
+                table = "Genres";
+                idcolumn = "GenreID";
+                valuecolumn = "Genre";
+            }
+            else if (T.Equals(typeof(Authors)))
+            {
+                table = "Authors";
+                idcolumn = "AuthorId";
+                valuecolumn = "Author";
+            }
+            else if (T.Equals(typeof(Publishers)))
+            {
+                table = "Publishers";
+                idcolumn = "PublisherID";
+                valuecolumn = "Publisher";
+            }
+        }
     }
 
 }

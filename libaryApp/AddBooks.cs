@@ -28,14 +28,14 @@ namespace libaryApp
                 return instance;
             }
         }
-     
 
-    
-       /// <summary>
-       /// allow numeric charchters in the copy and publication year textboxes
-       /// </summary>
-       /// <param name="sender"></param>
-       /// <param name="e"></param>
+
+
+        /// <summary>
+        /// allow numeric charchters in the copy and publication year textboxes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AllowOnlyNumeric(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -44,9 +44,9 @@ namespace libaryApp
             }
         }
 
-    
 
- 
+
+
 
         private void AddBooks_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -65,30 +65,61 @@ namespace libaryApp
         /// </summary>
         private void setComboBoxes()
         {
-            var GenereList = DataManager.GetGeneresFromDB();
-            var AuthorsList = DataManager.GetAuthorsFromDB();
-            var PublisherList = DataManager.GetPublishersFromDB();
-            this.GenereComboBox.DisplayMember = "Genere";
-            this.GenereComboBox.DataSource = GenereList;
-            this.GenereComboBox.ValueMember = null;
-            this.authorComboBox.DisplayMember = "Author";
-            this.authorComboBox.DataSource = AuthorsList;
-            this.authorComboBox.ValueMember = null;
-            this.publicationComboBox.DisplayMember = "Publisher";
-            this.publicationComboBox.DataSource = PublisherList;
-            this.publicationComboBox.ValueMember = null;
+            BindingList<BookAttributes> GenereList = DataManager.GetAttributesFromDB<Generes>();
+            setBookAttirbuteComboBox<Generes>(GenereComboBox, GenereList);
+            BindingList<BookAttributes> AuthorsList = DataManager.GetAttributesFromDB<Authors>();
+            setBookAttirbuteComboBox<Authors>(authorComboBox, AuthorsList);
+            BindingList<BookAttributes> PublisherList = DataManager.GetAttributesFromDB<Publishers>();
+            setBookAttirbuteComboBox<Publishers>(publicationComboBox, PublisherList);
         }
 
+        private void setBookAttirbuteComboBox<T>(ComboBox comboBox, BindingList<BookAttributes> list) where T : BookAttributes
+        {
+            list.Add((T)Activator.CreateInstance(typeof(T), new object[] { -1, "הוסף..."}));
+            comboBox.DisplayMember = "value";
+            comboBox.DataSource = list;
+            comboBox.ValueMember = null;
+        }
+        /// <summary>
+        /// when the submit button is click the new book is added to the db.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void submit_Click(object sender, EventArgs e)
         {
-            Generes Genere= (Generes)GenereComboBox.SelectedValue;
-            Authors author = (Authors)authorComboBox.SelectedValue;
-            Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
-            string BookName = this.AddBookTxt.Text;
-            Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
-            int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
-            DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+            if ((AddBookTxt.Text != "") && (publicationYearTxt.Text != "") && (NumberOfCopiesTxt.Text != ""))
+            {
+                Generes Genere = (Generes)GenereComboBox.SelectedValue;
+                Authors author = (Authors)authorComboBox.SelectedValue;
+                Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
+                string BookName = this.AddBookTxt.Text;
+                Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
+                int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
+                DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+                MessageBox.Show("הספר נוסף בהצלחה");
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("נא למלא את כל השדות");
+            }
 
         }
+
+        private void SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            BookAttributes elem = (BookAttributes)comboBox.SelectedValue;
+            Type t = elem.GetType();
+         
+            if (elem.ID == -1)
+            {
+                Form form = new AddBookAttirbutes(t);
+                form.ShowDialog();
+                setComboBoxes();
+            }
+        }
+
+     
     }
 }

@@ -41,21 +41,38 @@ namespace libaryApp
         }
 
     }
+    public  abstract class BookAttributes {
 
-    public struct Generes
-    {
-        public int GenereID { get; set; }
-        public string Genere { get; set; }
+         public int ID { get; set; }
+        public string Value { get; set; }
+       public BookAttributes(int id, string value) {
+            ID = id;
+            Value = value;
+        }
     }
-    public struct Publishers {
-        public int PublishersID { get; set; }
-        public string Publisher { get; set; }
+
+    public class Generes: BookAttributes
+    {
+        public Generes(int id, string value) : base(id, value)
+        {
+
+        }
+    }
+    public class Publishers :BookAttributes
+    {
+        public Publishers(int id, string value) : base(id, value)
+        {
+
+        }
 
     }
-    public struct Authors
+    public class Authors : BookAttributes
     {
-        public int AuthorID { get; set; }
-        public string Author { get; set; }
+        public Authors(int id, string value) : base(id, value)
+        {
+
+        }
+
     }
 
 }
