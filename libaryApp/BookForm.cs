@@ -13,9 +13,12 @@ namespace libaryApp
        // public List<Book>
         public BookForm()
         {
+           
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+
+            //set the search button to react enter preses
             searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
@@ -70,12 +73,31 @@ namespace libaryApp
 
         }
 
+        /// <summary>
+        /// get the search  data from the DB.
+        /// </summary>
         private void SearchAndDisplayBooks()
         {
             var searchText = searchTextBox.Text;
-            BookGrid.DataSource = DataManager.getBooks(searchText);
+            BookGrid.DataSource = DataManager.getBooksFromDB(searchText);
         }
 
-     
+        private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Book book = (Book)this.BookGrid.CurrentRow.DataBoundItem;
+            var form = new BookDetails((Book)(book));
+            form.Show();
+        }
+
+        private void BookGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void AddBook_Click(object sender, EventArgs e)
+        {
+            AddBooks addBooks = AddBooks.Instance;
+            addBooks.Show();
+        }
     }
 }
