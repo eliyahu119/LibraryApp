@@ -121,7 +121,7 @@ namespace libaryApp
             this.NumberOfCopiesTxt.Name = "NumberOfCopiesTxt";
             this.NumberOfCopiesTxt.Size = new System.Drawing.Size(54, 23);
             this.NumberOfCopiesTxt.TabIndex = 11;
-            this.NumberOfCopiesTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
+            this.NumberOfCopiesTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(Utils.AllowOnlyNumeric);
             // 
             // publicationYearTxt
             // 
@@ -129,7 +129,7 @@ namespace libaryApp
             this.publicationYearTxt.Name = "publicationYearTxt";
             this.publicationYearTxt.Size = new System.Drawing.Size(54, 23);
             this.publicationYearTxt.TabIndex = 12;
-            this.publicationYearTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AllowOnlyNumeric);
+            this.publicationYearTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(Utils.AllowOnlyNumeric);
             // 
             // authorComboBox
             // 

@@ -72,12 +72,13 @@ namespace libaryApp
             // 
             // AddBook
             // 
-            this.AddBook.Location = new System.Drawing.Point(289, 365);
+            this.AddBook.Location = new System.Drawing.Point(294, 365);
             this.AddBook.Name = "AddBook";
             this.AddBook.Size = new System.Drawing.Size(259, 47);
             this.AddBook.TabIndex = 6;
             this.AddBook.Text = "הוסף מנוי";
             this.AddBook.UseVisualStyleBackColor = true;
+            this.AddBook.Click += new System.EventHandler(this.AddBook_Click);
             // 
             // searchTextBox
             // 

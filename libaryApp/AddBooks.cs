@@ -31,18 +31,7 @@ namespace libaryApp
 
 
 
-        /// <summary>
-        /// allow numeric charchters in the copy and publication year textboxes
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void AllowOnlyNumeric(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
+    
 
 
 
@@ -120,6 +109,6 @@ namespace libaryApp
             }
         }
 
-     
+
     }
 }
