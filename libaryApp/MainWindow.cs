@@ -49,5 +49,10 @@ namespace libaryApp
         {
             Utils.SwitchBetweenWindows(this, new MembersForm());
         }
+
+        private void LoanBook_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new CreateLoan());
+        }
     }
 }

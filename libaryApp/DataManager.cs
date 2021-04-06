@@ -12,6 +12,33 @@ namespace libaryApp
 
         private static SqlConnection Connection;
         const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
+
+        internal static Member GetMember(int memberID)
+        {
+            string query = "select MemberID,MemberName,Phone,Adress,PersonID from Members";
+            query = $"{query} WHERE MemberID=@ID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", memberID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            //turn the data into list Of Books.
+            var member = new Member();
+
+            while (reader.Read())
+            {
+                member.MemberID = (int)reader[0];
+                member.memberName = reader[1].ToString();
+                member.Phone = reader[2].ToString();
+                member.Adress = reader[3].ToString();
+                member.PersonID = (int)reader[4];
+               
+            }
+            Connection.Close();
+            return member;
+
+        }
+
         static DataManager()
         {
 
@@ -20,6 +47,50 @@ namespace libaryApp
                 Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
         }
+
+
+        public static bool IfItemExist(int ID, string table, string column)
+        {
+            string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            Connection.Close();
+            if (NumberOfRows > 0)
+            {
+               return true;
+            }
+                return false;
+        }
+
+        internal static bool IsBookAviable(int copyID)
+        {
+            string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", copyID);
+            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            Connection.Close();
+            if (NumberOfRows > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        static public void CreateLoan(int memberID, int copyID)
+        {
+            string query = "INSERT INTO Loans(MemberID,BooksCopyID,LoanDate) VALUES (@memberID,@booksCopyID, GETDATE());";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            sqlCommand.Parameters.AddWithValue("@booksCopyID", copyID);
+            sqlCommand.ExecuteNonQuery();
+            Connection.Close();
+
+        }
+
         /// <summary>
         /// search the books base on the Author or the name of the book.
         /// </summary>
@@ -125,7 +196,7 @@ namespace libaryApp
             for (int j = 0; j < numberOfCopies; j++)
             {
                 insertCopies.ExecuteNonQuery();
-                
+
 
             }
 
@@ -164,11 +235,11 @@ namespace libaryApp
         /// get BookAttributes classes's bindingList from DB
         /// </summary>
         /// <returns></returns>
-        static public BindingList<BookAttributes>  GetAttributesFromDB<T>() where T: BookAttributes
+        static public BindingList<BookAttributes> GetAttributesFromDB<T>() where T : BookAttributes
         {
             //check which subClasses T is.
             string table, idcolumn, valuecolumn;
-            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,typeof(T));
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn, typeof(T));
 
             string query = $"SELECT  {idcolumn}, {valuecolumn}  FROM {table}";
             Connection.Open();
@@ -191,10 +262,10 @@ namespace libaryApp
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        static public void AddBookAttributesToDB(string value ,Type t)
+        static public void AddBookAttributesToDB(string value, Type t)
         {
             string table, idcolumn, valuecolumn;
-            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn,t);
+            getDBStructureDataBaseOnType(out table, out idcolumn, out valuecolumn, t);
             string query = $"INSERT INTO  {table} ( {valuecolumn}) VALUES(@value) ";
             Connection.Open();
             SqlCommand insertTODB = new SqlCommand(query, Connection);
@@ -211,7 +282,7 @@ namespace libaryApp
         /// <param name="table"></param>
         /// <param name="idcolumn"></param>
         /// <param name="valuecolumn"></param>
-        private static void getDBStructureDataBaseOnType(out string table, out string idcolumn, out string valuecolumn, Type T) 
+        private static void getDBStructureDataBaseOnType(out string table, out string idcolumn, out string valuecolumn, Type T)
         {
             table = "";
             idcolumn = "";

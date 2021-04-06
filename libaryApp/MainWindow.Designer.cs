@@ -53,6 +53,7 @@ namespace libaryApp
             this.LoanBook.TabIndex = 0;
             this.LoanBook.Text = "השאל ספרים";
             this.LoanBook.UseVisualStyleBackColor = true;
+            this.LoanBook.Click += new System.EventHandler(this.LoanBook_Click);
             // 
             // ReturnBook
             // 
