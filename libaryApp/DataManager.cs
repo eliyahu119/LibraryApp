@@ -13,9 +13,59 @@ namespace libaryApp
         private static SqlConnection Connection;
         const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
 
-        internal static Member GetMember(int memberID)
+        /// <summary>
+        /// private static costructor
+        /// </summary>
+        static DataManager()
         {
-            string query = "select MemberID,MemberName,Phone,Adress,PersonID from Members";
+
+            string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
+                AttachDbFilename={DbLocation};
+                Integrated Security=True";
+            Connection = new SqlConnection(ConnectionString);
+        }
+
+
+        /// <summary>
+        /// get the last member who loan this copy.
+        /// </summary>
+        /// <param name="BoocCopyID"></param>
+        /// <returns></returns>
+        public static Member getLastUserUseTheBook(int BoocCopyID)
+        {
+            string query = @"SELECT  Members.MemberID,Members.MemberName,Members.Phone,Members.Adress,Members.PersonID  FROM Loans T1
+                            INNER JOIN (SELECT  BooksCopyID , max(LoanDate) AS maxDate FROM Loans GROUP BY BooksCopyID ) tm ON T1.LoanDate=tm.maxDate  
+                            INNER JOIN Members ON Members.MemberID=T1.MemberID
+                            WHERE T1.BooksCopyID=@BoocCopyID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@BoocCopyID", BoocCopyID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            //turn the data into list Of Books.
+            var member = new Member();
+
+            while (reader.Read())
+            {
+                member.MemberID = (int)reader[0];
+                member.memberName = reader[1].ToString();
+                member.Phone = reader[2].ToString();
+                member.Adress = reader[3].ToString();
+                member.PersonID = (int)reader[4];
+
+            }
+            Connection.Close();
+            return member;
+        }
+
+        /// <summary>
+        /// get Member base on his memberId
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
+        public static Member GetMember(int memberID)
+        {
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
             query = $"{query} WHERE MemberID=@ID";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -32,23 +82,43 @@ namespace libaryApp
                 member.Phone = reader[2].ToString();
                 member.Adress = reader[3].ToString();
                 member.PersonID = (int)reader[4];
-               
+
             }
             Connection.Close();
             return member;
 
         }
 
-        static DataManager()
+        /// <summary>
+        /// sets the availability of the book to true in DB.
+        /// </summary>
+        /// <param name="bookCopyID"></param>
+        /// <returns></returns>
+        public static bool returnBook(int bookCopyID)
         {
+            string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
+            var NumberOfRows = sqlCommand.ExecuteNonQuery();
+            Connection.Close();
+            if (NumberOfRows > 0)
+            {
+                return true;
+            }
+            return false;
 
-            string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
-                AttachDbFilename={DbLocation};
-                Integrated Security=True";
-            Connection = new SqlConnection(ConnectionString);
         }
 
 
+
+        /// <summary>
+        /// check if item  exist in db
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="table"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
         public static bool IfItemExist(int ID, string table, string column)
         {
             string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
@@ -59,12 +129,18 @@ namespace libaryApp
             Connection.Close();
             if (NumberOfRows > 0)
             {
-               return true;
+                return true;
             }
-                return false;
+            return false;
         }
 
-        internal static bool IsBookAviable(int copyID)
+
+        /// <summary>
+        /// check if book is avialbe base on  ISAvailable column
+        /// </summary>
+        /// <param name="copyID"></param>
+        /// <returns></returns>
+        public static bool IsBookAvailable(int copyID)
         {
             string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
             Connection.Open();
@@ -79,6 +155,13 @@ namespace libaryApp
             return true;
         }
 
+
+        /// <summary>
+        /// creates  a loan.
+        /// the availability of the book is auto updated do to the trigger UpdateAvailability.
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <param name="copyID"></param>
         static public void CreateLoan(int memberID, int copyID)
         {
             string query = "INSERT INTO Loans(MemberID,BooksCopyID,LoanDate) VALUES (@memberID,@booksCopyID, GETDATE());";
@@ -128,6 +211,12 @@ namespace libaryApp
 
         }
 
+
+        /// <summary>
+        /// search the Member base on the Member's name..
+        /// </summary>
+        /// <param name="condition"></param>
+        /// <returns></returns>
         static public List<Member> GetMemberFromDb(string condition = "")
         {
             //get the data from the sql
@@ -168,6 +257,7 @@ namespace libaryApp
             Connection.Close();
             return AvailableBooks;
         }
+
 
         /// <summary>
         /// adds the book to Db
