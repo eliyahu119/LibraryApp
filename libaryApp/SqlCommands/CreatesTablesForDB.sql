@@ -50,7 +50,8 @@ GO
 
 
 --sets trigger that every time that a book is getting loan its aviablity will be upadated.
-CREATE TRIGGER DontCreateLoanNotInStor  ON Loans 
+--UpdateAvailability
+CREATE TRIGGER UpdateAvailability  ON Loans 
 AFTER INSERT AS 
 BEGIN 
 SET NOCOUNT ON;
