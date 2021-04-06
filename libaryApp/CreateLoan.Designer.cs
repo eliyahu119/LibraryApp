@@ -102,7 +102,6 @@ namespace libaryApp
             this.Controls.Add(this.Booo);
             this.Name = "CreateLoan";
             this.Text = "CreateLoan";
-            this.Load += new System.EventHandler(this.CreateLoan_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

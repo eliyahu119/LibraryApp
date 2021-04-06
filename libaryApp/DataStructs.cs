@@ -26,11 +26,11 @@ namespace libaryApp
 
     public class BookCopies
     {
-     
+
         public int CopyID { get; set; }
 
         private bool isAvailable;
-        public string _isAvailable { get {return isAvailable ? "נמצא" : "לא נמצא"; }}
+        public string _isAvailable { get { return isAvailable ? "נמצא" : "לא נמצא"; } }
         public int bookId { private get; set; }
         public BookCopies(int bookId, int CopyID, bool isAvailable)
 
@@ -40,7 +40,7 @@ namespace libaryApp
             this.bookId = bookId;
 
         }
-      
+
         public int getBookID()
         {
             return bookId;
@@ -51,11 +51,13 @@ namespace libaryApp
     /// <summary>
     /// book's Attribute abscract structure.
     /// </summary>
-    public abstract class BookAttributes {
+    public abstract class BookAttributes
+    {
 
-         public int ID { get; set; }
+        public int ID { get; set; }
         public string Value { get; set; }
-       public BookAttributes(int id, string value) {
+        public BookAttributes(int id, string value)
+        {
             ID = id;
             Value = value;
         }
@@ -65,7 +67,7 @@ namespace libaryApp
     /// <summary>
     /// one of book's Attribute
     /// </summary>
-    public class Generes: BookAttributes
+    public class Generes : BookAttributes
     {
         public Generes(int id, string value) : base(id, value)
         {
@@ -75,7 +77,7 @@ namespace libaryApp
     /// <summary>
     /// one of book's Attribute
     /// </summary>
-    public class Publishers :BookAttributes
+    public class Publishers : BookAttributes
     {
         public Publishers(int id, string value) : base(id, value)
         {
@@ -96,7 +98,7 @@ namespace libaryApp
     }
     #endregion
 
-    #region
+
     public class Member
     {
         public string memberName { get; set; }
@@ -106,6 +108,13 @@ namespace libaryApp
         public string Adress { get; set; }
 
     }
-    #endregion
+
+    public class Loan
+    {
+        public int LoanID { get; set; }
+        public int CopyID { get; set; }
+        public string BookName { get; set; }
+        public DateTime dateOfLoan { get; set; }
+    }
 
 }

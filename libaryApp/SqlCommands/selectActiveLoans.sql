@@ -9,7 +9,7 @@ SELECT  T1.LoanID,BooksCopies.BooksCopyID,Books.Bookname,T1.LoanDate  from Loans
 inner join (select  BooksCopyID , max(LoanDate) as maxDate from Loans Group by BooksCopyID ) tm on T1.LoanDate=tm.maxDate  
 inner join BooksCopies on BooksCopies.BooksCopyID=tm.BooksCopyID
 inner join Books on Books.BookID=BooksCopies.BookID
-where BooksCopies.IsAvailable=0 AND MemberID=@memberID;
+where BooksCopies.IsAvailable=0 AND Loans.MemberID=@memberID;
 GO
 
 

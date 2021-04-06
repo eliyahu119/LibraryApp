@@ -59,6 +59,40 @@ namespace libaryApp
         }
 
         /// <summary>
+        /// get the list of active loans base on memberID
+        /// </summary>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
+        public static List<Loan> GetActiveLoans(int memberID)
+        {
+
+            string query = @"SELECT  T1.LoanID,BooksCopies.BooksCopyID,Books.Bookname,T1.LoanDate  from Loans T1
+                            inner join (select  BooksCopyID , max(LoanDate) as maxDate from Loans Group by BooksCopyID ) tm on T1.LoanDate=tm.maxDate  
+                            inner join BooksCopies on BooksCopies.BooksCopyID=tm.BooksCopyID
+                            inner join Books on Books.BookID=BooksCopies.BookID
+                            where BooksCopies.IsAvailable=0 AND T1.MemberID=@memberID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var LoanList = new List<Loan>();
+            //turn the data into list Of Books.
+            while (reader.Read())
+            {
+                var Loan = new Loan();
+                Loan.LoanID = (int)reader[0];
+                Loan.CopyID = (int)reader[1];
+                Loan.BookName = reader[2].ToString();
+                Loan.dateOfLoan = (DateTime)reader[3];
+
+
+                LoanList.Add(Loan);
+            }
+            Connection.Close();
+            return LoanList;
+        }
+
+        /// <summary>
         /// get Member base on his memberId
         /// </summary>
         /// <param name="memberID"></param>
@@ -96,7 +130,7 @@ namespace libaryApp
         /// <returns></returns>
         public static bool returnBook(int bookCopyID)
         {
-            string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID";
+            string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
