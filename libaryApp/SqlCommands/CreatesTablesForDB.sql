@@ -29,7 +29,7 @@ GO
 CREATE TABLE BooksCopies (
 BooksCopyID int IDENTITY(1,1) PRIMARY KEY,
 BookID int FOREIGN KEY REFERENCES Books(BookID) NOT NULL,
-IsAvailable bit DEFAULT 1 NOT NULL
+IsAvailable bit DEFAULT 1 NOT NULL, DEFAULT  1
 );
 
 CREATE TABLE Members (
@@ -45,4 +45,17 @@ LoanID int IDENTITY(1,1) PRIMARY KEY,
 MemberID int FOREIGN KEY REFERENCES Members(MemberID) NOT NUll,
 BooksCopyID int FOREIGN KEY REFERENCES BooksCopies(BooksCopyID) NOT NUll,
 LoanDate datetime NOT NULL
-)
+);
+GO
+
+
+--sets trigger that every time that a book is getting loan its aviablity will be upadated.
+CREATE TRIGGER DontCreateLoanNotInStor  ON Loans 
+AFTER INSERT AS 
+BEGIN 
+SET NOCOUNT ON;
+UPDATE [BooksCopies]
+SET IsAvailable=0
+FROM inserted I
+WHERE [BooksCopies].BooksCopyID=i.BooksCopyID
+END
