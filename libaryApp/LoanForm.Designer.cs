@@ -51,7 +51,7 @@ namespace libaryApp
             // 
             // loanBook
             // 
-            this.loanBook.Location = new System.Drawing.Point(8, 211);
+            this.loanBook.Location = new System.Drawing.Point(65, 193);
             this.loanBook.Name = "loanBook";
             this.loanBook.Size = new System.Drawing.Size(189, 47);
             this.loanBook.TabIndex = 8;
@@ -61,7 +61,7 @@ namespace libaryApp
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 135);
+            this.button1.Location = new System.Drawing.Point(69, 136);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(185, 51);
             this.button1.TabIndex = 10;
@@ -81,7 +81,7 @@ namespace libaryApp
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(69, 64);
+            this.button2.Location = new System.Drawing.Point(126, 67);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(128, 52);
             this.button2.TabIndex = 12;

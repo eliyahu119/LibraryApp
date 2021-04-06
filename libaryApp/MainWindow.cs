@@ -20,25 +20,7 @@ namespace libaryApp
             
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void headline_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void Books_Click(object sender, EventArgs e)
         {
@@ -53,6 +35,11 @@ namespace libaryApp
         private void LoanBook_Click(object sender, EventArgs e)
         {
             Utils.SwitchBetweenWindows(this, new CreateLoan());
+        }
+
+        private void ReturnBook_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new ReturnBook());
         }
     }
 }

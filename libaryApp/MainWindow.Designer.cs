@@ -64,6 +64,7 @@ namespace libaryApp
             this.ReturnBook.TabIndex = 1;
             this.ReturnBook.Text = "החזר ספר";
             this.ReturnBook.UseVisualStyleBackColor = true;
+            this.ReturnBook.Click += new System.EventHandler(this.ReturnBook_Click);
             // 
             // Books
             // 
@@ -97,7 +98,6 @@ namespace libaryApp
             this.belonging.TabIndex = 4;
             this.belonging.Text = "created by eliyahu";
             this.belonging.UseWaitCursor = true;
-            this.belonging.Click += new System.EventHandler(this.label1_Click);
             // 
             // label1
             // 
@@ -119,7 +119,6 @@ namespace libaryApp
             this.headline.TabIndex = 7;
             this.headline.Text = "הספרייה ";
             this.headline.UseWaitCursor = true;
-            this.headline.Click += new System.EventHandler(this.headline_Click);
             // 
             // pictureBox1
             // 
@@ -130,7 +129,6 @@ namespace libaryApp
             this.pictureBox1.Size = new System.Drawing.Size(156, 146);
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // MainWindow
             // 

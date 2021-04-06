@@ -23,16 +23,13 @@ namespace libaryApp
             }
         }
 
-        private void CreateLoan_Load(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void SubmitLoan_Click(object sender, EventArgs e)
         {
             int MemberID= Convert.ToInt32(CodeMemberTxt.Text);
             int CopyID = Convert.ToInt32(BookCodeTxt.Text);
-            if ((DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsBookAviable(CopyID)))
+            if ((DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsBookAvailable(CopyID)))
             {
                 if (DataManager.IfItemExist(MemberID,"Members","MemberID"))
                 {

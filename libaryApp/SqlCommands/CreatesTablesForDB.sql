@@ -55,8 +55,7 @@ CREATE TRIGGER UpdateAvailability  ON Loans
 AFTER INSERT AS 
 BEGIN 
 SET NOCOUNT ON;
-UPDATE [BooksCopies]
-SET IsAvailable=0
+UPDATE [BooksCopies] SET IsAvailable=0
 FROM inserted I
 WHERE [BooksCopies].BooksCopyID=i.BooksCopyID
 END
