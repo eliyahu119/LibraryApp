@@ -60,5 +60,22 @@ namespace libaryApp
                 grid.Columns[pair.Item1].HeaderText = pair.Item2;
             }
         }
+
+        ///////////
+        //creating a place holder events
+        public static void RemoveText(object sender, EventArgs e)
+        {
+            if (((TextBox)sender).Text == "שורת חיפוש")
+            {
+                ((TextBox)sender).Text = "";
+            }
+        }
+
+        public static void AddText(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+                ((TextBox)sender).Text = "שורת חיפוש";
+        }
+        /////////////
     }
 }

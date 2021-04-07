@@ -68,12 +68,12 @@ namespace libaryApp
             this.MemberGrid.RowTemplate.Height = 25;
             this.MemberGrid.Size = new System.Drawing.Size(737, 288);
             this.MemberGrid.TabIndex = 7;
-            this.MemberGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MemberGrid_CellContentClick);
+            this.MemberGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MemberGrid_CellDoubleClick);
             // 
-            // AddBook
+            // AddMember
             // 
             this.AddMember.Location = new System.Drawing.Point(294, 365);
-            this.AddMember.Name = "AddBook";
+            this.AddMember.Name = "AddMember";
             this.AddMember.Size = new System.Drawing.Size(259, 47);
             this.AddMember.TabIndex = 6;
             this.AddMember.Text = "הוסף מנוי";

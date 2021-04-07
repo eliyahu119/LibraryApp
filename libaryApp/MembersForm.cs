@@ -44,7 +44,7 @@ namespace libaryApp
 
 
     
-        private void MemberGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void MemberGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Member member = (Member)this.MemberGrid.CurrentRow.DataBoundItem;
             DialogResult dialogResult = MessageBox.Show($"מעבר ל: {member.memberName} ?", "מעבר לפרטי מנוי", MessageBoxButtons.YesNo);
@@ -94,5 +94,7 @@ namespace libaryApp
             
             Utils.SwitchBetweenWindows(this, new AddMember());
         }
+
+      
     }
 }
