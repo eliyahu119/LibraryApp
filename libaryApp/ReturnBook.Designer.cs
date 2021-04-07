@@ -37,9 +37,10 @@ namespace libaryApp
             // 
             // backButton
             // 
-            this.backButton.Location = new System.Drawing.Point(12, 12);
+            this.backButton.Location = new System.Drawing.Point(14, 16);
+            this.backButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(71, 30);
+            this.backButton.Size = new System.Drawing.Size(81, 40);
             this.backButton.TabIndex = 24;
             this.backButton.Text = "חזור";
             this.backButton.UseVisualStyleBackColor = true;
@@ -47,9 +48,10 @@ namespace libaryApp
             // 
             // SubmitReturn
             // 
-            this.SubmitReturn.Location = new System.Drawing.Point(60, 130);
+            this.SubmitReturn.Location = new System.Drawing.Point(69, 173);
+            this.SubmitReturn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SubmitReturn.Name = "SubmitReturn";
-            this.SubmitReturn.Size = new System.Drawing.Size(119, 37);
+            this.SubmitReturn.Size = new System.Drawing.Size(136, 49);
             this.SubmitReturn.TabIndex = 23;
             this.SubmitReturn.Text = "החזר ספר";
             this.SubmitReturn.UseVisualStyleBackColor = true;
@@ -57,29 +59,32 @@ namespace libaryApp
             // 
             // BookCodeTxt
             // 
-            this.BookCodeTxt.Location = new System.Drawing.Point(207, 63);
+            this.BookCodeTxt.Location = new System.Drawing.Point(237, 84);
+            this.BookCodeTxt.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BookCodeTxt.Name = "BookCodeTxt";
-            this.BookCodeTxt.Size = new System.Drawing.Size(111, 23);
+            this.BookCodeTxt.Size = new System.Drawing.Size(126, 27);
             this.BookCodeTxt.TabIndex = 22;
+            this.BookCodeTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(Utils.AllowOnlyNumeric);
             // 
             // Booo
             // 
             this.Booo.AutoSize = true;
-            this.Booo.Location = new System.Drawing.Point(336, 66);
+            this.Booo.Location = new System.Drawing.Point(384, 88);
             this.Booo.Name = "Booo";
-            this.Booo.Size = new System.Drawing.Size(50, 15);
+            this.Booo.Size = new System.Drawing.Size(61, 20);
             this.Booo.TabIndex = 19;
             this.Booo.Text = "קוד ספר";
             // 
             // ReturnBook
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(429, 196);
+            this.ClientSize = new System.Drawing.Size(490, 261);
             this.Controls.Add(this.backButton);
             this.Controls.Add(this.SubmitReturn);
             this.Controls.Add(this.BookCodeTxt);
             this.Controls.Add(this.Booo);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "ReturnBook";
             this.Text = "ReturnBook";
             this.ResumeLayout(false);

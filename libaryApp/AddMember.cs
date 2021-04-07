@@ -10,35 +10,59 @@ namespace libaryApp
 {
     public partial class AddMember : Form
     {
-        private static AddMember instance = null;
 
-        private AddMember()
+        public AddMember()
         {
             InitializeComponent();
         }
 
-        public static AddMember Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new AddMember();
-                }
-                return instance;
-            }
-        }
-        private void AddMember_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            instance = null;
 
-        }
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
+            if ((fullNameTextBox.Text != "") &&
+                (PersonIDTextBox.Text != "") &&
+                (phoneNumberTextBox.Text != "") &&
+                (AdressTextBox.Text != ""))
+            {
+                Member member = DataManager.AddMember
+                 (
+                        fullNameTextBox.Text,
+                        PersonIDTextBox.Text,
+                        phoneNumberTextBox.Text,
+                        AdressTextBox.Text,
+                        out bool isAdded
+                );
+                if (isAdded)
+                {
+                    MessageBox.Show("המנוי נוסף בהצלחה");
+                    Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                }
+                else
+                {
+                    MessageBox.Show("מנוי זה כבר קיים");
+                    AdressTextBox.Text = "";
+                    PersonIDTextBox.Text = "";
+                    phoneNumberTextBox.Text = "";
+                    fullNameTextBox.Text = "";
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("נא למלא את כל הפרטים");
+            }
+
+
+
 
         }
 
-  
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new MembersForm());
+        }
     }
+
+
 }

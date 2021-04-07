@@ -23,7 +23,7 @@ namespace libaryApp
         private void SubmitReturn_Click(object sender, EventArgs e)
         {
             var BoocCopyID = Convert.ToInt32(BookCodeTxt.Text);
-             bool IsReturned = DataManager.returnBook(BoocCopyID);
+             bool IsReturned = DataManager.returnBookToShelf(BoocCopyID);
             if (IsReturned)
             {
                 Member member = DataManager.getLastUserUseTheBook(BoocCopyID);
@@ -38,5 +38,7 @@ namespace libaryApp
                             
 
         }
+
+
     }
 }

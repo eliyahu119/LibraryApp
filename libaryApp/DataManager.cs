@@ -11,7 +11,7 @@ namespace libaryApp
     {
 
         private static SqlConnection Connection;
-        const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
+        const string DbLocation = @"C:\Users\amich\Documents\delete\libaryApp\libaryApp\libaryDb.mdf";
 
         /// <summary>
         /// private static costructor
@@ -23,6 +23,50 @@ namespace libaryApp
                 AttachDbFilename={DbLocation};
                 Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
+        }
+
+        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress,out bool isAdded)
+        {
+            bool IfExist = IfItemExist(personID, "Members", "PersonID");
+            if (IfExist)
+            {
+                isAdded = false;
+                return null;
+            }
+            string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID) 
+                             OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID
+                             VALUES(@MemberName,@Phone,@Adress,@PersonID)";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@MemberName", memberName);
+            sqlCommand.Parameters.AddWithValue("@Phone", phoneNunber);
+            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
+            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+
+            Member member=null; 
+
+            while (reader.Read())
+            {
+                member = new Member(); 
+                member.MemberID = (int)reader[0];
+                member.memberName = reader[1].ToString();
+                member.Phone = reader[2].ToString();
+                member.Adress = reader[3].ToString();
+                member.PersonID = (int)reader[4];
+
+            }
+            if (member == null)
+            {
+                isAdded = false;
+            }
+            else
+            {
+                isAdded = true;
+            }
+            Connection.Close();
+            return member;
         }
 
 
@@ -128,7 +172,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="bookCopyID"></param>
         /// <returns></returns>
-        public static bool returnBook(int bookCopyID)
+        public static bool returnBookToShelf(int bookCopyID)
         {
             string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
             Connection.Open();
@@ -149,16 +193,16 @@ namespace libaryApp
         /// <summary>
         /// check if item  exist in db
         /// </summary>
-        /// <param name="ID"></param>
+        /// <param name="Element"></param>
         /// <param name="table"></param>
         /// <param name="column"></param>
         /// <returns></returns>
-        public static bool IfItemExist(int ID, string table, string column)
+        public static bool IfItemExist(object Element, string table, string column)
         {
             string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            sqlCommand.Parameters.AddWithValue("@ID", Element);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
             if (NumberOfRows > 0)
@@ -254,7 +298,7 @@ namespace libaryApp
         static public List<Member> GetMemberFromDb(string condition = "")
         {
             //get the data from the sql
-            string query = "select MemberID,MemberName,Phone,Adress,PersonID from Members";
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
             query = $"{query} WHERE MemberName LIKE N'%'+@c+'%'";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -305,8 +349,8 @@ namespace libaryApp
         internal static void AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
         {
             Connection.Open();
-            SqlCommand insertTODB = new SqlCommand("INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )  " +
-               " OUTPUT Inserted.BookID " + "VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
+            SqlCommand insertTODB = new SqlCommand(@"INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )
+                                                    OUTPUT Inserted.BookID VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
             insertTODB.Parameters.AddWithValue("@Bookname", bookName);
             insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
             insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);

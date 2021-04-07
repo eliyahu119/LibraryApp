@@ -78,8 +78,8 @@ namespace libaryApp
 
         private void AddBook_Click(object sender, EventArgs e)
         {
-            AddMember AddMember = AddMember.Instance;
-            AddMember.Show();
+            
+            Utils.SwitchBetweenWindows(this, new AddMember());
         }
     }
 }

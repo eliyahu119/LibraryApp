@@ -15,14 +15,20 @@ namespace libaryApp
         {
             this.member = DataManager.GetMember(memberID);
             InitializeComponent();
-            MemberNameLabel.Text = member.memberName;
-            Memberlabel.Text = member.MemberID.ToString();
+            setTextOfLabels();
         }
+
+        private void setTextOfLabels()
+        {
+            MemberNameLabel.Text = $"שם מלא {member.memberName}";
+            Memberlabel.Text = $"קוד מנוי: {member.MemberID}";
+        }
+
         public LoanForm(Member member)
         {
             this.member = member;
             InitializeComponent();
-            MemberNameLabel.Text = member.memberName;
+            setTextOfLabels();
         }
 
         private void loanBook_Click(object sender, EventArgs e)
@@ -42,6 +48,11 @@ namespace libaryApp
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void MemberNameLabel_Click(object sender, EventArgs e)
         {
 
         }
