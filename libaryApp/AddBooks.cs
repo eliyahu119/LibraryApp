@@ -95,6 +95,11 @@ namespace libaryApp
 
         }
 
+        /// <summary>
+        /// when the selected item in combox have id of -1 (the Agreed sign for this Action) the add new book attirbute window is open.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;

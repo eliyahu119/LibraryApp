@@ -17,7 +17,12 @@ namespace libaryApp
         }
 
 
-
+        
+        /// <summary>
+        /// submit the form and opens the Member window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             if ((fullNameTextBox.Text != "") &&

@@ -11,7 +11,7 @@ namespace libaryApp
     {
 
         private static SqlConnection Connection;
-        const string DbLocation = @"C:\Users\amich\Documents\delete\libaryApp\libaryApp\libaryDb.mdf";
+        const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
 
         /// <summary>
         /// private static costructor
@@ -323,8 +323,12 @@ namespace libaryApp
 
 
 
-
-        static public int GetNumberOfCopiesAvaible(int bookID)
+        /// <summary>
+        /// get the number of book's copy available
+        /// </summary>
+        /// <param name="bookID"></param>
+        /// <returns></returns>
+        static public int GetNumberOfCopiesavailable(int bookID)
         {
             Connection.Open();
             string query = "SELECT COUNT(IsAvailable)  FROM  BooksCopies WHERE BookID=@BookID AND IsAvailable=@true";

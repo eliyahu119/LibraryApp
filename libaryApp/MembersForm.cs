@@ -26,6 +26,7 @@ namespace libaryApp
             Utils.SwitchBetweenWindows(this, new MainWindow());   
         }
 
+
         private void Members_Load(object sender, EventArgs e)
         {
             MemberGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
@@ -45,7 +46,17 @@ namespace libaryApp
     
         private void MemberGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            Member member = (Member)this.MemberGrid.CurrentRow.DataBoundItem;
+            DialogResult dialogResult = MessageBox.Show($"מעבר ל: {member.memberName} ?", "מעבר לפרטי מנוי", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Utils.SwitchBetweenWindows(this, new LoanForm(member));
 
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -55,6 +66,11 @@ namespace libaryApp
             }
         }
 
+        /// <summary>
+        /// search and display Members on member form, if user given PersonID or memberID loan window will auto open
+        /// /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchAndDisplayMember(object sender=null, EventArgs e=null)
         {
             if (searchTextBox.Text != "")
@@ -73,7 +89,7 @@ namespace libaryApp
 
         }
 
-        private void AddBook_Click(object sender, EventArgs e)
+        private void AddMember_Click(object sender, EventArgs e)
         {
             
             Utils.SwitchBetweenWindows(this, new AddMember());

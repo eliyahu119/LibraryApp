@@ -25,6 +25,11 @@ namespace libaryApp
 
       
 
+        /// <summary>
+        /// submit the loan to the db
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitLoan_Click(object sender, EventArgs e)
         {
             int MemberID= Convert.ToInt32(CodeMemberTxt.Text);

@@ -46,17 +46,6 @@ namespace libaryApp
 
 
 
-        /// <summary>
-        /// translate the header of the Columns to hebrew 
-        /// </summary>
-        private void ChangeColumnsHeaders()
-        {
-            BookGrid.Columns["BookName"].HeaderText = "שם הספר";
-            BookGrid.Columns["Genre"].HeaderText = "ז'אנר";
-            BookGrid.Columns["Author"].HeaderText = "סופר";
-            BookGrid.Columns["Publisher"].HeaderText = "הוצאה לאור";
-            BookGrid.Columns["PublicationYear"].HeaderText = "שנת יציאה";
-        }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
@@ -73,6 +62,11 @@ namespace libaryApp
             BookGrid.DataSource = DataManager.GetBooksFromDB(searchText);
         }
 
+        /// <summary>
+        /// in case double click on cell the book detail form will open.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Book book = (Book)this.BookGrid.CurrentRow.DataBoundItem;
@@ -80,15 +74,15 @@ namespace libaryApp
             form.Show();
         }
 
-        private void BookGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// opens the singelton instance of addbook form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddBook_Click(object sender, EventArgs e)
         {
             AddBooks addBooks = AddBooks.Instance;
-            addBooks.Show();
+            addBooks.ShowDialog();
         }
 
        
