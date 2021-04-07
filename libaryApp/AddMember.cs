@@ -14,6 +14,8 @@ namespace libaryApp
         public AddMember()
         {
             InitializeComponent();
+            phoneNumberTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            PersonIDTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
         }
 
 
@@ -67,6 +69,8 @@ namespace libaryApp
         {
             Utils.SwitchBetweenWindows(this, new MembersForm());
         }
+
+      
     }
 
 

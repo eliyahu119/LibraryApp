@@ -19,6 +19,9 @@ namespace libaryApp
 
             //set the search button to react enter preses
             searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+            //add place holder
+            searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
+            searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
         }
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -78,11 +81,15 @@ namespace libaryApp
                 bool isNumeric = int.TryParse(searchTextBox.Text, out int n);
                 if (isNumeric)
                 {
-
+                    Member member = DataManager.GetMember(n);
+                    if (member != null)
+                    {
+                        Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                    }
                 }
                 else
                 {
-                    MemberGrid.DataSource = DataManager.GetMemberFromDb(searchTextBox.Text);
+                    MemberGrid.DataSource = DataManager.GetMembersFromDb(searchTextBox.Text);
                 }
 
             }
@@ -95,6 +102,6 @@ namespace libaryApp
             Utils.SwitchBetweenWindows(this, new AddMember());
         }
 
-      
+        
     }
 }

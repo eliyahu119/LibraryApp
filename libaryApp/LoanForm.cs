@@ -46,8 +46,8 @@ namespace libaryApp
             UpdateLoanGrid();
             Utils.ChangeColumnsNameOfGrid(ActiveLoanGrid,
                 new Tuple<string, string>[] {
-                new Tuple<string, string>("LoanID", "קוד מנוי"),
-                new Tuple<string, string>("CopyID","קוד ספר"),
+                new Tuple<string, string>("LoanID", "מספר השאלה"),
+                new Tuple<string, string>("CopyID","מספר עותק"),
                 new Tuple<string, string>("BookName","שם הספר"),
                 new Tuple<string, string>("dateOfLoan","תאריך השאלה")
                 });

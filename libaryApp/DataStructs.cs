@@ -29,13 +29,13 @@ namespace libaryApp
 
         public int CopyID { get; set; }
 
-        private bool isAvailable;
-        public string _isAvailable { get { return isAvailable ? "נמצא" : "לא נמצא"; } }
-        public int bookId { private get; set; }
+        private bool _isAvailable;
+        public string isAvailable { get { return _isAvailable ? "נמצא" : "לא נמצא"; } }
+        public int bookId { private get;  set; }
         public BookCopies(int bookId, int CopyID, bool isAvailable)
 
         {
-            this.isAvailable = isAvailable;
+            this._isAvailable = isAvailable;
             this.CopyID = CopyID;
             this.bookId = bookId;
 

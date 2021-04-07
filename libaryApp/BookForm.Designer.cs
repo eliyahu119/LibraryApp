@@ -54,8 +54,6 @@ namespace libaryApp
             this.searchTextBox.Size = new System.Drawing.Size(368, 23);
             this.searchTextBox.TabIndex = 1;
             this.searchTextBox.Text = "שורת חיפוש";
-            this.searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
-            this.searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
             // 
             // AddBook
             // 

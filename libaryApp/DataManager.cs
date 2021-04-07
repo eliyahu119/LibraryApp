@@ -7,6 +7,9 @@ using System.Text;
 namespace libaryApp
 {
 
+    /// <summary>
+    /// this class is the manager that connects between the DB and the entire project
+    /// </summary>
     static public class DataManager
     {
 
@@ -25,6 +28,16 @@ namespace libaryApp
             Connection = new SqlConnection(ConnectionString);
         }
 
+
+        /// <summary>
+        /// add member to Db and returning his memberID and if added or not.
+        /// </summary>
+        /// <param name="memberName"></param>
+        /// <param name="personID"></param>
+        /// <param name="phoneNunber"></param>
+        /// <param name="Adress"></param>
+        /// <param name="isAdded"></param>
+        /// <returns></returns>
         public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress,out bool isAdded)
         {
             bool IfExist = IfItemExist(personID, "Members", "PersonID");
@@ -110,11 +123,11 @@ namespace libaryApp
         public static List<Loan> GetActiveLoans(int memberID)
         {
 
-            string query = @"SELECT  T1.LoanID,BooksCopies.BooksCopyID,Books.Bookname,T1.LoanDate  from Loans T1
-                            inner join (select  BooksCopyID , max(LoanDate) as maxDate from Loans Group by BooksCopyID ) tm on T1.LoanDate=tm.maxDate  
-                            inner join BooksCopies on BooksCopies.BooksCopyID=tm.BooksCopyID
-                            inner join Books on Books.BookID=BooksCopies.BookID
-                            where BooksCopies.IsAvailable=0 AND T1.MemberID=@memberID;";
+            string query = @"SELECT  T1.LoanID,BooksCopies.BooksCopyID,Books.Bookname,T1.LoanDate  FROM Loans T1
+                            INNER JOIN (select  BooksCopyID , max(LoanDate) AS maxDate FROM Loans GROUP BY BooksCopyID ) tm ON T1.LoanDate=tm.maxDate  
+                            INNER JOIN BooksCopies ON BooksCopies.BooksCopyID=tm.BooksCopyID
+                            INNER JOIN Books ON Books.BookID=BooksCopies.BookID
+                            WHERE BooksCopies.IsAvailable=0 AND T1.MemberID=@memberID;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@memberID", memberID);
@@ -151,10 +164,11 @@ namespace libaryApp
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
             //turn the data into list Of Books.
-            var member = new Member();
+            Member member = null;
 
             while (reader.Read())
             {
+                member=new Member();
                 member.MemberID = (int)reader[0];
                 member.memberName = reader[1].ToString();
                 member.Phone = reader[2].ToString();
@@ -186,6 +200,36 @@ namespace libaryApp
             }
             return false;
 
+        }
+
+        /// <summary>
+        /// sets the availability of the book to true in DB. and gets the book name.
+        /// </summary>
+        /// <param name="bookCopyID"></param>
+        /// <param name="bookName"></param>
+        /// <returns></returns>
+        public static bool returnBookToShelf(int bookCopyID, out string bookName)
+        {
+            string query = @"UPDATE [BooksCopies] SET IsAvailable = 1  
+                            OUTPUT B.Bookname 
+                            FROM [BooksCopies] BC
+                            JOIN Books B ON B.BookID=BC.BookID WHERE BC.BooksCopyID = @ID AND IsAvailable = 0  ";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+             bookName = "";
+
+            while (reader.Read())
+            {
+                bookName = reader[0].ToString();
+            }
+            Connection.Close();
+            if (bookName!="")
+            {
+                return true;
+            }
+            return false;
         }
 
 
@@ -295,7 +339,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
-        static public List<Member> GetMemberFromDb(string condition = "")
+        static public List<Member> GetMembersFromDb(string condition = "")
         {
             //get the data from the sql
             string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
@@ -319,9 +363,6 @@ namespace libaryApp
             Connection.Close();
             return memberList;
         }
-
-
-
 
         /// <summary>
         /// get the number of book's copy available

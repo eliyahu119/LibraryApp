@@ -15,6 +15,10 @@ namespace libaryApp
         private AddBooks()
         {
             InitializeComponent();
+            //allow only numeric
+            publicationYearTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            NumberOfCopiesTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            
         }
         //implenting singelton pattern to this class
         public static AddBooks Instance
@@ -113,7 +117,6 @@ namespace libaryApp
                 setComboBoxes();
             }
         }
-
 
     }
 }

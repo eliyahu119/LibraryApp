@@ -13,7 +13,7 @@ namespace libaryApp
 
 
     static class Utils
-      {
+    {
 
         /// <summary>
         /// switch between the 2 windows
@@ -23,10 +23,10 @@ namespace libaryApp
         static public void SwitchBetweenWindows(Form current, Form otherWindow)
         {
 
-             otherWindow.Location = current.Location; //change the location as the last window.
-             otherWindow.StartPosition = FormStartPosition.Manual;
-             otherWindow.Show();
-             current.Hide ();
+            otherWindow.Location = current.Location; //change the location as the last window.
+            otherWindow.StartPosition = FormStartPosition.Manual;
+            otherWindow.Show();
+            current.Hide();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace libaryApp
             }
         }
 
-        public static void ChangeColumnsNameOfGrid(DataGridView grid,Tuple<string,string>[] pairs)
+        public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
         {
             foreach (var pair in pairs)
             {

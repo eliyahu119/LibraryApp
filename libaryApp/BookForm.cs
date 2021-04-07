@@ -20,6 +20,9 @@ namespace libaryApp
 
             //set the search button to react enter preses
             searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+            //add place holder
+            searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
+            searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -85,6 +88,5 @@ namespace libaryApp
             addBooks.ShowDialog();
         }
 
-      
     }
 }
