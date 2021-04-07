@@ -44,22 +44,20 @@ namespace libaryApp
             this.ActiveLoanGrid.AllowUserToAddRows = false;
             this.ActiveLoanGrid.AllowUserToDeleteRows = false;
             this.ActiveLoanGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ActiveLoanGrid.Location = new System.Drawing.Point(14, 145);
-            this.ActiveLoanGrid.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.ActiveLoanGrid.Location = new System.Drawing.Point(12, 109);
             this.ActiveLoanGrid.Name = "ActiveLoanGrid";
             this.ActiveLoanGrid.ReadOnly = true;
             this.ActiveLoanGrid.RowHeadersWidth = 51;
             this.ActiveLoanGrid.RowTemplate.Height = 25;
-            this.ActiveLoanGrid.Size = new System.Drawing.Size(719, 432);
+            this.ActiveLoanGrid.Size = new System.Drawing.Size(629, 324);
             this.ActiveLoanGrid.TabIndex = 9;
-            this.ActiveLoanGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ActiveLoanGrid_CellContentClick);
+            this.ActiveLoanGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnDoubleClickReturnBook);
             // 
             // loanBook
             // 
-            this.loanBook.Location = new System.Drawing.Point(160, 589);
-            this.loanBook.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.loanBook.Location = new System.Drawing.Point(140, 442);
             this.loanBook.Name = "loanBook";
-            this.loanBook.Size = new System.Drawing.Size(134, 73);
+            this.loanBook.Size = new System.Drawing.Size(117, 55);
             this.loanBook.TabIndex = 8;
             this.loanBook.Text = "השאל ספר";
             this.loanBook.UseVisualStyleBackColor = true;
@@ -67,10 +65,9 @@ namespace libaryApp
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(301, 589);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Location = new System.Drawing.Point(263, 442);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 73);
+            this.button1.Size = new System.Drawing.Size(110, 55);
             this.button1.TabIndex = 10;
             this.button1.Text = "חלון השאלות";
             this.button1.UseVisualStyleBackColor = true;
@@ -80,18 +77,17 @@ namespace libaryApp
             // 
             this.MemberNameLabel.AutoSize = true;
             this.MemberNameLabel.Font = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.MemberNameLabel.Location = new System.Drawing.Point(423, 12);
+            this.MemberNameLabel.Location = new System.Drawing.Point(370, 9);
             this.MemberNameLabel.Name = "MemberNameLabel";
-            this.MemberNameLabel.Size = new System.Drawing.Size(125, 37);
+            this.MemberNameLabel.Size = new System.Drawing.Size(98, 30);
             this.MemberNameLabel.TabIndex = 11;
             this.MemberNameLabel.Text = "שם המנוי";
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(433, 589);
-            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button2.Location = new System.Drawing.Point(379, 442);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(115, 73);
+            this.button2.Size = new System.Drawing.Size(101, 55);
             this.button2.TabIndex = 12;
             this.button2.Text = "חזור למסך הראשי";
             this.button2.UseVisualStyleBackColor = true;
@@ -101,9 +97,9 @@ namespace libaryApp
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(623, 119);
+            this.label1.Location = new System.Drawing.Point(545, 89);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(129, 23);
+            this.label1.Size = new System.Drawing.Size(96, 17);
             this.label1.TabIndex = 13;
             this.label1.Text = "השאלות פעילות";
             // 
@@ -111,17 +107,17 @@ namespace libaryApp
             // 
             this.Memberlabel.AutoSize = true;
             this.Memberlabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Memberlabel.Location = new System.Drawing.Point(160, 81);
+            this.Memberlabel.Location = new System.Drawing.Point(140, 61);
             this.Memberlabel.Name = "Memberlabel";
-            this.Memberlabel.Size = new System.Drawing.Size(91, 23);
+            this.Memberlabel.Size = new System.Drawing.Size(69, 17);
             this.Memberlabel.TabIndex = 14;
             this.Memberlabel.Text = "memberID";
             // 
             // LoanForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(789, 679);
+            this.ClientSize = new System.Drawing.Size(690, 509);
             this.Controls.Add(this.Memberlabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
@@ -129,7 +125,6 @@ namespace libaryApp
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ActiveLoanGrid);
             this.Controls.Add(this.loanBook);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoanForm";
             this.Text = "LoanForm";
             this.Load += new System.EventHandler(this.LoanForm_Load);

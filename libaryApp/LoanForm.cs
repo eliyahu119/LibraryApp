@@ -43,8 +43,7 @@ namespace libaryApp
 
         private void LoanForm_Load(object sender, EventArgs e)
         {
-            List<Loan> li = DataManager.GetActiveLoans(member.MemberID);
-            ActiveLoanGrid.DataSource = li;
+            UpdateLoanGrid();
             Utils.ChangeColumnsNameOfGrid(ActiveLoanGrid,
                 new Tuple<string, string>[] {
                 new Tuple<string, string>("LoanID", "קוד מנוי"),
@@ -55,14 +54,45 @@ namespace libaryApp
 
         }
 
+        private void UpdateLoanGrid()
+        {
+            List<Loan> li = DataManager.GetActiveLoans(member.MemberID);
+            ActiveLoanGrid.DataSource = li;
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void ActiveLoanGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+        /// <summary>
+        /// on double click in cell will show a dialog if return book and if yes the book will be reutrned.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnDoubleClickReturnBook(object sender, DataGridViewCellEventArgs e)
         {
+            Loan loan = (Loan)this.ActiveLoanGrid.CurrentRow.DataBoundItem;
+            DialogResult dialogResult = MessageBox.Show($"האם להחזיר ספר זה?", "החזרת ספר", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                if (DataManager.returnBookToShelf(loan.CopyID))
+                    MessageBox.Show($"הספר {loan.BookName} הוחזר למדף");
+                else
+                {
+                    MessageBox.Show("שגיאה בהחזרת הספר");
+
+                }
+                UpdateLoanGrid();
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
 
         }
+
     }
 }
