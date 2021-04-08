@@ -16,7 +16,6 @@ namespace libaryApp
 
         private static SqlConnection Connection;
         const string DbLocation = @"..\..\..\libaryDb.mdf";
-<<<<<<< HEAD
 
         public static List<Loan> getAllLoans(int memberID)
         {
@@ -67,8 +66,6 @@ namespace libaryApp
             }
             return false ;
         }
-=======
->>>>>>> bd3f642ba9caa2dd8248c860e8ba657e520240e3
 
         /// <summary>
         /// private static costructor
@@ -131,7 +128,6 @@ namespace libaryApp
             return member;
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// edit member query.
         /// </summary>
@@ -142,8 +138,6 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isUpdate"></param>
         /// <returns></returns>
-=======
->>>>>>> bd3f642ba9caa2dd8248c860e8ba657e520240e3
         internal static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, out bool isUpdate)
         {
 

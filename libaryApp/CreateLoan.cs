@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -53,7 +53,7 @@ namespace libaryApp
                 {
                     DataManager.CreateLoan(MemberID, CopyID);
                     MessageBox.Show("השאלה בוצעה בהצלחה");
-                    
+
                     Utils.SwitchBetweenWindows(this, new MemberForm(MemberID));
 
                 }

@@ -47,7 +47,6 @@ namespace libaryApp
 
 
     
-
         private void MemberGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Member member = (Member)this.MemberGrid.CurrentRow.DataBoundItem;
