@@ -41,7 +41,7 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// allow numeric charchters  only in the Text object.
+        /// allow numeric charchters  only in the Text object. and limits it 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -51,8 +51,22 @@ namespace libaryApp
             {
                 e.Handled = true;
             }
-        }
 
+        }
+        public static bool AllowOnlyInRange(int min, int max, TextBox textbox)
+        {
+            int val = 0;
+            bool res = Int32.TryParse(textbox.Text, out val);
+            if (res == true && val >= min && val <= max)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show($"Please input {min} to {max} only.");
+                return false;
+            }
+        }
         public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
         {
             foreach (var pair in pairs)

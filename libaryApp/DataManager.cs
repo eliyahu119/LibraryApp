@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 
 namespace libaryApp
@@ -14,17 +15,67 @@ namespace libaryApp
     {
 
         private static SqlConnection Connection;
-        const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
+        const string DbLocation = @"..\..\..\libaryDb.mdf";
+
+        public static List<Loan> getAllLoans(int memberID)
+        {
+
+            string query = @"SELECT  T1.LoanID,BooksCopies.BooksCopyID,Books.Bookname,T1.LoanDate  FROM Loans T1  
+                            INNER JOIN BooksCopies ON BooksCopies.BooksCopyID=T1.BooksCopyID
+                            INNER JOIN Books ON Books.BookID=BooksCopies.BookID
+                            WHERE  T1.MemberID=@memberID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            var LoanList = new List<Loan>();
+            //turn the data into list Of Books.
+            while (reader.Read())
+            {
+                Loan Loan = GetLoanFromReader(reader);
+
+                LoanList.Add(Loan);
+            }
+            Connection.Close();
+            return LoanList;
+
+        }
+
+        /// <summary>
+        /// check if this book has been loaned  before.
+        /// </summary>
+        /// <param name="copyID"></param>
+        /// <param name="memberID"></param>
+        /// <returns></returns>
+        internal static bool ifHadBeenLoanBefore(int copyID, int memberID)
+        {
+
+            string query = @"SELECT COUNT(*) FROM Loans  l 
+              LEFT JOIN BooksCopies b on l.BooksCopyID=b.BooksCopyID
+              LEFT JOIN BOOKS on b.BookID=BOOKS.BookID
+              WHERE l.BooksCopyID=@BooksCopyID AND l.memberID=@memberID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@BooksCopyID", copyID);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            Connection.Close();
+            if (NumberOfRows > 0)
+            {
+                return true;
+            }
+            return false ;
+        }
 
         /// <summary>
         /// private static costructor
         /// </summary>
         static DataManager()
         {
-
+            string absPAth = Path.GetFullPath(DbLocation);
             string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
-                AttachDbFilename={DbLocation};
-                Integrated Security=True";
+                                        AttachDbFilename={absPAth};
+                                        Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
         }
 
@@ -38,7 +89,7 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isAdded"></param>
         /// <returns></returns>
-        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress,out bool isAdded)
+        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded)
         {
             bool IfExist = IfItemExist(personID, "Members", "PersonID");
             if (IfExist)
@@ -58,16 +109,11 @@ namespace libaryApp
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
 
-            Member member=null; 
+            Member member = null;
 
             while (reader.Read())
             {
-                member = new Member(); 
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
+                member = getMemberFromReader(reader);
 
             }
             if (member == null)
@@ -80,6 +126,61 @@ namespace libaryApp
             }
             Connection.Close();
             return member;
+        }
+
+        /// <summary>
+        /// edit member query.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="FullName"></param>
+        /// <param name="personID"></param>
+        /// <param name="phone"></param>
+        /// <param name="Adress"></param>
+        /// <param name="isUpdate"></param>
+        /// <returns></returns>
+        internal static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, out bool isUpdate)
+        {
+
+            string query = @"UPDATE Members
+                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID
+                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID
+                            WHERE MemberID=@MemberID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@MemberName", FullName);
+            sqlCommand.Parameters.AddWithValue("@Phone", phone);
+            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
+            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            sqlCommand.Parameters.AddWithValue("@MemberID", member.MemberID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            Member UpdatedMember = null;
+            try
+            {
+                while (reader.Read())
+                {
+
+                    UpdatedMember = getMemberFromReader(reader);
+
+
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            if (UpdatedMember == null)
+            {
+                isUpdate = false;
+            }
+            else
+            {
+                isUpdate = true;
+            }
+            Connection.Close();
+            return UpdatedMember;
+
         }
 
 
@@ -100,18 +201,33 @@ namespace libaryApp
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
             //turn the data into list Of Books.
-            var member = new Member();
-
+            Member member = null;
             while (reader.Read())
             {
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
-
+                member = getMemberFromReader(reader);
             }
+
             Connection.Close();
+            return member;
+        }
+
+        /// <summary>
+        /// get member data from sqlReader.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static Member getMemberFromReader(SqlDataReader reader)
+        {
+
+            var member = new Member();
+            member.MemberID = (int)reader["MemberID"];
+            member.memberName = reader["MemberName"].ToString();
+            member.Phone = reader["Phone"].ToString();
+            member.Adress = reader["Adress"].ToString();
+            member.PersonID = (long)reader["PersonID"];
+
+
+
             return member;
         }
 
@@ -136,17 +252,26 @@ namespace libaryApp
             //turn the data into list Of Books.
             while (reader.Read())
             {
-                var Loan = new Loan();
-                Loan.LoanID = (int)reader[0];
-                Loan.CopyID = (int)reader[1];
-                Loan.BookName = reader[2].ToString();
-                Loan.dateOfLoan = (DateTime)reader[3];
-
+                Loan Loan = GetLoanFromReader(reader);
 
                 LoanList.Add(Loan);
             }
             Connection.Close();
             return LoanList;
+        }
+        /// <summary>
+        /// get Loan From Reader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static Loan GetLoanFromReader(SqlDataReader reader)
+        {
+            var Loan = new Loan();
+            Loan.LoanID = (int)reader["LoanID"];
+            Loan.CopyID = (int)reader["BooksCopyID"];
+            Loan.BookName = reader["Bookname"].ToString();
+            Loan.dateOfLoan = (DateTime)reader["LoanDate"];
+            return Loan;
         }
 
         /// <summary>
@@ -168,13 +293,7 @@ namespace libaryApp
 
             while (reader.Read())
             {
-                member=new Member();
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
-
+                member = getMemberFromReader(reader);
             }
             Connection.Close();
             return member;
@@ -218,14 +337,14 @@ namespace libaryApp
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
             SqlDataReader reader = sqlCommand.ExecuteReader();
-             bookName = "";
+            bookName = "";
 
             while (reader.Read())
             {
                 bookName = reader[0].ToString();
             }
             Connection.Close();
-            if (bookName!="")
+            if (bookName != "")
             {
                 return true;
             }
@@ -352,12 +471,7 @@ namespace libaryApp
             //turn the data into list Of Books.
             while (reader.Read())
             {
-                var member = new Member();
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
+                var member = getMemberFromReader(reader);
                 memberList.Add(member);
             }
             Connection.Close();
@@ -412,7 +526,7 @@ namespace libaryApp
 
 
             }
-
+            Connection.Close();
 
         }
 

@@ -102,7 +102,7 @@ namespace libaryApp
     {
         public string memberName { get; set; }
         public int MemberID { get; set; }
-        public int PersonID { get; set; }
+        public long PersonID { get; set; }
         public string Phone { get; set; }
         public string Adress { get; set; }
 

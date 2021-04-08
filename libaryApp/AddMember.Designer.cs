@@ -86,7 +86,7 @@ namespace libaryApp
             // PersonIDTextBox
             // 
             this.PersonIDTextBox.Location = new System.Drawing.Point(130, 71);
-            this.PersonIDTextBox.MaxLength = 9;
+            this.PersonIDTextBox.MaxLength = 10;
             this.PersonIDTextBox.Name = "PersonIDTextBox";
             this.PersonIDTextBox.Size = new System.Drawing.Size(121, 23);
             this.PersonIDTextBox.TabIndex = 16;
@@ -233,6 +233,7 @@ namespace libaryApp
             this.Controls.Add(this.bookNameLabel);
             this.Name = "AddMember";
             this.Text = "AddMember";
+            this.Load += new System.EventHandler(this.AddMember_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -12,7 +12,7 @@ namespace libaryApp
     {
 
         Member member;
-        public CreateLoan(Member member=null)
+        public CreateLoan(Member member = null)
         {
             this.member = member;
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace libaryApp
             }
         }
 
-      
+
 
         /// <summary>
         /// submit the loan to the db
@@ -32,16 +32,29 @@ namespace libaryApp
         /// <param name="e"></param>
         private void SubmitLoan_Click(object sender, EventArgs e)
         {
-            int MemberID= Convert.ToInt32(CodeMemberTxt.Text);
+            if ((!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)) || (!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)))
+                return;
+
+            int MemberID = Convert.ToInt32(CodeMemberTxt.Text);
             int CopyID = Convert.ToInt32(BookCodeTxt.Text);
-            if ((DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsBookAvailable(CopyID)))
+            if (DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsBookAvailable(CopyID))
             {
-                if (DataManager.IfItemExist(MemberID,"Members","MemberID"))
+                if(DataManager.ifHadBeenLoanBefore(CopyID,MemberID))
+                {
+                    DialogResult dialogResult = MessageBox.Show("ספר זה הושאל בעבר, האם תרצה להשאיל אותו שוב?", "השאלת ספר", MessageBoxButtons.YesNo);
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+
+                    }
+                }
+
+                if (DataManager.IfItemExist(MemberID, "Members", "MemberID"))
                 {
                     DataManager.CreateLoan(MemberID, CopyID);
                     MessageBox.Show("השאלה בוצעה בהצלחה");
-                    
-                    Utils.SwitchBetweenWindows(this, new LoanForm(MemberID));
+
+                    Utils.SwitchBetweenWindows(this, new MemberForm(MemberID));
 
                 }
                 else
@@ -49,26 +62,28 @@ namespace libaryApp
                     MessageBox.Show(" מספר מנוי זה אינו תקין ");
                 }
             }
-            else 
+            else
             {
                 MessageBox.Show("עותק זה אינו זמין להשאלה או שאינו קיים במערכת");
             }
-           
+
 
         }
 
+
+
         private void backButton_Click(object sender, EventArgs e)
-            
+
         {
-            if(member== null)
-               Utils.SwitchBetweenWindows(this,new MainWindow());
+            if (member == null)
+                Utils.SwitchBetweenWindows(this, new MainWindow());
             else
             {
-                Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
 
             }
         }
 
-      
+
     }
 }

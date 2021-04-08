@@ -27,6 +27,8 @@ namespace libaryApp
         /// <param name="e"></param>
         private void SubmitReturn_Click(object sender, EventArgs e)
         {
+            if (!Utils.AllowOnlyInRange(0, 1000000, BookCodeTxt))
+                return;
             var BoocCopyID = Convert.ToInt32(BookCodeTxt.Text);
             bool IsReturned = DataManager.returnBookToShelf(BoocCopyID, out string bookName);
             if (IsReturned)
@@ -34,7 +36,7 @@ namespace libaryApp
 
                 Member member = DataManager.getLastUserUseTheBook(BoocCopyID);
                 MessageBox.Show($"הספר {bookName} הוחזר למדף");
-                Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
             }
             else
             {
