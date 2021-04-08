@@ -72,6 +72,7 @@ namespace libaryApp
         /// <param name="e"></param>
         private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+          
             Book book = (Book)this.BookGrid.CurrentRow.DataBoundItem;
             var form = new BookDetails((Book)(book));
             form.Show();

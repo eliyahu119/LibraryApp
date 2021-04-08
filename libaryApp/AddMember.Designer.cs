@@ -52,75 +52,80 @@ namespace libaryApp
             // 
             // phoneNumberTextBox
             // 
-            this.phoneNumberTextBox.Location = new System.Drawing.Point(131, 124);
+            this.phoneNumberTextBox.Location = new System.Drawing.Point(150, 165);
+            this.phoneNumberTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.phoneNumberTextBox.MaxLength = 10;
             this.phoneNumberTextBox.Name = "phoneNumberTextBox";
-            this.phoneNumberTextBox.Size = new System.Drawing.Size(121, 23);
+            this.phoneNumberTextBox.Size = new System.Drawing.Size(138, 27);
             this.phoneNumberTextBox.TabIndex = 12;
             // 
             // bookNameLabel
             // 
             this.bookNameLabel.AutoSize = true;
-            this.bookNameLabel.Location = new System.Drawing.Point(268, 129);
+            this.bookNameLabel.Location = new System.Drawing.Point(306, 172);
             this.bookNameLabel.Name = "bookNameLabel";
-            this.bookNameLabel.Size = new System.Drawing.Size(78, 15);
+            this.bookNameLabel.Size = new System.Drawing.Size(94, 20);
             this.bookNameLabel.TabIndex = 11;
             this.bookNameLabel.Text = "מספר פלאפון";
             // 
             // AdressTextBox
             // 
-            this.AdressTextBox.Location = new System.Drawing.Point(131, 150);
+            this.AdressTextBox.Location = new System.Drawing.Point(150, 200);
+            this.AdressTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AdressTextBox.Name = "AdressTextBox";
-            this.AdressTextBox.Size = new System.Drawing.Size(121, 23);
+            this.AdressTextBox.Size = new System.Drawing.Size(138, 27);
             this.AdressTextBox.TabIndex = 14;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(304, 155);
+            this.label1.Location = new System.Drawing.Point(347, 207);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 15);
+            this.label1.Size = new System.Drawing.Size(52, 20);
             this.label1.TabIndex = 13;
             this.label1.Text = "כתובת";
             // 
             // PersonIDTextBox
             // 
-            this.PersonIDTextBox.Location = new System.Drawing.Point(130, 71);
+            this.PersonIDTextBox.Location = new System.Drawing.Point(149, 95);
+            this.PersonIDTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PersonIDTextBox.MaxLength = 9;
             this.PersonIDTextBox.Name = "PersonIDTextBox";
-            this.PersonIDTextBox.Size = new System.Drawing.Size(121, 23);
+            this.PersonIDTextBox.Size = new System.Drawing.Size(138, 27);
             this.PersonIDTextBox.TabIndex = 16;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(323, 76);
+            this.label2.Location = new System.Drawing.Point(369, 101);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(25, 15);
+            this.label2.Size = new System.Drawing.Size(31, 20);
             this.label2.TabIndex = 15;
             this.label2.Text = "ת\"ז";
             // 
             // fullNameTextBox
             // 
-            this.fullNameTextBox.Location = new System.Drawing.Point(130, 98);
+            this.fullNameTextBox.Location = new System.Drawing.Point(149, 131);
+            this.fullNameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fullNameTextBox.Name = "fullNameTextBox";
-            this.fullNameTextBox.Size = new System.Drawing.Size(121, 23);
+            this.fullNameTextBox.Size = new System.Drawing.Size(138, 27);
             this.fullNameTextBox.TabIndex = 18;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(295, 103);
+            this.label3.Location = new System.Drawing.Point(337, 137);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 15);
+            this.label3.Size = new System.Drawing.Size(63, 20);
             this.label3.TabIndex = 17;
             this.label3.Text = "שם מלא";
             // 
             // SubmitButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(191, 193);
+            this.SubmitButton.Location = new System.Drawing.Point(218, 257);
+            this.SubmitButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.SubmitButton.Name = "SubmitButton";
-            this.SubmitButton.Size = new System.Drawing.Size(99, 23);
+            this.SubmitButton.Size = new System.Drawing.Size(113, 31);
             this.SubmitButton.TabIndex = 19;
             this.SubmitButton.Text = "הוסף מנוי";
             this.SubmitButton.UseVisualStyleBackColor = true;
@@ -141,7 +146,7 @@ namespace libaryApp
             this.textBox1.Location = new System.Drawing.Point(144, 148);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(138, 23);
+            this.textBox1.Size = new System.Drawing.Size(138, 27);
             this.textBox1.TabIndex = 27;
             // 
             // label4
@@ -159,7 +164,7 @@ namespace libaryApp
             this.textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox2.MaxLength = 9;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(138, 23);
+            this.textBox2.Size = new System.Drawing.Size(138, 27);
             this.textBox2.TabIndex = 25;
             // 
             // label5
@@ -176,7 +181,7 @@ namespace libaryApp
             this.textBox3.Location = new System.Drawing.Point(145, 218);
             this.textBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(138, 23);
+            this.textBox3.Size = new System.Drawing.Size(138, 27);
             this.textBox3.TabIndex = 23;
             // 
             // label6
@@ -194,7 +199,7 @@ namespace libaryApp
             this.textBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox4.MaxLength = 10;
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(138, 23);
+            this.textBox4.Size = new System.Drawing.Size(138, 27);
             this.textBox4.TabIndex = 21;
             // 
             // label7
@@ -208,9 +213,10 @@ namespace libaryApp
             // 
             // BackButton
             // 
-            this.BackButton.Location = new System.Drawing.Point(10, 16);
+            this.BackButton.Location = new System.Drawing.Point(11, 21);
+            this.BackButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BackButton.Name = "BackButton";
-            this.BackButton.Size = new System.Drawing.Size(95, 33);
+            this.BackButton.Size = new System.Drawing.Size(109, 44);
             this.BackButton.TabIndex = 20;
             this.BackButton.Text = "חזור";
             this.BackButton.UseVisualStyleBackColor = true;
@@ -218,9 +224,9 @@ namespace libaryApp
             // 
             // AddMember
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 298);
+            this.ClientSize = new System.Drawing.Size(485, 397);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.fullNameTextBox);
@@ -231,8 +237,10 @@ namespace libaryApp
             this.Controls.Add(this.label1);
             this.Controls.Add(this.phoneNumberTextBox);
             this.Controls.Add(this.bookNameLabel);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AddMember";
             this.Text = "AddMember";
+            this.Load += new System.EventHandler(this.AddMember_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

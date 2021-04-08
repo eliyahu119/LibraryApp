@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 
 namespace libaryApp
@@ -14,17 +15,17 @@ namespace libaryApp
     {
 
         private static SqlConnection Connection;
-        const string DbLocation = @"C:\Users\eliyahu\Desktop\פרוייקט מדעי המחשב\libaryApp\libaryApp\libaryDb.mdf";
+        const string DbLocation = @"..\..\..\libaryDb.mdf";
 
         /// <summary>
         /// private static costructor
         /// </summary>
         static DataManager()
         {
-
+            string absPAth = Path.GetFullPath(DbLocation);
             string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
-                AttachDbFilename={DbLocation};
-                Integrated Security=True";
+                                        AttachDbFilename={absPAth};
+                                        Integrated Security=True";
             Connection = new SqlConnection(ConnectionString);
         }
 
@@ -38,7 +39,7 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isAdded"></param>
         /// <returns></returns>
-        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress,out bool isAdded)
+        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded)
         {
             bool IfExist = IfItemExist(personID, "Members", "PersonID");
             if (IfExist)
@@ -58,16 +59,11 @@ namespace libaryApp
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
 
-            Member member=null; 
+            Member member = null;
 
             while (reader.Read())
             {
-                member = new Member(); 
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
+                member = getMemberFromReader(reader);
 
             }
             if (member == null)
@@ -80,6 +76,51 @@ namespace libaryApp
             }
             Connection.Close();
             return member;
+        }
+
+        internal static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, out bool isUpdate)
+        {
+
+            string query = @"UPDATE Members
+                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID
+                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID
+                            WHERE MemberID=@MemberID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@MemberName", FullName);
+            sqlCommand.Parameters.AddWithValue("@Phone", phone);
+            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
+            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            sqlCommand.Parameters.AddWithValue("@MemberID", member.MemberID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            Member UpdatedMember = null;
+            try
+            {
+                while (reader.Read())
+                {
+
+                    UpdatedMember = getMemberFromReader(reader);
+
+
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            if (UpdatedMember == null)
+            {
+                isUpdate = false;
+            }
+            else
+            {
+                isUpdate = true;
+            }
+            Connection.Close();
+            return UpdatedMember;
+
         }
 
 
@@ -100,18 +141,33 @@ namespace libaryApp
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
             //turn the data into list Of Books.
-            var member = new Member();
-
+            Member member = null;
             while (reader.Read())
             {
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
-
+                member = getMemberFromReader(reader);
             }
+
             Connection.Close();
+            return member;
+        }
+
+        /// <summary>
+        /// get member data from sqlReader.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static Member getMemberFromReader(SqlDataReader reader)
+        {
+
+            var member = new Member();
+            member.MemberID = (int)reader["MemberID"];
+            member.memberName = reader["MemberName"].ToString();
+            member.Phone = reader["Phone"].ToString();
+            member.Adress = reader["Adress"].ToString();
+            member.PersonID = (long)reader["PersonID"];
+
+
+
             return member;
         }
 
@@ -168,13 +224,7 @@ namespace libaryApp
 
             while (reader.Read())
             {
-                member=new Member();
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
-
+                member = getMemberFromReader(reader);
             }
             Connection.Close();
             return member;
@@ -218,14 +268,14 @@ namespace libaryApp
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
             SqlDataReader reader = sqlCommand.ExecuteReader();
-             bookName = "";
+            bookName = "";
 
             while (reader.Read())
             {
                 bookName = reader[0].ToString();
             }
             Connection.Close();
-            if (bookName!="")
+            if (bookName != "")
             {
                 return true;
             }
@@ -352,12 +402,7 @@ namespace libaryApp
             //turn the data into list Of Books.
             while (reader.Read())
             {
-                var member = new Member();
-                member.MemberID = (int)reader[0];
-                member.memberName = reader[1].ToString();
-                member.Phone = reader[2].ToString();
-                member.Adress = reader[3].ToString();
-                member.PersonID = (int)reader[4];
+                var member = getMemberFromReader(reader);
                 memberList.Add(member);
             }
             Connection.Close();
@@ -412,7 +457,7 @@ namespace libaryApp
 
 
             }
-
+            Connection.Close();
 
         }
 

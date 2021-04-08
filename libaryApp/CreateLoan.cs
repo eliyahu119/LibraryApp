@@ -41,7 +41,7 @@ namespace libaryApp
                     DataManager.CreateLoan(MemberID, CopyID);
                     MessageBox.Show("השאלה בוצעה בהצלחה");
                     
-                    Utils.SwitchBetweenWindows(this, new LoanForm(MemberID));
+                    Utils.SwitchBetweenWindows(this, new MemberForm(MemberID));
 
                 }
                 else
@@ -64,7 +64,7 @@ namespace libaryApp
                Utils.SwitchBetweenWindows(this,new MainWindow());
             else
             {
-                Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
 
             }
         }

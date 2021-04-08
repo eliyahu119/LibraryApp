@@ -34,7 +34,7 @@ namespace libaryApp
 
                 Member member = DataManager.getLastUserUseTheBook(BoocCopyID);
                 MessageBox.Show($"הספר {bookName} הוחזר למדף");
-                Utils.SwitchBetweenWindows(this, new LoanForm(member));
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
             }
             else
             {

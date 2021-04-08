@@ -8,10 +8,10 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
-    public partial class LoanForm : Form
+    public partial class MemberForm : Form
     {
         Member member;
-        public LoanForm(int memberID)
+        public MemberForm(int memberID)
         {
             this.member = DataManager.GetMember(memberID);
             InitializeComponent();
@@ -24,7 +24,7 @@ namespace libaryApp
             Memberlabel.Text = $"קוד מנוי: {member.MemberID}";
         }
 
-        public LoanForm(Member member)
+        public MemberForm(Member member)
         {
             this.member = member;
             InitializeComponent();
@@ -36,10 +36,7 @@ namespace libaryApp
             Utils.SwitchBetweenWindows(this, new CreateLoan(member));
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Utils.SwitchBetweenWindows(this, new MainWindow());
-        }
+    
 
         private void LoanForm_Load(object sender, EventArgs e)
         {
@@ -94,5 +91,16 @@ namespace libaryApp
 
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new MainWindow());
+
+        }
+
+        private void editMember_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new AddMember(member));
+
+        }
     }
 }
