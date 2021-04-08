@@ -33,7 +33,14 @@ namespace libaryApp
 
             BookGrid.DataSource = new List<Book>();
             BookGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
-            ChangeColumnsHeaders();
+            Utils.ChangeColumnsNameOfGrid(BookGrid,
+                new Tuple<string, string>[] {
+                new Tuple<string, string>("BookName", "שם הספר"),
+                new Tuple<string, string>("Genre","ז'אנר"),
+                new Tuple<string, string>("Author","סופר"),
+                new Tuple<string, string>("PublicationYear","שנת יציאה"),
+                new Tuple<string, string>("Publisher","סופר")
+                });
 
         }
 

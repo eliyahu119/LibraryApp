@@ -20,7 +20,7 @@ namespace libaryApp
 
         private void setTextOfLabels()
         {
-            MemberNameLabel.Text = $"שם מלא {member.memberName}";
+            MemberNameLabel.Text = $"שם מלא: {member.memberName}";
             Memberlabel.Text = $"קוד מנוי: {member.MemberID}";
         }
 
@@ -45,6 +45,14 @@ namespace libaryApp
         {
             List<Loan> li = DataManager.GetActiveLoans(member.MemberID);
             ActiveLoanGrid.DataSource = li;
+            Utils.ChangeColumnsNameOfGrid(ActiveLoanGrid,
+                new Tuple<string, string>[] {
+                new Tuple<string, string>("LoanID", "קוד מנוי"),
+                new Tuple<string, string>("CopyID","קוד ספר"),
+                new Tuple<string, string>("BookName","שם הספר"),
+                new Tuple<string, string>("dateOfLoan","תאריך השאלה")
+                });
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -52,7 +60,7 @@ namespace libaryApp
 
         }
 
-        private void MemberNameLabel_Click(object sender, EventArgs e)
+        private void ActiveLoanGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

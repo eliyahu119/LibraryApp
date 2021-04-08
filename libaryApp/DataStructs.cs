@@ -53,7 +53,6 @@ namespace libaryApp
     /// </summary>
     public abstract class BookAttributes
     {
-
         public int ID { get; set; }
         public string Value { get; set; }
         public BookAttributes(int id, string value)

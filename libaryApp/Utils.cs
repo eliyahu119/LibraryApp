@@ -52,5 +52,13 @@ namespace libaryApp
                 e.Handled = true;
             }
         }
+
+        public static void ChangeColumnsNameOfGrid(DataGridView grid,Tuple<string,string>[] pairs)
+        {
+            foreach (var pair in pairs)
+            {
+                grid.Columns[pair.Item1].HeaderText = pair.Item2;
+            }
+        }
     }
 }

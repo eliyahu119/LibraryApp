@@ -52,6 +52,7 @@ namespace libaryApp
             this.ActiveLoanGrid.RowTemplate.Height = 25;
             this.ActiveLoanGrid.Size = new System.Drawing.Size(719, 432);
             this.ActiveLoanGrid.TabIndex = 9;
+            this.ActiveLoanGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ActiveLoanGrid_CellContentClick);
             // 
             // loanBook
             // 
@@ -84,7 +85,6 @@ namespace libaryApp
             this.MemberNameLabel.Size = new System.Drawing.Size(125, 37);
             this.MemberNameLabel.TabIndex = 11;
             this.MemberNameLabel.Text = "שם המנוי";
-            this.MemberNameLabel.Click += new System.EventHandler(this.MemberNameLabel_Click);
             // 
             // button2
             // 

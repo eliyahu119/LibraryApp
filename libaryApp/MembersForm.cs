@@ -30,22 +30,19 @@ namespace libaryApp
         {
             MemberGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
             MemberGrid.DataSource = new List<Member>();
-            ChangeColumnsHeaders();
+            Utils.ChangeColumnsNameOfGrid(MemberGrid,
+                new Tuple<string, string>[] {
+                new Tuple<string, string>("memberName", "שם המנוי"),
+                new Tuple<string, string>("Phone"," טלפון"),
+                new Tuple<string, string>("Adress","כתובת"),
+                new Tuple<string, string>("MemberID","מספר מנוי"),
+                new Tuple<string, string>("PersonID","תעודת זהות"),
+                });
 
         }
 
 
-        /// <summary>
-        /// translate the header of the Columns to hebrew 
-        /// </summary>
-        private void ChangeColumnsHeaders()
-        {
-            MemberGrid.Columns["memberName"].HeaderText = "שם המנוי";
-            MemberGrid.Columns["Phone"].HeaderText = "טלפון";
-            MemberGrid.Columns["Adress"].HeaderText = "כתובת";
-            MemberGrid.Columns["MemberID"].HeaderText = "מספר מנוי";
-            MemberGrid.Columns["PersonID"].HeaderText = "תעודת זהות";
-        }
+    
         private void MemberGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
