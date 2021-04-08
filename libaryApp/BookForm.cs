@@ -20,6 +20,9 @@ namespace libaryApp
 
             //set the search button to react enter preses
             searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+            //add place holder
+            searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
+            searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -46,17 +49,6 @@ namespace libaryApp
 
 
 
-        /// <summary>
-        /// translate the header of the Columns to hebrew 
-        /// </summary>
-        private void ChangeColumnsHeaders()
-        {
-            BookGrid.Columns["BookName"].HeaderText = "שם הספר";
-            BookGrid.Columns["Genre"].HeaderText = "ז'אנר";
-            BookGrid.Columns["Author"].HeaderText = "סופר";
-            BookGrid.Columns["Publisher"].HeaderText = "הוצאה לאור";
-            BookGrid.Columns["PublicationYear"].HeaderText = "שנת יציאה";
-        }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
@@ -73,24 +65,29 @@ namespace libaryApp
             BookGrid.DataSource = DataManager.GetBooksFromDB(searchText);
         }
 
+        /// <summary>
+        /// in case double click on cell the book detail form will open.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+          
             Book book = (Book)this.BookGrid.CurrentRow.DataBoundItem;
             var form = new BookDetails((Book)(book));
             form.Show();
         }
 
-        private void BookGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// opens the singelton instance of addbook form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddBook_Click(object sender, EventArgs e)
         {
             AddBooks addBooks = AddBooks.Instance;
-            addBooks.Show();
+            addBooks.ShowDialog();
         }
 
-       
     }
 }

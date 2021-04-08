@@ -79,7 +79,7 @@ namespace libaryApp
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(348, 207);
+            this.label1.Location = new System.Drawing.Point(347, 207);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 20);
             this.label1.TabIndex = 13;
@@ -97,7 +97,7 @@ namespace libaryApp
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(369, 102);
+            this.label2.Location = new System.Drawing.Point(369, 101);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(31, 20);
             this.label2.TabIndex = 15;
@@ -105,7 +105,7 @@ namespace libaryApp
             // 
             // fullNameTextBox
             // 
-            this.fullNameTextBox.Location = new System.Drawing.Point(149, 130);
+            this.fullNameTextBox.Location = new System.Drawing.Point(149, 131);
             this.fullNameTextBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.fullNameTextBox.Name = "fullNameTextBox";
             this.fullNameTextBox.Size = new System.Drawing.Size(138, 27);
@@ -213,7 +213,7 @@ namespace libaryApp
             // 
             // BackButton
             // 
-            this.BackButton.Location = new System.Drawing.Point(12, 21);
+            this.BackButton.Location = new System.Drawing.Point(11, 21);
             this.BackButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.BackButton.Name = "BackButton";
             this.BackButton.Size = new System.Drawing.Size(109, 44);
@@ -226,7 +226,7 @@ namespace libaryApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 397);
+            this.ClientSize = new System.Drawing.Size(485, 397);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.fullNameTextBox);
@@ -240,6 +240,7 @@ namespace libaryApp
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AddMember";
             this.Text = "AddMember";
+            this.Load += new System.EventHandler(this.AddMember_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

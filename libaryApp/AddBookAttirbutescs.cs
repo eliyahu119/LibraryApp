@@ -13,7 +13,11 @@ namespace libaryApp
         
         private readonly Type T;
 
-        public AddBookAttirbutes(Type t)
+        /// <summary>
+        /// display the window  correspondingly with the type of bookAttirbute
+        /// </summary>
+        /// <param name="t"></param>
+        public AddBookAttirbutes(Type t) 
         {
             InitializeComponent();
             T = t;
@@ -32,6 +36,11 @@ namespace libaryApp
           
         }
 
+        /// <summary>
+        /// //send the book aattirbute data to the data manager.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void submitButton_Click(object sender, EventArgs e)
         {
             string value = bookAttirbuteTextBox.Text;

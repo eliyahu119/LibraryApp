@@ -24,8 +24,8 @@ namespace libaryApp
             List<BookCopies> li = DataManager.getBookCopiesFromDB(book.getBookID());
             CopiesGrid.DataSource = li;
             CopiesGrid.Columns["CopyID"].HeaderText = "קוד עותק";
-            CopiesGrid.Columns["_isAvailable"].HeaderText = "האם נמצא";
-            int number= DataManager.GetNumberOfCopiesAvaible(book.getBookID());
+            CopiesGrid.Columns["isAvailable"].HeaderText = "האם נמצא";
+            int number= DataManager.GetNumberOfCopiesavailable(book.getBookID());
             availableBooks.Text = string.Format(availableBooks.Text, number);
         }
         private void Author_Click(object sender, EventArgs e)

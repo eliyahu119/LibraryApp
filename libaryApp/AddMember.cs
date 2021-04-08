@@ -10,14 +10,32 @@ namespace libaryApp
 {
     public partial class AddMember : Form
     {
-
-        public AddMember()
+        private Member member;
+        public AddMember(Member member = null)
         {
+            this.member = member;
             InitializeComponent();
+            phoneNumberTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            PersonIDTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            if (member != null)
+            {
+                fullNameTextBox.Text = member.memberName;
+                PersonIDTextBox.Text = member.PersonID.ToString();
+                phoneNumberTextBox.Text = member.Phone;
+                AdressTextBox.Text = member.Adress;
+                SubmitButton.Text = "ערוך מנוי";
+            }
         }
 
 
 
+
+
+        /// <summary>
+        /// submit the form and opens the Member window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             if ((fullNameTextBox.Text != "") &&
@@ -25,26 +43,49 @@ namespace libaryApp
                 (phoneNumberTextBox.Text != "") &&
                 (AdressTextBox.Text != ""))
             {
-                Member member = DataManager.AddMember
-                 (
-                        fullNameTextBox.Text,
-                        PersonIDTextBox.Text,
-                        phoneNumberTextBox.Text,
-                        AdressTextBox.Text,
-                        out bool isAdded
-                );
-                if (isAdded)
+                if (member == null)
                 {
-                    MessageBox.Show("המנוי נוסף בהצלחה");
-                    Utils.SwitchBetweenWindows(this, new LoanForm(member));
+
+                    Member NewMember = DataManager.AddMember
+                     (
+                            fullNameTextBox.Text,
+                            PersonIDTextBox.Text,
+                            phoneNumberTextBox.Text,
+                            AdressTextBox.Text,
+                            out bool isAdded
+                    );
+                    if (isAdded)
+                    {
+                        MessageBox.Show("המנוי נוסף בהצלחה");
+                        Utils.SwitchBetweenWindows(this, new MemberForm(NewMember));
+                    }
+                    else;
+                    {
+                        MessageBox.Show("מנוי זה כבר קיים");
+                        AdressTextBox.Text = "";
+                        PersonIDTextBox.Text = "";
+                        phoneNumberTextBox.Text = "";
+                        fullNameTextBox.Text = "";
+
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("מנוי זה כבר קיים");
-                    AdressTextBox.Text = "";
-                    PersonIDTextBox.Text = "";
-                    phoneNumberTextBox.Text = "";
-                    fullNameTextBox.Text = "";
+                    Member UpdatedMember = null;
+                    UpdatedMember = DataManager.EditMember(member, fullNameTextBox.Text,
+                               Convert.ToInt64(PersonIDTextBox.Text),
+                                phoneNumberTextBox.Text,
+                                AdressTextBox.Text, out bool isUpdate);
+                    if (isUpdate)
+                    {
+                        MessageBox.Show("פרטי המנוי נערכו בהצלחה");
+                        Utils.SwitchBetweenWindows(this, new MemberForm(UpdatedMember));
+                    }
+                    else
+                    {
+                        MessageBox.Show("שגיאה בעדכון פרטי המנוי");
+                        Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                    }
 
                 }
             }
@@ -60,7 +101,15 @@ namespace libaryApp
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MembersForm());
+            if (member == null)
+                Utils.SwitchBetweenWindows(this, new MembersForm());
+            else
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+        }
+
+        private void AddMember_Load(object sender, EventArgs e)
+        {
+
         }
     }
 

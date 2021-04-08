@@ -19,12 +19,16 @@ namespace libaryApp
 
             //set the search button to react enter preses
             searchTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+            //add place holder
+            searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
+            searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
             Utils.SwitchBetweenWindows(this, new MainWindow());   
         }
+
 
         private void Members_Load(object sender, EventArgs e)
         {
@@ -43,9 +47,20 @@ namespace libaryApp
 
 
     
-        private void MemberGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
+        private void MemberGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Member member = (Member)this.MemberGrid.CurrentRow.DataBoundItem;
+            DialogResult dialogResult = MessageBox.Show($"מעבר ל: {member.memberName} ?", "מעבר לפרטי מנוי", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                return;
+            }
         }
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -55,6 +70,11 @@ namespace libaryApp
             }
         }
 
+        /// <summary>
+        /// search and display Members on member form, if user given PersonID or memberID loan window will auto open
+        /// /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchAndDisplayMember(object sender=null, EventArgs e=null)
         {
             if (searchTextBox.Text != "")
@@ -62,21 +82,27 @@ namespace libaryApp
                 bool isNumeric = int.TryParse(searchTextBox.Text, out int n);
                 if (isNumeric)
                 {
-
+                    Member member = DataManager.GetMember(n);
+                    if (member != null)
+                    {
+                        Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                    }
                 }
                 else
                 {
-                    MemberGrid.DataSource = DataManager.GetMemberFromDb(searchTextBox.Text);
+                    MemberGrid.DataSource = DataManager.GetMembersFromDb(searchTextBox.Text);
                 }
 
             }
 
         }
 
-        private void AddBook_Click(object sender, EventArgs e)
+        private void AddMember_Click(object sender, EventArgs e)
         {
             
             Utils.SwitchBetweenWindows(this, new AddMember());
         }
+
+        
     }
 }

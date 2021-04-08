@@ -13,7 +13,7 @@ namespace libaryApp
 
 
     static class Utils
-      {
+    {
 
         /// <summary>
         /// switch between the 2 windows
@@ -23,10 +23,10 @@ namespace libaryApp
         static public void SwitchBetweenWindows(Form current, Form otherWindow)
         {
 
-             otherWindow.Location = current.Location; //change the location as the last window.
-             otherWindow.StartPosition = FormStartPosition.Manual;
-             otherWindow.Show();
-             current.Hide ();
+            otherWindow.Location = current.Location; //change the location as the last window.
+            otherWindow.StartPosition = FormStartPosition.Manual;
+            otherWindow.Show();
+            current.Hide();
         }
 
         /// <summary>
@@ -53,12 +53,29 @@ namespace libaryApp
             }
         }
 
-        public static void ChangeColumnsNameOfGrid(DataGridView grid,Tuple<string,string>[] pairs)
+        public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
         {
             foreach (var pair in pairs)
             {
                 grid.Columns[pair.Item1].HeaderText = pair.Item2;
             }
         }
+
+        ///////////
+        //creating a place holder events
+        public static void RemoveText(object sender, EventArgs e)
+        {
+            if (((TextBox)sender).Text == "שורת חיפוש")
+            {
+                ((TextBox)sender).Text = "";
+            }
+        }
+
+        public static void AddText(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+                ((TextBox)sender).Text = "שורת חיפוש";
+        }
+        /////////////
     }
 }
