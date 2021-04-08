@@ -51,6 +51,16 @@ namespace libaryApp
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new AllLoansForm(member));
+        }
+
+        private void ActiveLoanGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
         private void UpdateLoanGrid()
         {
             List<Loan> li = DataManager.GetActiveLoans(member.MemberID);
@@ -103,6 +113,5 @@ namespace libaryApp
 
         }
 
-     
     }
 }
