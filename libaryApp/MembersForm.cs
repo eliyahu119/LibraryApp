@@ -26,7 +26,7 @@ namespace libaryApp
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MainWindow());   
+            Utils.SwitchBetweenWindows(this, new MainWindow());
         }
 
 
@@ -46,7 +46,7 @@ namespace libaryApp
         }
 
 
-    
+
         private void MemberGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             Member member = (Member)this.MemberGrid.CurrentRow.DataBoundItem;
@@ -74,23 +74,30 @@ namespace libaryApp
         /// /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void SearchAndDisplayMember(object sender=null, EventArgs e=null)
+        private void SearchAndDisplayMember(object sender = null, EventArgs e = null)
         {
             if (searchTextBox.Text != "")
             {
-                bool isNumeric = int.TryParse(searchTextBox.Text, out int n);
+                List<Member> Li = null;
+                bool isNumeric = long.TryParse(searchTextBox.Text, out long n);
                 if (isNumeric)
                 {
-                    Member member = DataManager.GetMember(n);
-                    if (member != null)
-                    {
-                        Utils.SwitchBetweenWindows(this, new MemberForm(member));
-                    }
+                    Li = DataManager.GetMembersByID(n);
                 }
                 else
                 {
-                    MemberGrid.DataSource = DataManager.GetMembersFromDb(searchTextBox.Text);
+                    Li = DataManager.GetMembersFromDb(searchTextBox.Text);
                 }
+
+                if (Li.Count == 1)
+                {
+                    Utils.SwitchBetweenWindows(this, new MemberForm(Li[0]));
+                }
+                else
+                {
+                    MemberGrid.DataSource = Li;
+                }
+
 
             }
 
@@ -98,10 +105,10 @@ namespace libaryApp
 
         private void AddMember_Click(object sender, EventArgs e)
         {
-            
+
             Utils.SwitchBetweenWindows(this, new AddMember());
         }
 
-        
+
     }
 }

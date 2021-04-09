@@ -10,10 +10,11 @@ namespace libaryApp
 {
     public partial class MemberForm : Form
     {
+        private List<Loan> loanList;
         Member member;
         public MemberForm(int memberID)
         {
-            this.member = DataManager.GetMember(memberID);
+            this.member = DataManager.GetMemberByID(memberID);
             InitializeComponent();
             setTextOfLabels();
         }
@@ -53,8 +54,8 @@ namespace libaryApp
 
         private void UpdateLoanGrid()
         {
-            List<Loan> li = DataManager.GetActiveLoans(member.MemberID);
-            ActiveLoanGrid.DataSource = li;
+            loanList = DataManager.GetActiveLoans(member.MemberID);
+            ActiveLoanGrid.DataSource = loanList;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -103,6 +104,6 @@ namespace libaryApp
 
         }
 
-     
+
     }
 }

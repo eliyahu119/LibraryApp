@@ -52,6 +52,7 @@ namespace libaryApp
             this.ActiveLoanGrid.RowTemplate.Height = 25;
             this.ActiveLoanGrid.Size = new System.Drawing.Size(629, 324);
             this.ActiveLoanGrid.TabIndex = 9;
+            this.ActiveLoanGrid.DataSource = loanList;
             this.ActiveLoanGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnDoubleClickReturnBook);
             // 
             // loanBook
@@ -128,7 +129,7 @@ namespace libaryApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 509);
+            this.ClientSize = new System.Drawing.Size(701, 515);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.Memberlabel);
             this.Controls.Add(this.label1);

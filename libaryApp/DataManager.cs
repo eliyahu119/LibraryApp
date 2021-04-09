@@ -277,15 +277,16 @@ namespace libaryApp
         /// <summary>
         /// get Member base on his memberId
         /// </summary>
-        /// <param name="memberID"></param>
+        /// <param name="ID"></param>
         /// <returns></returns>
-        public static Member GetMember(int memberID)
+        public static Member GetMemberByID(long ID)
         {
             string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
             query = $"{query} WHERE MemberID=@ID";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", memberID);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
             //turn the data into list Of Books.
@@ -297,6 +298,32 @@ namespace libaryApp
             }
             Connection.Close();
             return member;
+
+        }
+        /// <summary>
+        /// search by person id as well as member id
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static List<Member> GetMembersByID(long ID)
+        {
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
+            query = $"{query} WHERE MemberID=@ID OR PersonID=@ID ";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+      
+            var memberList = new List<Member>();
+            //turn the data into list Of members.
+            while (reader.Read())
+            {
+                var member = getMemberFromReader(reader);
+                memberList.Add(member);
+            }
+            Connection.Close();
+            return memberList;
 
         }
 
@@ -468,7 +495,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@c", condition);
             SqlDataReader reader = sqlCommand.ExecuteReader();
             var memberList = new List<Member>();
-            //turn the data into list Of Books.
+            //turn the data into list Of members.
             while (reader.Read())
             {
                 var member = getMemberFromReader(reader);
