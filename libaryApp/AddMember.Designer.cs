@@ -48,6 +48,8 @@ namespace libaryApp
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.BackButton = new System.Windows.Forms.Button();
+            this.EmailtextBox = new System.Windows.Forms.TextBox();
+            this.EmailLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // phoneNumberTextBox
@@ -69,7 +71,7 @@ namespace libaryApp
             // 
             // AdressTextBox
             // 
-            this.AdressTextBox.Location = new System.Drawing.Point(131, 150);
+            this.AdressTextBox.Location = new System.Drawing.Point(131, 153);
             this.AdressTextBox.Name = "AdressTextBox";
             this.AdressTextBox.Size = new System.Drawing.Size(121, 23);
             this.AdressTextBox.TabIndex = 14;
@@ -118,7 +120,7 @@ namespace libaryApp
             // 
             // SubmitButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(191, 193);
+            this.SubmitButton.Location = new System.Drawing.Point(168, 242);
             this.SubmitButton.Name = "SubmitButton";
             this.SubmitButton.Size = new System.Drawing.Size(99, 23);
             this.SubmitButton.TabIndex = 19;
@@ -216,11 +218,29 @@ namespace libaryApp
             this.BackButton.UseVisualStyleBackColor = true;
             this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
+            // EmailtextBox
+            // 
+            this.EmailtextBox.Location = new System.Drawing.Point(130, 183);
+            this.EmailtextBox.Name = "EmailtextBox";
+            this.EmailtextBox.Size = new System.Drawing.Size(121, 23);
+            this.EmailtextBox.TabIndex = 22;
+            // 
+            // EmailLabel
+            // 
+            this.EmailLabel.AutoSize = true;
+            this.EmailLabel.Location = new System.Drawing.Point(303, 183);
+            this.EmailLabel.Name = "EmailLabel";
+            this.EmailLabel.Size = new System.Drawing.Size(36, 15);
+            this.EmailLabel.TabIndex = 21;
+            this.EmailLabel.Text = "Email";
+            // 
             // AddMember
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(424, 298);
+            this.Controls.Add(this.EmailtextBox);
+            this.Controls.Add(this.EmailLabel);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.fullNameTextBox);
@@ -260,5 +280,7 @@ namespace libaryApp
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button BackButton;
+        private System.Windows.Forms.TextBox EmailtextBox;
+        private System.Windows.Forms.Label EmailLabel;
     }
 }

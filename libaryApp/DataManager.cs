@@ -89,7 +89,7 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isAdded"></param>
         /// <returns></returns>
-        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded)
+        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded, string EmailtextBox = null)
         {
             bool IfExist = IfItemExist(personID, "Members", "PersonID");
             if (IfExist)
@@ -97,15 +97,16 @@ namespace libaryApp
                 isAdded = false;
                 return null;
             }
-            string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID) 
+            string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID,Email) 
                              OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID
-                             VALUES(@MemberName,@Phone,@Adress,@PersonID)";
+                             VALUES(@MemberName,@Phone,@Adress,@PersonID,@Email)";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@MemberName", memberName);
             sqlCommand.Parameters.AddWithValue("@Phone", phoneNunber);
             sqlCommand.Parameters.AddWithValue("@PersonID", personID);
             sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            sqlCommand.Parameters.AddWithValue("@Email", Adress);
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
 
@@ -128,6 +129,28 @@ namespace libaryApp
             return member;
         }
 
+        public static void EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
+        {
+            string query = @"UPDATE Books
+                            SET BookName=@BookName,GenereID=@phone,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
+   
+                              OUTPUT B.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
+                            FROM [Bookname] B
+                            LEFT JOIN Genres ON  b.GenreID = Genres.GenreID 
+                            LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
+                            LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID; ";
+            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID,INSERTED.Email
+                            
+                            WHERE MemberID=@MemberID";
+
+            sqlCommand.Parameters.AddWithValue("@BookName", bookName);
+            sqlCommand.Parameters.AddWithValue("@GenereID", genere.ID);
+            sqlCommand.Parameters.AddWithValue("@AuthorID", author.ID);
+            sqlCommand.Parameters.AddWithValue("@PublisherID", publisher.ID);
+            sqlCommand.Parameters.AddWithValue("@PublicationYear", publicationYear) ;
+
+        }
+
         /// <summary>
         /// edit member query.
         /// </summary>
@@ -138,12 +161,12 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isUpdate"></param>
         /// <returns></returns>
-        internal static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, out bool isUpdate)
+        public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress,string Email, out bool isUpdate)
         {
 
             string query = @"UPDATE Members
-                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID
-                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID
+                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID,Email=@Email
+                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID,INSERTED.Email
                             WHERE MemberID=@MemberID";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -152,6 +175,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@PersonID", personID);
             sqlCommand.Parameters.AddWithValue("@Adress", Adress);
             sqlCommand.Parameters.AddWithValue("@MemberID", member.MemberID);
+            sqlCommand.Parameters.AddWithValue("@Email", Email);
             SqlDataReader reader = sqlCommand.ExecuteReader();
             Member UpdatedMember = null;
             try
@@ -225,9 +249,7 @@ namespace libaryApp
             member.Phone = reader["Phone"].ToString();
             member.Adress = reader["Adress"].ToString();
             member.PersonID = (long)reader["PersonID"];
-
-
-
+            member.Email= reader["Email"].ToString(); 
             return member;
         }
 
@@ -281,11 +303,10 @@ namespace libaryApp
         /// <returns></returns>
         public static Member GetMemberByID(long ID)
         {
-            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
             query = $"{query} WHERE MemberID=@ID";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", ID);
             sqlCommand.Parameters.AddWithValue("@ID", ID);
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
@@ -307,7 +328,7 @@ namespace libaryApp
         /// <returns></returns>
         public static List<Member> GetMembersByID(long ID)
         {
-            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
             query = $"{query} WHERE MemberID=@ID OR PersonID=@ID ";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -450,7 +471,7 @@ namespace libaryApp
         static public List<Book> GetBooksFromDB(string condition = "")
         {
             //get the data from the sql
-            string query = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID "
+            string query = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID "
                                                   + "FROM Books b "
                                                   + "LEFT JOIN Genres ON  b.GenreID = Genres.GenreID "
                                                   + "LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID "
@@ -465,12 +486,13 @@ namespace libaryApp
             while (reader.Read())
             {
                 var Book = new Book();
-                Book.BookName = reader[0].ToString();
-                Book.Genre = reader[1].ToString();
-                Book.Author = reader[2].ToString();
-                Book.Publisher = reader[3].ToString();
-                Book.PublicationYear = (short)reader[4];
-                Book.bookId = (int)reader[5];
+                Book.BookName = reader["bookname"].ToString();
+                Book.Genre =new Generes((int)reader["GenreID"], reader["Genre"].ToString());
+                Book.Author =new Authors((int)reader["AuthorID"], reader["Author"].ToString());
+                Book.Publisher = new Publishers((int)reader["PublisherID"], reader["Publisher"].ToString());
+                Book.PublicationYear = (short)reader["PublicationYear"];
+                Book.bookId = (int)reader["BookID"];
+                
 
                 booksList.Add(Book);
             }
@@ -488,7 +510,7 @@ namespace libaryApp
         static public List<Member> GetMembersFromDb(string condition = "")
         {
             //get the data from the sql
-            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID FROM Members";
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
             query = $"{query} WHERE MemberName LIKE N'%'+@c+'%'";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);

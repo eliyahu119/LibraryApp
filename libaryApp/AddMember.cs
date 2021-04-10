@@ -23,6 +23,7 @@ namespace libaryApp
                 PersonIDTextBox.Text = member.PersonID.ToString();
                 phoneNumberTextBox.Text = member.Phone;
                 AdressTextBox.Text = member.Adress;
+                EmailtextBox.Text = member.Email;
                 SubmitButton.Text = "ערוך מנוי";
             }
         }
@@ -38,10 +39,12 @@ namespace libaryApp
         /// <param name="e"></param>
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            if ((fullNameTextBox.Text != "") &&
+            if (
+                (fullNameTextBox.Text != "") &&
                 (PersonIDTextBox.Text != "") &&
                 (phoneNumberTextBox.Text != "") &&
-                (AdressTextBox.Text != ""))
+                (AdressTextBox.Text != "")
+               )
             {
                 if (member == null)
                 {
@@ -52,7 +55,9 @@ namespace libaryApp
                             PersonIDTextBox.Text,
                             phoneNumberTextBox.Text,
                             AdressTextBox.Text,
-                            out bool isAdded
+                            out bool isAdded,
+                            EmailtextBox.Text
+                          
                     );
                     if (isAdded)
                     {
@@ -66,6 +71,7 @@ namespace libaryApp
                         PersonIDTextBox.Text = "";
                         phoneNumberTextBox.Text = "";
                         fullNameTextBox.Text = "";
+                        EmailtextBox.Text = "";
 
                     }
                 }
@@ -75,7 +81,7 @@ namespace libaryApp
                     UpdatedMember = DataManager.EditMember(member, fullNameTextBox.Text,
                                Convert.ToInt64(PersonIDTextBox.Text),
                                 phoneNumberTextBox.Text,
-                                AdressTextBox.Text, out bool isUpdate);
+                                AdressTextBox.Text, EmailtextBox.Text, out bool isUpdate);
                     if (isUpdate)
                     {
                         MessageBox.Show("פרטי המנוי נערכו בהצלחה");
