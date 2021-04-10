@@ -16,7 +16,7 @@ namespace libaryApp
             InitializeComponent();
             this.book = book;
             BookName.Text = this.book.BookName;
-            Author.Text = this.book.Author;
+            Author.Text = this.book.Author.ToString();
            
         }
         private void BookDetails_Load(object sender, EventArgs e)
@@ -28,34 +28,15 @@ namespace libaryApp
             int number= DataManager.GetNumberOfCopiesavailable(book.getBookID());
             availableBooks.Text = string.Format(availableBooks.Text, number);
         }
-        private void Author_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void BookName_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Author_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CopiesGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         private void EditBook_Click(object sender, EventArgs e)
         {
-
+            AddBooks addBooks =  new AddBooks(book);
+            addBooks.ShowDialog();
+            
         }
+
+     
     }
 }

@@ -37,7 +37,7 @@ namespace libaryApp
             // bookAttirbuteLabel
             // 
             this.bookAttirbuteLabel.AutoSize = true;
-            this.bookAttirbuteLabel.Location = new System.Drawing.Point(247, 26);
+            this.bookAttirbuteLabel.Location = new System.Drawing.Point(221, 26);
             this.bookAttirbuteLabel.Name = "bookAttirbuteLabel";
             this.bookAttirbuteLabel.Size = new System.Drawing.Size(50, 15);
             this.bookAttirbuteLabel.TabIndex = 0;

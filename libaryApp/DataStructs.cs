@@ -14,10 +14,11 @@ namespace libaryApp
     {
         public int bookId { private get; set; }
         public string BookName { get; set; }
-        public string Genre { get; set; }
-        public string Author { get; set; }
-        public string Publisher { get; set; }
+        public Generes Genre { get; set; }
+        public Authors Author { get; set; }
+        public Publishers Publisher { get; set; }
         public short PublicationYear { get; set; }
+     
         public int getBookID()
         {
             return bookId;
@@ -53,12 +54,33 @@ namespace libaryApp
     /// </summary>
     public abstract class BookAttributes
     {
-        public int ID { get; set; }
-        public string Value { get; set; }
+        public int ID { get; }
+        public string Value { get; }
         public BookAttributes(int id, string value)
         {
             ID = id;
             Value = value;
+        }
+        public override string ToString() 
+        {
+            return Value;
+        }
+        public override bool Equals(Object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                BookAttributes p = (BookAttributes)obj;
+                return (ID == p.ID) && (Value == p.Value);
+            }
+        }
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode() + Value.GetHashCode();
         }
     }
 
@@ -105,7 +127,7 @@ namespace libaryApp
         public long PersonID { get; set; }
         public string Phone { get; set; }
         public string Adress { get; set; }
-
+        public string Email { get;  set; }
     }
 
     public class Loan

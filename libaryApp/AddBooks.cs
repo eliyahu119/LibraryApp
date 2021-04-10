@@ -5,37 +5,29 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
+
+
 
 namespace libaryApp
 {
     public partial class AddBooks : Form
     {
-        private static AddBooks instance = null;
 
-        private AddBooks()
+        private Book book = null;
+        public AddBooks(Book book = null)
         {
+            this.book = book;
             InitializeComponent();
             //allow only numeric
             publicationYearTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
             NumberOfCopiesTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
-            
-        }
-        //implenting singelton pattern to this class
-        public static AddBooks Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new AddBooks();
-                }
-                return instance;
-            }
         }
 
 
 
-    
+
+
 
 
 
@@ -43,14 +35,25 @@ namespace libaryApp
 
         private void AddBooks_FormClosing(object sender, FormClosingEventArgs e)
         {
-            instance = null;
+
 
         }
 
         private void AddBooks_Load(object sender, EventArgs e)
         {
             setComboBoxes();
+            if (book != null)
+            {
+                GenereComboBox.SelectedIndex = GenereComboBox.Items.IndexOf(book.Genre);
+                authorComboBox.SelectedIndex = authorComboBox.Items.IndexOf(book.Author);
+                publicationComboBox.SelectedIndex = publicationComboBox.Items.IndexOf(book.Publisher);
+                publicationYearTxt.Text = book.PublicationYear.ToString();
+                AddBookTxt.Text = book.BookName;
+                NumberOfCopiesTxt.Hide();
+                copiesLabel.Hide();
+                submit.Text = "ערוך פרטי ספר";
 
+            }
         }
 
         /// <summary>
@@ -64,11 +67,12 @@ namespace libaryApp
             setBookAttirbuteComboBox<Authors>(authorComboBox, AuthorsList);
             BindingList<BookAttributes> PublisherList = DataManager.GetAttributesFromDB<Publishers>();
             setBookAttirbuteComboBox<Publishers>(publicationComboBox, PublisherList);
+
         }
 
         private void setBookAttirbuteComboBox<T>(ComboBox comboBox, BindingList<BookAttributes> list) where T : BookAttributes
         {
-            list.Add((T)Activator.CreateInstance(typeof(T), new object[] { -1, "הוסף..."}));
+            list.Add((T)Activator.CreateInstance(typeof(T), new object[] { -1, "הוסף..." }));
             comboBox.DisplayMember = "value";
             comboBox.DataSource = list;
             comboBox.ValueMember = null;
@@ -80,16 +84,27 @@ namespace libaryApp
         /// <param name="e"></param>
         private void submit_Click(object sender, EventArgs e)
         {
-            if ((AddBookTxt.Text != "") && (publicationYearTxt.Text != "") && (NumberOfCopiesTxt.Text != ""))
+            if (((AddBookTxt.Text != "") && (publicationYearTxt.Text != "")) && ((book != null) || (NumberOfCopiesTxt.Text != "")))
             {
                 Generes Genere = (Generes)GenereComboBox.SelectedValue;
                 Authors author = (Authors)authorComboBox.SelectedValue;
                 Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
                 string BookName = this.AddBookTxt.Text;
-                Int16 publicationYear = Convert.ToInt16(publicationYearTxt.Text);
-                int NumberOfCopies = Convert.ToInt32(NumberOfCopiesTxt.Text);
-                DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
-                MessageBox.Show("הספר נוסף בהצלחה");
+                short publicationYear = short.TryParse(publicationYearTxt.Text,out publicationYear)? publicationYear :(short)0;
+                int NumberOfCopies = int.TryParse(NumberOfCopiesTxt.Text, out NumberOfCopies) ? NumberOfCopies : 1;
+
+
+
+                if (null == book)
+                {
+                    DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+                    MessageBox.Show("הספר נוסף בהצלחה");
+                }
+                else
+                {
+                    DataManager.EditBookInDB(book.getBookID(), BookName, Genere, author, Publisher, publicationYear);
+
+                }
                 this.Close();
             }
             else
@@ -109,7 +124,7 @@ namespace libaryApp
             ComboBox comboBox = (ComboBox)sender;
             BookAttributes elem = (BookAttributes)comboBox.SelectedValue;
             Type t = elem.GetType();
-         
+
             if (elem.ID == -1)
             {
                 Form form = new AddBookAttirbutes(t);

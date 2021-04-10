@@ -55,7 +55,6 @@ namespace libaryApp
             this.Author.Size = new System.Drawing.Size(257, 21);
             this.Author.TabIndex = 1;
             this.Author.Text = "Author";
-            this.Author.Click += new System.EventHandler(this.Author_Click_1);
             // 
             // CopiesGrid
             // 
@@ -71,7 +70,6 @@ namespace libaryApp
             this.CopiesGrid.RowTemplate.Height = 25;
             this.CopiesGrid.Size = new System.Drawing.Size(203, 331);
             this.CopiesGrid.TabIndex = 2;
-            this.CopiesGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.CopiesGrid_CellContentClick);
             // 
             // availableBooks
             // 

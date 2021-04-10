@@ -10,7 +10,8 @@ namespace libaryApp
 {
     public partial class BookForm : Form
     {
-        // public List<Book>
+   
+        
         public BookForm()
         {
 
@@ -85,9 +86,8 @@ namespace libaryApp
         /// <param name="e"></param>
         private void AddBook_Click(object sender, EventArgs e)
         {
-            AddBooks addBooks = AddBooks.Instance;
+            AddBooks addBooks = new AddBooks() ;
             addBooks.ShowDialog();
         }
-
     }
 }

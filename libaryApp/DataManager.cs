@@ -64,7 +64,7 @@ namespace libaryApp
             {
                 return true;
             }
-            return false ;
+            return false;
         }
 
         /// <summary>
@@ -129,25 +129,34 @@ namespace libaryApp
             return member;
         }
 
-        public static void EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
+        public static Book EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
         {
-            string query = @"UPDATE Books
-                            SET BookName=@BookName,GenereID=@phone,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
-   
-                              OUTPUT B.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
-                            FROM [Bookname] B
-                            LEFT JOIN Genres ON  b.GenreID = Genres.GenreID 
-                            LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
-                            LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID; ";
-            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID,INSERTED.Email
-                            
-                            WHERE MemberID=@MemberID";
 
+         string  query = @"UPDATE Books
+                SET BookName=@BookName,GenreID=@GenereID,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
+                OUTPUT inserted.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,inserted.PublicationYear, inserted.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
+                FROM Books b
+                LEFT JOIN Genres ON  b.GenreID = Genres.GenreID 
+                LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
+                LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID
+                WHERE b.BookID=@Bookid;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@BookName", bookName);
             sqlCommand.Parameters.AddWithValue("@GenereID", genere.ID);
             sqlCommand.Parameters.AddWithValue("@AuthorID", author.ID);
             sqlCommand.Parameters.AddWithValue("@PublisherID", publisher.ID);
-            sqlCommand.Parameters.AddWithValue("@PublicationYear", publicationYear) ;
+            sqlCommand.Parameters.AddWithValue("@PublicationYear", publicationYear);
+            sqlCommand.Parameters.AddWithValue("@Bookid", bookId);
+            Book Updated = null;
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
+            {
+
+                Updated = getBookFromReader(reader);
+            }
+            Connection.Close();
+            return Updated;
 
         }
 
@@ -161,7 +170,7 @@ namespace libaryApp
         /// <param name="Adress"></param>
         /// <param name="isUpdate"></param>
         /// <returns></returns>
-        public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress,string Email, out bool isUpdate)
+        public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, string Email, out bool isUpdate)
         {
 
             string query = @"UPDATE Members
@@ -249,7 +258,7 @@ namespace libaryApp
             member.Phone = reader["Phone"].ToString();
             member.Adress = reader["Adress"].ToString();
             member.PersonID = (long)reader["PersonID"];
-            member.Email= reader["Email"].ToString(); 
+            member.Email = reader["Email"].ToString();
             return member;
         }
 
@@ -335,7 +344,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", ID);
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
-      
+
             var memberList = new List<Member>();
             //turn the data into list Of members.
             while (reader.Read())
@@ -485,20 +494,30 @@ namespace libaryApp
             //turn the data into list Of Books.
             while (reader.Read())
             {
-                var Book = new Book();
-                Book.BookName = reader["bookname"].ToString();
-                Book.Genre =new Generes((int)reader["GenreID"], reader["Genre"].ToString());
-                Book.Author =new Authors((int)reader["AuthorID"], reader["Author"].ToString());
-                Book.Publisher = new Publishers((int)reader["PublisherID"], reader["Publisher"].ToString());
-                Book.PublicationYear = (short)reader["PublicationYear"];
-                Book.bookId = (int)reader["BookID"];
-                
+                Book Book = getBookFromReader(reader);
 
                 booksList.Add(Book);
             }
             Connection.Close();
             return booksList;
 
+        }
+
+        /// <summary>
+        /// gets the book From the reader
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static Book getBookFromReader(SqlDataReader reader)
+        {
+            var Book = new Book();
+            Book.BookName = reader["bookname"].ToString();
+            Book.Genre = new Generes((int)reader["GenreID"], reader["Genre"].ToString());
+            Book.Author = new Authors((int)reader["AuthorID"], reader["Author"].ToString());
+            Book.Publisher = new Publishers((int)reader["PublisherID"], reader["Publisher"].ToString());
+            Book.PublicationYear = (short)reader["PublicationYear"];
+            Book.bookId = (int)reader["BookID"];
+            return Book;
         }
 
 
