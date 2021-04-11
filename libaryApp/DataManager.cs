@@ -98,7 +98,7 @@ namespace libaryApp
                 return null;
             }
             string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID,Email) 
-                             OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID
+                             OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID,Inserted.Email
                              VALUES(@MemberName,@Phone,@Adress,@PersonID,@Email)";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -106,7 +106,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@Phone", phoneNunber);
             sqlCommand.Parameters.AddWithValue("@PersonID", personID);
             sqlCommand.Parameters.AddWithValue("@Adress", Adress);
-            sqlCommand.Parameters.AddWithValue("@Email", Adress);
+            sqlCommand.Parameters.AddWithValue("@Email", EmailtextBox);
             SqlDataReader reader = sqlCommand.ExecuteReader();
 
 

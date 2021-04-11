@@ -42,67 +42,69 @@ namespace libaryApp
             this.authorComboBox = new System.Windows.Forms.ComboBox();
             this.publicationComboBox = new System.Windows.Forms.ComboBox();
             this.GenereComboBox = new System.Windows.Forms.ComboBox();
+            this.BackButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // bookNameLabel
             // 
             this.bookNameLabel.AutoSize = true;
-            this.bookNameLabel.Location = new System.Drawing.Point(265, 51);
+            this.bookNameLabel.Location = new System.Drawing.Point(303, 68);
             this.bookNameLabel.Name = "bookNameLabel";
-            this.bookNameLabel.Size = new System.Drawing.Size(58, 15);
+            this.bookNameLabel.Size = new System.Drawing.Size(72, 20);
             this.bookNameLabel.TabIndex = 0;
             this.bookNameLabel.Text = "שם הספר";
             // 
             // authorLabel
             // 
             this.authorLabel.AutoSize = true;
-            this.authorLabel.Location = new System.Drawing.Point(282, 117);
+            this.authorLabel.Location = new System.Drawing.Point(322, 156);
             this.authorLabel.Name = "authorLabel";
-            this.authorLabel.Size = new System.Drawing.Size(37, 15);
+            this.authorLabel.Size = new System.Drawing.Size(46, 20);
             this.authorLabel.TabIndex = 2;
             this.authorLabel.Text = "מחבר";
             // 
             // GenereLabel
             // 
             this.GenereLabel.AutoSize = true;
-            this.GenereLabel.Location = new System.Drawing.Point(287, 83);
+            this.GenereLabel.Location = new System.Drawing.Point(328, 111);
             this.GenereLabel.Name = "GenereLabel";
-            this.GenereLabel.Size = new System.Drawing.Size(31, 15);
+            this.GenereLabel.Size = new System.Drawing.Size(38, 20);
             this.GenereLabel.TabIndex = 4;
             this.GenereLabel.Text = "זאנר";
             // 
             // publicationLabel
             // 
             this.publicationLabel.AutoSize = true;
-            this.publicationLabel.Location = new System.Drawing.Point(253, 151);
+            this.publicationLabel.Location = new System.Drawing.Point(289, 201);
             this.publicationLabel.Name = "publicationLabel";
-            this.publicationLabel.Size = new System.Drawing.Size(69, 15);
+            this.publicationLabel.Size = new System.Drawing.Size(86, 20);
             this.publicationLabel.TabIndex = 6;
             this.publicationLabel.Text = "הוצאה לאור";
             // 
             // publicationYearLabel
             // 
             this.publicationYearLabel.AutoSize = true;
-            this.publicationYearLabel.Location = new System.Drawing.Point(239, 178);
+            this.publicationYearLabel.Location = new System.Drawing.Point(273, 237);
             this.publicationYearLabel.Name = "publicationYearLabel";
-            this.publicationYearLabel.Size = new System.Drawing.Size(95, 15);
+            this.publicationYearLabel.Size = new System.Drawing.Size(119, 20);
             this.publicationYearLabel.TabIndex = 7;
             this.publicationYearLabel.Text = "שנת הוצאה לאור";
             // 
             // copiesLabel
             // 
             this.copiesLabel.AutoSize = true;
-            this.copiesLabel.Location = new System.Drawing.Point(253, 208);
+            this.copiesLabel.Location = new System.Drawing.Point(289, 277);
             this.copiesLabel.Name = "copiesLabel";
-            this.copiesLabel.Size = new System.Drawing.Size(79, 15);
+            this.copiesLabel.Size = new System.Drawing.Size(98, 20);
             this.copiesLabel.TabIndex = 8;
             this.copiesLabel.Text = "מספר עותקים";
             // 
             // submit
             // 
-            this.submit.Location = new System.Drawing.Point(12, 219);
+            this.submit.Location = new System.Drawing.Point(14, 292);
+            this.submit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.submit.Name = "submit";
-            this.submit.Size = new System.Drawing.Size(68, 39);
+            this.submit.Size = new System.Drawing.Size(78, 52);
             this.submit.TabIndex = 9;
             this.submit.Text = "הוסף ספר";
             this.submit.UseVisualStyleBackColor = true;
@@ -110,34 +112,38 @@ namespace libaryApp
             // 
             // AddBookTxt
             // 
-            this.AddBookTxt.Location = new System.Drawing.Point(114, 46);
+            this.AddBookTxt.Location = new System.Drawing.Point(130, 61);
+            this.AddBookTxt.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.AddBookTxt.Name = "AddBookTxt";
-            this.AddBookTxt.Size = new System.Drawing.Size(121, 23);
+            this.AddBookTxt.Size = new System.Drawing.Size(138, 27);
             this.AddBookTxt.TabIndex = 10;
             // 
             // NumberOfCopiesTxt
             // 
-            this.NumberOfCopiesTxt.Location = new System.Drawing.Point(181, 205);
+            this.NumberOfCopiesTxt.Location = new System.Drawing.Point(207, 273);
+            this.NumberOfCopiesTxt.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.NumberOfCopiesTxt.MaxLength = 1;
             this.NumberOfCopiesTxt.Name = "NumberOfCopiesTxt";
-            this.NumberOfCopiesTxt.Size = new System.Drawing.Size(54, 23);
+            this.NumberOfCopiesTxt.Size = new System.Drawing.Size(61, 27);
             this.NumberOfCopiesTxt.TabIndex = 11;
             // 
             // publicationYearTxt
             // 
-            this.publicationYearTxt.Location = new System.Drawing.Point(181, 170);
+            this.publicationYearTxt.Location = new System.Drawing.Point(207, 227);
+            this.publicationYearTxt.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.publicationYearTxt.MaxLength = 4;
             this.publicationYearTxt.Name = "publicationYearTxt";
-            this.publicationYearTxt.Size = new System.Drawing.Size(54, 23);
+            this.publicationYearTxt.Size = new System.Drawing.Size(61, 27);
             this.publicationYearTxt.TabIndex = 12;
             // 
             // authorComboBox
             // 
             this.authorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.authorComboBox.FormattingEnabled = true;
-            this.authorComboBox.Location = new System.Drawing.Point(114, 114);
+            this.authorComboBox.Location = new System.Drawing.Point(130, 152);
+            this.authorComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.authorComboBox.Name = "authorComboBox";
-            this.authorComboBox.Size = new System.Drawing.Size(121, 23);
+            this.authorComboBox.Size = new System.Drawing.Size(138, 28);
             this.authorComboBox.TabIndex = 14;
             this.authorComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
@@ -145,9 +151,10 @@ namespace libaryApp
             // 
             this.publicationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.publicationComboBox.FormattingEnabled = true;
-            this.publicationComboBox.Location = new System.Drawing.Point(114, 143);
+            this.publicationComboBox.Location = new System.Drawing.Point(130, 191);
+            this.publicationComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.publicationComboBox.Name = "publicationComboBox";
-            this.publicationComboBox.Size = new System.Drawing.Size(121, 23);
+            this.publicationComboBox.Size = new System.Drawing.Size(138, 28);
             this.publicationComboBox.TabIndex = 15;
             this.publicationComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
@@ -155,17 +162,30 @@ namespace libaryApp
             // 
             this.GenereComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GenereComboBox.FormattingEnabled = true;
-            this.GenereComboBox.Location = new System.Drawing.Point(114, 83);
+            this.GenereComboBox.Location = new System.Drawing.Point(130, 111);
+            this.GenereComboBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.GenereComboBox.Name = "GenereComboBox";
-            this.GenereComboBox.Size = new System.Drawing.Size(121, 23);
+            this.GenereComboBox.Size = new System.Drawing.Size(138, 28);
             this.GenereComboBox.TabIndex = 16;
             this.GenereComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
             // 
+            // BackButton
+            // 
+            this.BackButton.Location = new System.Drawing.Point(12, 13);
+            this.BackButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(89, 35);
+            this.BackButton.TabIndex = 17;
+            this.BackButton.Text = "חזור";
+            this.BackButton.UseVisualStyleBackColor = true;
+            this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
+            // 
             // AddBooks
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 270);
+            this.ClientSize = new System.Drawing.Size(479, 360);
+            this.Controls.Add(this.BackButton);
             this.Controls.Add(this.GenereComboBox);
             this.Controls.Add(this.publicationComboBox);
             this.Controls.Add(this.authorComboBox);
@@ -179,6 +199,7 @@ namespace libaryApp
             this.Controls.Add(this.GenereLabel);
             this.Controls.Add(this.authorLabel);
             this.Controls.Add(this.bookNameLabel);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AddBooks";
             this.Text = "AddBooks";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddBooks_FormClosing);
@@ -203,5 +224,6 @@ namespace libaryApp
         private System.Windows.Forms.ComboBox authorComboBox;
         private System.Windows.Forms.ComboBox publicationComboBox;
         private System.Windows.Forms.ComboBox GenereComboBox;
+        private System.Windows.Forms.Button BackButton;
     }
 }

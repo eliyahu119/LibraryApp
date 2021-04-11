@@ -10,7 +10,6 @@ namespace libaryApp
 {
     public partial class BookDetails : Form
     {
-        Book book;
         public BookDetails(Book book)
         {
             InitializeComponent();
@@ -33,7 +32,7 @@ namespace libaryApp
         private void EditBook_Click(object sender, EventArgs e)
         {
             AddBooks addBooks =  new AddBooks(book);
-            addBooks.ShowDialog();
+            Utils.SwitchBetweenWindows(this, addBooks);
             
         }
 

@@ -87,7 +87,8 @@ namespace libaryApp
         private void AddBook_Click(object sender, EventArgs e)
         {
             AddBooks addBooks = new AddBooks() ;
-            addBooks.ShowDialog();
+            Utils.SwitchBetweenWindows(this, addBooks);
+           // addBooks.ShowDialog();
         }
     }
 }
