@@ -99,10 +99,13 @@ namespace libaryApp
                 {
                     DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
                     MessageBox.Show("הספר נוסף בהצלחה");
+                    BackButton_Click();
                 }
                 else
                 {
                     DataManager.EditBookInDB(book.getBookID(), BookName, Genere, author, Publisher, publicationYear);
+                    MessageBox.Show("הספר נערך  בהצלחה");
+                    BackButton_Click();
 
                 }
                 this.Close();
@@ -133,5 +136,9 @@ namespace libaryApp
             }
         }
 
+        private void BackButton_Click(object sender=null, EventArgs e=null)
+        {
+            Utils.SwitchBetweenWindows(this, new BookForm());
+        }
     }
 }
