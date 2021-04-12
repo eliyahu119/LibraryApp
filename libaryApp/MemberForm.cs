@@ -10,13 +10,34 @@ namespace libaryApp
 {
     public partial class MemberForm : Form
     {
-        private List<Loan> loanList;
-        Member member;
-        public MemberForm(int memberID)
+
+        private static MemberForm instance = null;
+        //implenting singelton pattern to this class
+        public static MemberForm Instance(int memberID)
+        {
+
+            if (instance == null)
+            {
+                instance = new MemberForm();
+            }
+            instance.SetAsNewWindow(memberID);
+            return instance;
+
+        }
+
+        private void SetAsNewWindow(int memberID)
         {
             this.member = DataManager.GetMemberByID(memberID);
-            InitializeComponent();
             setTextOfLabels();
+        }
+
+        private List<Loan> loanList;
+        Member member;
+
+        private MemberForm()
+        {
+            InitializeComponent();
+           
         }
 
         private void setTextOfLabels()
@@ -34,7 +55,7 @@ namespace libaryApp
 
         private void loanBook_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new CreateLoan(member));
+            Utils.SwitchBetweenWindows(this,  CreateLoan.Instance(member));
         }
 
     
@@ -60,7 +81,7 @@ namespace libaryApp
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new AllLoansForm(member));
+            Utils.SwitchBetweenWindows(this,  AllLoansForm.Instance(member));
         }
 
 
@@ -94,13 +115,13 @@ namespace libaryApp
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MainWindow());
+            Utils.SwitchBetweenWindows(this,  MainWindow.Instance());
 
         }
 
         private void editMember_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new AddMember(member));
+            Utils.SwitchBetweenWindows(this,  AddMember.Instance(member));
 
         }
 

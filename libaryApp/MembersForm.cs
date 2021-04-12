@@ -10,7 +10,30 @@ namespace libaryApp
 {
     public partial class MembersForm : Form
     {
-        public MembersForm()
+
+        private static MembersForm instance = null;
+        //implenting singelton pattern to this class
+        public static MembersForm Instance()
+        {
+
+            if (instance == null)
+            {
+                instance = new MembersForm();
+            }
+            instance.SetAsNewWindow();
+            return instance;
+
+        }
+
+        private void SetAsNewWindow()
+        {
+
+            MemberGrid.DataSource = new List<Member>();
+            searchTextBox.Text = "שורת חיפוש";
+
+        }
+
+        private MembersForm()
         {
 
             InitializeComponent();
@@ -22,17 +45,18 @@ namespace libaryApp
             //add place holder
             searchTextBox.GotFocus += new System.EventHandler(Utils.RemoveText);
             searchTextBox.LostFocus += new System.EventHandler(Utils.AddText);
+            MemberGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MainWindow());
+            Utils.SwitchBetweenWindows(this,  MainWindow.Instance());
         }
 
 
         private void Members_Load(object sender, EventArgs e)
         {
-            MemberGrid.RowPostPaint += new DataGridViewRowPostPaintEventHandler(Utils.Grid_RowPostPaint);
+           
             MemberGrid.DataSource = new List<Member>();
             Utils.ChangeColumnsNameOfGrid(MemberGrid,
                 new Tuple<string, string>[] {
@@ -106,9 +130,12 @@ namespace libaryApp
         private void AddMember_Click(object sender, EventArgs e)
         {
 
-            Utils.SwitchBetweenWindows(this, new AddMember());
+            Utils.SwitchBetweenWindows(this,AddMember.Instance());
         }
 
+        private void MemberGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
     }
 }

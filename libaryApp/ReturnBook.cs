@@ -10,6 +10,26 @@ namespace libaryApp
 {
     public partial class ReturnBook : Form
     {
+
+        private static ReturnBook instance = null;
+        //implenting singelton pattern to this class
+        public static ReturnBook Instance(int memberID)
+        {
+
+            if (instance == null)
+            {
+                instance = new ReturnBook();
+            }
+            instance.SetAsNewWindow();
+            return instance;
+
+        }
+
+        private void SetAsNewWindow()
+        {
+            BookCodeTxt.Text = "";
+        }
+
         public ReturnBook()
         {
             InitializeComponent();
@@ -17,7 +37,7 @@ namespace libaryApp
 
         private void backButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MainWindow());
+            Utils.SwitchBetweenWindows(this,  MainWindow.Instance());
         }
 
         /// <summary>

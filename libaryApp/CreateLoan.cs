@@ -10,17 +10,35 @@ namespace libaryApp
 {
     public partial class CreateLoan : Form
     {
+        private static CreateLoan instance = null;
+        //implenting singelton pattern to this class
+        public static CreateLoan Instance(Member member = null)
+        {
 
-        Member member;
-        public CreateLoan(Member member = null)
+            if (instance == null)
+            {
+                instance = new CreateLoan();
+            }
+            instance.SetAsNewWindow(member);
+            return instance;
+
+        }
+
+        private void SetAsNewWindow(Member member)
         {
             this.member = member;
-            InitializeComponent();
             if (member != null)
             {
                 CodeMemberTxt.Text = member.MemberID.ToString();
                 CodeMemberTxt.ReadOnly = true;
             }
+        }
+
+        Member member;
+        private CreateLoan()
+        {
+            InitializeComponent();
+       
         }
 
 
@@ -54,7 +72,7 @@ namespace libaryApp
                     DataManager.CreateLoan(MemberID, CopyID);
                     MessageBox.Show("השאלה בוצעה בהצלחה");
 
-                    Utils.SwitchBetweenWindows(this, new MemberForm(MemberID));
+                    Utils.SwitchBetweenWindows(this, MemberForm.Instance(MemberID));
 
                 }
                 else
@@ -76,7 +94,7 @@ namespace libaryApp
 
         {
             if (member == null)
-                Utils.SwitchBetweenWindows(this, new MainWindow());
+                Utils.SwitchBetweenWindows(this,MainWindow.Instance());
             else
             {
                 Utils.SwitchBetweenWindows(this, new MemberForm(member));

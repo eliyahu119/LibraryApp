@@ -15,9 +15,50 @@ namespace libaryApp
     {
 
         private Book book = null;
-        public AddBooks(Book book = null)
+
+        private static AddBooks instance = null;
+        //implenting singelton pattern to this class
+        public static AddBooks Instance(Book Book=null)
+        {
+
+            if (instance == null)
+            {
+                instance = new AddBooks();
+            }
+            instance.SetAsNewWindow(Book);
+            return instance;
+
+        }
+
+        private void SetAsNewWindow(Book book)
         {
             this.book = book;
+            setComboBoxes();
+            if (book != null)
+            {
+                GenereComboBox.SelectedIndex = GenereComboBox.Items.IndexOf(book.Genre);
+                authorComboBox.SelectedIndex = authorComboBox.Items.IndexOf(book.Author);
+                publicationComboBox.SelectedIndex = publicationComboBox.Items.IndexOf(book.Publisher);
+                publicationYearTxt.Text = book.PublicationYear.ToString();
+                AddBookTxt.Text = book.BookName;
+                NumberOfCopiesTxt.Hide();
+                copiesLabel.Hide();
+                submit.Text = "ערוך פרטי ספר";
+
+            }
+            else
+            {
+                publicationYearTxt.Text ="";
+                AddBookTxt.Text = "";
+                NumberOfCopiesTxt.Show();
+                copiesLabel.Show();
+                submit.Text = "הוסף פרטי ספר";
+            }
+        }
+
+        private AddBooks()
+        {
+            
             InitializeComponent();
             //allow only numeric
             publicationYearTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
@@ -39,22 +80,7 @@ namespace libaryApp
 
         }
 
-        private void AddBooks_Load(object sender, EventArgs e)
-        {
-            setComboBoxes();
-            if (book != null)
-            {
-                GenereComboBox.SelectedIndex = GenereComboBox.Items.IndexOf(book.Genre);
-                authorComboBox.SelectedIndex = authorComboBox.Items.IndexOf(book.Author);
-                publicationComboBox.SelectedIndex = publicationComboBox.Items.IndexOf(book.Publisher);
-                publicationYearTxt.Text = book.PublicationYear.ToString();
-                AddBookTxt.Text = book.BookName;
-                NumberOfCopiesTxt.Hide();
-                copiesLabel.Hide();
-                submit.Text = "ערוך פרטי ספר";
-
-            }
-        }
+  
 
         /// <summary>
         /// set the comboBoxes and their attributes.
@@ -135,7 +161,7 @@ namespace libaryApp
 
             if (elem.ID == -1)
             {
-                Form form = new AddBookAttirbutes(t);
+                Form form =AddBookAttirbutes.Instance(t);
                 form.ShowDialog();
                 setComboBoxes();
             }
@@ -145,11 +171,11 @@ namespace libaryApp
         {
             if (book==null)
             {
-                Utils.SwitchBetweenWindows(this, new BookForm());
+                Utils.SwitchBetweenWindows(this,BookForm.Instance());
             }
             else
             {
-                Utils.SwitchBetweenWindows(this, new BookDetails(book));
+                Utils.SwitchBetweenWindows(this,  BookDetails.Instance(book));
             }
            
         }

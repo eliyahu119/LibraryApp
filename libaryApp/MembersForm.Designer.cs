@@ -32,7 +32,7 @@ namespace libaryApp
             this.BackButton = new System.Windows.Forms.Button();
             this.searchableButton = new System.Windows.Forms.Button();
             this.MemberGrid = new System.Windows.Forms.DataGridView();
-            this.AddMember = new System.Windows.Forms.Button();
+            this.AddMemberButton = new System.Windows.Forms.Button();
             this.searchTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.MemberGrid)).BeginInit();
             this.SuspendLayout();
@@ -68,17 +68,18 @@ namespace libaryApp
             this.MemberGrid.RowTemplate.Height = 25;
             this.MemberGrid.Size = new System.Drawing.Size(737, 288);
             this.MemberGrid.TabIndex = 7;
+            this.MemberGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MemberGrid_CellContentClick);
             this.MemberGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MemberGrid_CellDoubleClick);
             // 
             // AddMember
             // 
-            this.AddMember.Location = new System.Drawing.Point(294, 365);
-            this.AddMember.Name = "AddMember";
-            this.AddMember.Size = new System.Drawing.Size(259, 47);
-            this.AddMember.TabIndex = 6;
-            this.AddMember.Text = "הוסף מנוי";
-            this.AddMember.UseVisualStyleBackColor = true;
-            this.AddMember.Click += new System.EventHandler(this.AddMember_Click);
+            this.AddMemberButton.Location = new System.Drawing.Point(294, 365);
+            this.AddMemberButton.Name = "AddMember";
+            this.AddMemberButton.Size = new System.Drawing.Size(259, 47);
+            this.AddMemberButton.TabIndex = 6;
+            this.AddMemberButton.Text = "הוסף מנוי";
+            this.AddMemberButton.UseVisualStyleBackColor = true;
+            this.AddMemberButton.Click += new System.EventHandler(this.AddMember_Click);
             // 
             // searchTextBox
             // 
@@ -95,7 +96,7 @@ namespace libaryApp
             this.ClientSize = new System.Drawing.Size(892, 472);
             this.Controls.Add(this.searchableButton);
             this.Controls.Add(this.MemberGrid);
-            this.Controls.Add(this.AddMember);
+            this.Controls.Add(this.AddMemberButton);
             this.Controls.Add(this.searchTextBox);
             this.Controls.Add(this.BackButton);
             this.Name = "MembersForm";
@@ -112,7 +113,7 @@ namespace libaryApp
         private System.Windows.Forms.Button BackButton;
         private System.Windows.Forms.Button searchableButton;
         private System.Windows.Forms.DataGridView MemberGrid;
-        private System.Windows.Forms.Button AddMember;
+        private System.Windows.Forms.Button AddMemberButton;
         private System.Windows.Forms.TextBox searchTextBox;
     }
 }

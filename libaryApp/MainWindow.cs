@@ -12,29 +12,41 @@ namespace libaryApp
 {
     public partial class MainWindow : Form
     {
-        public MainWindow()
+        private MainWindow()
         {
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             
         }
+        private static MainWindow instance = null;
+        //implenting singelton pattern to this class
+        public static MainWindow Instance()
+        {
 
+            if (instance == null)
+            {
+                instance = new MainWindow();
+            }
+            return instance;
 
+        }
+
+   
 
         private void Books_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new BookForm());
+            Utils.SwitchBetweenWindows(this, BookForm.Instance());
         }
 
         private void Members_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MembersForm());
+            Utils.SwitchBetweenWindows(this,  MembersForm.Instance());
         }
 
         private void LoanBook_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new CreateLoan());
+            Utils.SwitchBetweenWindows(this,  CreateLoan.Instance());
         }
 
         private void ReturnBook_Click(object sender, EventArgs e)

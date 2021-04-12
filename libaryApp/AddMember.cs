@@ -11,12 +11,25 @@ namespace libaryApp
     public partial class AddMember : Form
     {
         private Member member;
-        public AddMember(Member member = null)
+
+
+        private static AddMember instance = null;
+        //implenting singelton pattern to this class
+        public static AddMember Instance(Member member = null)
+        {
+
+            if (instance == null)
+            {
+                instance = new AddMember();
+            }
+            instance.SetAsNewWindow(member);
+            return instance;
+
+        }
+
+        private void SetAsNewWindow(Member member = null)
         {
             this.member = member;
-            InitializeComponent();
-            phoneNumberTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
-            PersonIDTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
             if (member != null)
             {
                 fullNameTextBox.Text = member.memberName;
@@ -26,6 +39,24 @@ namespace libaryApp
                 EmailtextBox.Text = member.Email;
                 SubmitButton.Text = "ערוך מנוי";
             }
+            else
+            {
+                fullNameTextBox.Text = "";
+                PersonIDTextBox.Text = "";
+                phoneNumberTextBox.Text = "";
+                AdressTextBox.Text = "";
+                EmailtextBox.Text = "";
+                SubmitButton.Text = "הוסף  מנוי";
+            }
+        }
+
+        private AddMember(Member member = null)
+        {
+            
+            InitializeComponent();
+            phoneNumberTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            PersonIDTextBox.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+          
         }
 
 
@@ -99,16 +130,12 @@ namespace libaryApp
             {
                 MessageBox.Show("נא למלא את כל הפרטים");
             }
-
-
-
-
         }
 
         private void BackButton_Click(object sender, EventArgs e)
         {
             if (member == null)
-                Utils.SwitchBetweenWindows(this, new MembersForm());
+                Utils.SwitchBetweenWindows(this,MembersForm.Instance());
             else
                 Utils.SwitchBetweenWindows(this, new MemberForm(member));
         }

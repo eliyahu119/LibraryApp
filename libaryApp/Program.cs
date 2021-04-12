@@ -18,7 +18,7 @@ namespace libaryApp
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(MainWindow.Instance());
         }
         //Application.SetHighDpiMode(HighDpiMode.SystemAware);
         //Application.EnableVisualStyles();

@@ -47,7 +47,6 @@ namespace libaryApp
             this.AllLoanGrid.RowTemplate.Height = 25;
             this.AllLoanGrid.Size = new System.Drawing.Size(414, 471);
             this.AllLoanGrid.TabIndex = 4;
-            this.AllLoanGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AllLoanGrid_CellContentClick);
             // 
             // allLoanLabel
             // 
@@ -58,7 +57,6 @@ namespace libaryApp
             this.allLoanLabel.Size = new System.Drawing.Size(212, 30);
             this.allLoanLabel.TabIndex = 5;
             this.allLoanLabel.Text = "כל ההשאלות למנוי {0}";
-            this.allLoanLabel.Click += new System.EventHandler(this.allLoanLabel_Click);
             // 
             // BackButton
             // 
@@ -80,6 +78,7 @@ namespace libaryApp
             this.Controls.Add(this.AllLoanGrid);
             this.Name = "AllLoansForm";
             this.Text = "AllLoansForm";
+            this.Load += new System.EventHandler(this.AllLoansForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.AllLoanGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

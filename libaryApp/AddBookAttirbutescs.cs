@@ -10,29 +10,51 @@ namespace libaryApp
 {
     public partial class AddBookAttirbutes: Form 
     {
+
+        private Type T;
+        private static AddBookAttirbutes instance = null;
+        //implenting singelton pattern to this class
+        public static AddBookAttirbutes Instance(Type t)
+        {
+
+            if (instance == null)
+            {
+                instance = new AddBookAttirbutes(t);
+            }
+            instance.SetAsNewWindow(t);
+            return instance;
+
+        }
+
+  
+
+        private void SetAsNewWindow(Type t)
+        {
+            T = t;
+            if (T.Equals(typeof(Generes)))
+            {
+                bookAttirbuteLabel.Text = string.Format(bookAttirbuteLabel.Text, "זאנר");
+            }
+            else if (T.Equals(typeof(Authors)))
+            {
+                bookAttirbuteLabel.Text = string.Format(bookAttirbuteLabel.Text, " מחבר");
+            }
+            else if (T.Equals(typeof(Publishers)))
+            {
+                bookAttirbuteLabel.Text = string.Format(bookAttirbuteLabel.Text, " מוציא לאור");
+            }
+        }
+
         
-        private readonly Type T;
 
         /// <summary>
         /// display the window  correspondingly with the type of bookAttirbute
         /// </summary>
         /// <param name="t"></param>
-        public AddBookAttirbutes(Type t) 
+        private AddBookAttirbutes(Type t) 
         {
             InitializeComponent();
-            T = t;
-            if (T.Equals(typeof(Generes)))
-            {
-                bookAttirbuteLabel.Text=string.Format(bookAttirbuteLabel.Text, "זאנר");
-            }
-            else if (T.Equals(typeof(Authors)))
-            {
-                bookAttirbuteLabel.Text=string.Format(bookAttirbuteLabel.Text, " מחבר");
-            }
-            else if (T.Equals(typeof(Publishers)))
-            {
-                bookAttirbuteLabel.Text= string.Format(bookAttirbuteLabel.Text, " מוציא לאור");
-            }
+           
           
         }
 
@@ -54,6 +76,9 @@ namespace libaryApp
 
         }
 
-     
+        private void AddBookAttirbutes_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

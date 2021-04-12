@@ -203,7 +203,6 @@ namespace libaryApp
             this.Name = "AddBooks";
             this.Text = "AddBooks";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AddBooks_FormClosing);
-            this.Load += new System.EventHandler(this.AddBooks_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

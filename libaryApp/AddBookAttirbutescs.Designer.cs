@@ -70,6 +70,7 @@ namespace libaryApp
             this.Controls.Add(this.bookAttirbuteLabel);
             this.Name = "AddBookAttirbutes";
             this.Text = "AddBookAttirbutescs";
+            this.Load += new System.EventHandler(this.AddBookAttirbutes_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
