@@ -90,7 +90,12 @@ namespace libaryApp
                 Authors author = (Authors)authorComboBox.SelectedValue;
                 Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
                 string BookName = this.AddBookTxt.Text;
-                short publicationYear = short.TryParse(publicationYearTxt.Text,out publicationYear)? publicationYear :(short)0;
+                short publicationYear = short.TryParse(publicationYearTxt.Text, out publicationYear) ? publicationYear : (short)0;
+                if (Utils.AllowOnlyInRange(0, DateTime.Now.Year, publicationYearTxt))
+                {
+                    MessageBox.Show("השנה שציינת עדיין לא הגיעה.");
+                    return;
+                }
                 int NumberOfCopies = int.TryParse(NumberOfCopiesTxt.Text, out NumberOfCopies) ? NumberOfCopies : 1;
 
 
@@ -140,7 +145,7 @@ namespace libaryApp
         {
             if (book==null)
             {
-                Utils.SwitchBetweenWindows<BookForm>(this, new BookForm());
+                Utils.SwitchBetweenWindows(this, new BookForm());
             }
             else
             {
