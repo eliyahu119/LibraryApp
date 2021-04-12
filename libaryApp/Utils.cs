@@ -14,20 +14,26 @@ namespace libaryApp
 
     static class Utils
     {
-
+        static public Form f;
         /// <summary>
         /// switch between the 2 windows
         /// </summary>
         /// <param name="current"> the current window</param>
         /// <param name="otherWindow">the next form</param>
+      
         static public void SwitchBetweenWindows(Form current, Form otherWindow)
         {
 
-            otherWindow.Location = current.Location; //change the location as the last window.
+            otherWindow.Location = f.Location; //change the location as the last window.
             otherWindow.StartPosition = FormStartPosition.Manual;
             otherWindow.Show();
             current.Hide();
+            otherWindow.Closed += (s, args) => current.Close();
         }
+
+
+    
+
 
         /// <summary>
         ///updates rowNumbers of the line the lines
