@@ -10,6 +10,7 @@ namespace libaryApp
 {
     public partial class BookDetails : Form
     {
+        Book book;
         public BookDetails(Book book)
         {
             InitializeComponent();
@@ -36,6 +37,9 @@ namespace libaryApp
             
         }
 
-     
+        private void BackButton_Click(object sender, EventArgs e)
+        {
+            Utils.SwitchBetweenWindows(this, new BookForm());
+        }
     }
 }

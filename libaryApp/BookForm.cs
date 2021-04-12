@@ -75,8 +75,13 @@ namespace libaryApp
         {
           
             Book book = (Book)this.BookGrid.CurrentRow.DataBoundItem;
-            var form = new BookDetails((Book)(book));
-            form.Show();
+            DialogResult dialogResult = MessageBox.Show($"האם תרצה לעבור לפרטי הספר {book.BookName} ", "השאלת ספר", MessageBoxButtons.YesNo);
+            if (dialogResult== DialogResult.Yes)
+            {
+                var form = new BookDetails((Book)(book));
+                Utils.SwitchBetweenWindows(this, form);
+            }
+
         }
 
         /// <summary>

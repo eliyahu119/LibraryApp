@@ -138,7 +138,15 @@ namespace libaryApp
 
         private void BackButton_Click(object sender=null, EventArgs e=null)
         {
-            Utils.SwitchBetweenWindows(this, new BookForm());
+            if (book==null)
+            {
+                Utils.SwitchBetweenWindows<BookForm>(this, new BookForm());
+            }
+            else
+            {
+                Utils.SwitchBetweenWindows(this, new BookDetails(book));
+            }
+           
         }
     }
 }
