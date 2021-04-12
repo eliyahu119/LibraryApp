@@ -93,7 +93,7 @@ namespace libaryApp
                     if (isAdded)
                     {
                         MessageBox.Show("המנוי נוסף בהצלחה");
-                        Utils.SwitchBetweenWindows(this, new MemberForm(NewMember));
+                        Utils.SwitchBetweenWindows(this,  MemberForm.Instance(NewMember));
                     }
                     else
                     {
@@ -116,12 +116,12 @@ namespace libaryApp
                     if (isUpdate)
                     {
                         MessageBox.Show("פרטי המנוי נערכו בהצלחה");
-                        Utils.SwitchBetweenWindows(this, new MemberForm(UpdatedMember));
+                        Utils.SwitchBetweenWindows(this,  MemberForm.Instance(UpdatedMember));
                     }
                     else
                     {
                         MessageBox.Show("שגיאה בעדכון פרטי המנוי");
-                        Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                        Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
                     }
 
                 }
@@ -137,7 +137,7 @@ namespace libaryApp
             if (member == null)
                 Utils.SwitchBetweenWindows(this,MembersForm.Instance());
             else
-                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
         }
 
         private void AddMember_Load(object sender, EventArgs e)

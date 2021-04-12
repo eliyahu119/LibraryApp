@@ -32,7 +32,7 @@ namespace libaryApp
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.LoanBook = new System.Windows.Forms.Button();
-            this.ReturnBook = new System.Windows.Forms.Button();
+            this.ReturnBookButton = new System.Windows.Forms.Button();
             this.Books = new System.Windows.Forms.Button();
             this.Members = new System.Windows.Forms.Button();
             this.belonging = new System.Windows.Forms.Label();
@@ -57,14 +57,14 @@ namespace libaryApp
             // 
             // ReturnBook
             // 
-            this.ReturnBook.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.ReturnBook.Location = new System.Drawing.Point(309, 252);
-            this.ReturnBook.Name = "ReturnBook";
-            this.ReturnBook.Size = new System.Drawing.Size(224, 100);
-            this.ReturnBook.TabIndex = 1;
-            this.ReturnBook.Text = "החזר ספר";
-            this.ReturnBook.UseVisualStyleBackColor = true;
-            this.ReturnBook.Click += new System.EventHandler(this.ReturnBook_Click);
+            this.ReturnBookButton.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.ReturnBookButton.Location = new System.Drawing.Point(309, 252);
+            this.ReturnBookButton.Name = "ReturnBook";
+            this.ReturnBookButton.Size = new System.Drawing.Size(224, 100);
+            this.ReturnBookButton.TabIndex = 1;
+            this.ReturnBookButton.Text = "החזר ספר";
+            this.ReturnBookButton.UseVisualStyleBackColor = true;
+            this.ReturnBookButton.Click += new System.EventHandler(this.ReturnBook_Click);
             // 
             // Books
             // 
@@ -141,7 +141,7 @@ namespace libaryApp
             this.Controls.Add(this.belonging);
             this.Controls.Add(this.Members);
             this.Controls.Add(this.Books);
-            this.Controls.Add(this.ReturnBook);
+            this.Controls.Add(this.ReturnBookButton);
             this.Controls.Add(this.LoanBook);
             this.Name = "MainWindow";
             this.Text = "liberyApp";
@@ -155,7 +155,7 @@ namespace libaryApp
         #endregion
 
         private System.Windows.Forms.Button LoanBook;
-        private System.Windows.Forms.Button ReturnBook;
+        private System.Windows.Forms.Button ReturnBookButton;
         private System.Windows.Forms.Button Books;
         private System.Windows.Forms.Button Members;
         private System.Windows.Forms.Label belonging;

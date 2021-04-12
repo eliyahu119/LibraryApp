@@ -77,7 +77,7 @@ namespace libaryApp
             DialogResult dialogResult = MessageBox.Show($"מעבר ל: {member.memberName} ?", "מעבר לפרטי מנוי", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
 
             }
             else if (dialogResult == DialogResult.No)
@@ -115,7 +115,7 @@ namespace libaryApp
 
                 if (Li.Count == 1)
                 {
-                    Utils.SwitchBetweenWindows(this, new MemberForm(Li[0]));
+                    Utils.SwitchBetweenWindows(this, MemberForm.Instance(Li[0]));
                 }
                 else
                 {

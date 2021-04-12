@@ -47,7 +47,7 @@ namespace libaryApp
 
         private void BackButton_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new MemberForm(member));
+            Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
         }
 
         private void AllLoansForm_Load(object sender, EventArgs e)

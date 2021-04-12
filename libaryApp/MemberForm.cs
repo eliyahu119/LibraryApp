@@ -20,16 +20,29 @@ namespace libaryApp
             {
                 instance = new MemberForm();
             }
-            instance.SetAsNewWindow(memberID);
+            instance.member = DataManager.GetMemberByID(memberID);
+            instance.SetAsNewWindow();
             return instance;
+        }
+        public static MemberForm Instance(Member member)
+        {
 
+            if (instance == null)
+            {
+                instance = new MemberForm();
+            }
+            instance.member = member;
+            instance.SetAsNewWindow();
+            return instance;
         }
 
-        private void SetAsNewWindow(int memberID)
+        private void SetAsNewWindow()
         {
-            this.member = DataManager.GetMemberByID(memberID);
+           
             setTextOfLabels();
         }
+
+
 
         private List<Loan> loanList;
         Member member;
@@ -46,12 +59,7 @@ namespace libaryApp
             Memberlabel.Text = $"קוד מנוי: {member.MemberID}";
         }
 
-        public MemberForm(Member member)
-        {
-            this.member = member;
-            InitializeComponent();
-            setTextOfLabels();
-        }
+    
 
         private void loanBook_Click(object sender, EventArgs e)
         {

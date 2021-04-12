@@ -72,7 +72,12 @@ namespace libaryApp
                     return false;
                 }
             }
-            public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
+        /// <summary>
+        /// change the name of the Columns of the grid using pairs of current name and wanted name.
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="pairs"></param>
+        public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
             {
                 foreach (var pair in pairs)
                 {

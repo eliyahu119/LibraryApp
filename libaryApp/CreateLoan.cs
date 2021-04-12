@@ -97,7 +97,7 @@ namespace libaryApp
                 Utils.SwitchBetweenWindows(this,MainWindow.Instance());
             else
             {
-                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
 
             }
         }

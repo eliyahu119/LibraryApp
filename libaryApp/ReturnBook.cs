@@ -13,7 +13,7 @@ namespace libaryApp
 
         private static ReturnBook instance = null;
         //implenting singelton pattern to this class
-        public static ReturnBook Instance(int memberID)
+        public static ReturnBook Instance()
         {
 
             if (instance == null)
@@ -30,7 +30,7 @@ namespace libaryApp
             BookCodeTxt.Text = "";
         }
 
-        public ReturnBook()
+        private ReturnBook()
         {
             InitializeComponent();
         }
@@ -56,7 +56,7 @@ namespace libaryApp
 
                 Member member = DataManager.getLastUserUseTheBook(BoocCopyID);
                 MessageBox.Show($"הספר {bookName} הוחזר למדף");
-                Utils.SwitchBetweenWindows(this, new MemberForm(member));
+                Utils.SwitchBetweenWindows(this, MemberForm.Instance(member));
             }
             else
             {

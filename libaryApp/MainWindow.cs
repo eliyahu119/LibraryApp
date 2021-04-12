@@ -51,7 +51,7 @@ namespace libaryApp
 
         private void ReturnBook_Click(object sender, EventArgs e)
         {
-            Utils.SwitchBetweenWindows(this, new ReturnBook());
+            Utils.SwitchBetweenWindows(this,  ReturnBook.Instance());
         }
     }
 }
