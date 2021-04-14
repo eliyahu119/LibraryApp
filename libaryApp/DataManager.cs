@@ -60,11 +60,8 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@memberID", memberID);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
-            if (NumberOfRows > 0)
-            {
-                return true;
-            }
-            return false;
+            return NumberOfRows > 0 ? true : false;
+
         }
 
         /// <summary>
@@ -117,14 +114,10 @@ namespace libaryApp
                 member = getMemberFromReader(reader);
 
             }
-            if (member == null)
-            {
-                isAdded = false;
-            }
-            else
-            {
-                isAdded = true;
-            }
+            
+                isAdded = member == null;
+
+
             Connection.Close();
             return member;
         }
@@ -203,14 +196,7 @@ namespace libaryApp
             {
 
             }
-            if (UpdatedMember == null)
-            {
-                isUpdate = false;
-            }
-            else
-            {
-                isUpdate = true;
-            }
+            isUpdate = !(UpdatedMember == null);
             Connection.Close();
             return UpdatedMember;
 
@@ -370,11 +356,8 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
             var NumberOfRows = sqlCommand.ExecuteNonQuery();
             Connection.Close();
-            if (NumberOfRows > 0)
-            {
-                return true;
-            }
-            return false;
+            return NumberOfRows > 0 ? true : false;
+
 
         }
 
@@ -401,11 +384,8 @@ namespace libaryApp
                 bookName = reader[0].ToString();
             }
             Connection.Close();
-            if (bookName != "")
-            {
-                return true;
-            }
-            return false;
+            return bookName != "" ? true : false;
+            
         }
 
 
@@ -425,11 +405,9 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", Element);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
-            if (NumberOfRows > 0)
-            {
-                return true;
-            }
-            return false;
+           
+                return NumberOfRows > 0? true:false;
+           
         }
 
 
@@ -446,11 +424,8 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", copyID);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
-            if (NumberOfRows > 0)
-            {
-                return false;
-            }
-            return true;
+            return NumberOfRows > 0 ? true : false;
+
         }
 
 
