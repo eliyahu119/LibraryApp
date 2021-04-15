@@ -25,6 +25,7 @@ namespace libaryApp
 
         }
 
+
         private void SetAsNewWindow(Book book)
         {
             this.book = book;

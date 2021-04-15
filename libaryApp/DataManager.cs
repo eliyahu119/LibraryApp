@@ -296,7 +296,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        public static Member GetMemberByID(long ID)
+        public static Member GetMemberByMemberID(long ID)
         {
             string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
             query = $"{query} WHERE MemberID=@ID";
@@ -348,7 +348,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="bookCopyID"></param>
         /// <returns></returns>
-        public static bool returnBookToShelf(int bookCopyID)
+        public static bool returnCopyToShelf(int bookCopyID)
         {
             string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
             Connection.Open();
@@ -416,7 +416,7 @@ namespace libaryApp
         /// </summary>
         /// <param name="copyID"></param>
         /// <returns></returns>
-        public static bool IsBookAvailable(int copyID)
+        public static bool IsCopyAvailable(int copyID)
         {
             string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
             Connection.Open();
@@ -548,29 +548,66 @@ namespace libaryApp
         /// <param name="publisher"></param>
         /// <param name="publicationYear"></param>
         /// <param name="numberOfCopies"></param>
-        internal static void AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
+        public static Book AddBookToDBAndUpdateCopies(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
+        { 
+            Book book = AddBookToDB(bookName, genere, author, publisher, publicationYear);
+            AddCopiesToDb(numberOfCopies, book.getBookID());
+            return book;
+        }
+
+        public static void AddCopiesToDb(int numberOfCopies,  int bookid)
         {
             Connection.Open();
-            SqlCommand insertTODB = new SqlCommand(@"INSERT INTO [Books]([Bookname],[GenreID],[AuthorID],[PublisherID],[PublicationYear] )
-                                                    OUTPUT Inserted.BookID VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)", Connection);
+            ///add the copies to db
+            SqlCommand insertCopies = new SqlCommand("INSERT INTO [BooksCopies]([BookID]) VALUES(@bookID)", Connection);
+            insertCopies.Parameters.AddWithValue("@bookID", bookid);
+            for (int j = 0; j < numberOfCopies; j++)
+            {
+                insertCopies.ExecuteNonQuery();
+
+            }
+            Connection.Close();
+        }
+
+        public static Book AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
+        {
+            Book book=null;
+            Connection.Open();
+            SqlCommand insertTODB = new SqlCommand(@"WITH Source
+     AS (SELECT v.Bookname,v.GenreID,v.AuthorID,v.PublisherID,v.PublicationYear,Genres.Genre,Publishers.Publisher,Authors.Author
+         FROM  (VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)) 
+                    V(Bookname,GenreID,AuthorID,PublisherID,PublicationYear)
+					INNER JOIN Genres ON  v.GenreID =Genres.GenreID 
+					INNER JOIN Publishers ON  Publishers.PublisherID = v.PublisherID 
+					INNER JOIN Authors ON Authors.AuthorID = v.AuthorID)
+MERGE INTO Books
+USING Source
+ON 1 = 0
+WHEN NOT MATCHED THEN
+  INSERT (Bookname,
+           GenreID,
+           AuthorID,
+		   PublisherID,
+		   PublicationYear)
+  VALUES (Bookname,
+		  GenreID,
+		  AuthorID,
+		  PublisherID,
+		  PublicationYear)
+
+OUTPUT Source.*,INSERTED.BookID;", Connection);
             insertTODB.Parameters.AddWithValue("@Bookname", bookName);
             insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
             insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);
             insertTODB.Parameters.AddWithValue("@PublisherID", publisher.ID);
             insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
-            int BookID = (int)insertTODB.ExecuteScalar();
-
-            ///add the copies to db
-            SqlCommand insertCopies = new SqlCommand("INSERT INTO [BooksCopies]([BookID]) VALUES(@bookID)", Connection);
-            insertCopies.Parameters.AddWithValue("@bookID", BookID);
-            for (int j = 0; j < numberOfCopies; j++)
+            var reader = insertTODB.ExecuteReader();
+            while (reader.Read())
             {
-                insertCopies.ExecuteNonQuery();
-
-
+                book = getBookFromReader(reader);
             }
             Connection.Close();
-
+            return book;
         }
 
         /// <summary>

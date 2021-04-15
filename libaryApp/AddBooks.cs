@@ -117,9 +117,8 @@ namespace libaryApp
                 Publishers Publisher = (Publishers)publicationComboBox.SelectedValue;
                 string BookName = this.AddBookTxt.Text;
                 short publicationYear = short.TryParse(publicationYearTxt.Text, out publicationYear) ? publicationYear : (short)0;
-                if (Utils.AllowOnlyInRange(0, DateTime.Now.Year, publicationYearTxt))
+                if (!Utils.AllowOnlyInRange(0, DateTime.Now.Year, publicationYearTxt, "נא למלא את השדה עד השנה הנוכחית."))
                 {
-                    MessageBox.Show("השנה שציינת עדיין לא הגיעה.");
                     return;
                 }
                 int NumberOfCopies = int.TryParse(NumberOfCopiesTxt.Text, out NumberOfCopies) ? NumberOfCopies : 1;
@@ -128,18 +127,18 @@ namespace libaryApp
 
                 if (null == book)
                 {
-                    DataManager.AddBookToDB(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+                    DataManager.AddBookToDBAndUpdateCopies(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
                     MessageBox.Show("הספר נוסף בהצלחה");
                     BackButton_Click();
                 }
                 else
                 {
-                    DataManager.EditBookInDB(book.getBookID(), BookName, Genere, author, Publisher, publicationYear);
+                    book= DataManager.EditBookInDB(book.getBookID(), BookName, Genere, author, Publisher, publicationYear);
                     MessageBox.Show("הספר נערך  בהצלחה");
                     BackButton_Click();
 
                 }
-                this.Close();
+              
             }
             else
             {

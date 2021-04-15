@@ -58,7 +58,7 @@ namespace libaryApp
                 }
 
             }
-            public static bool AllowOnlyInRange(int min, int max, TextBox textbox)
+            public static bool AllowOnlyInRange(int min, int max, TextBox textbox,string ErrMsg)
             {
                 int val = 0;
                 bool res = Int32.TryParse(textbox.Text, out val);
@@ -68,7 +68,7 @@ namespace libaryApp
                 }
                 else
                 {
-                    MessageBox.Show($"Please input {min} to {max} only.");
+                    MessageBox.Show(ErrMsg);
                     return false;
                 }
             }

@@ -50,12 +50,13 @@ namespace libaryApp
         /// <param name="e"></param>
         private void SubmitLoan_Click(object sender, EventArgs e)
         {
-            if ((!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)) || (!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)))
+            const int max = 1000000;
+            if ((!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt,$"נא הכנס מספר עד {max}")) || (!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt, $"נא הכנס מספר עד {max}")))
                 return;
 
             int MemberID = Convert.ToInt32(CodeMemberTxt.Text);
             int CopyID = Convert.ToInt32(BookCodeTxt.Text);
-            if (DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsBookAvailable(CopyID))
+            if (DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID") && DataManager.IsCopyAvailable(CopyID))
             {
                 if(DataManager.ifHadBeenLoanBefore(CopyID,MemberID))
                 {

@@ -20,7 +20,7 @@ namespace libaryApp
             {
                 instance = new MemberForm();
             }
-            instance.member = DataManager.GetMemberByID(memberID);
+            instance.member = DataManager.GetMemberByMemberID(memberID);
             instance.SetAsNewWindow();
             return instance;
         }
@@ -104,7 +104,7 @@ namespace libaryApp
             DialogResult dialogResult = MessageBox.Show($"האם להחזיר ספר זה?", "החזרת ספר", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.Yes)
             {
-                if (DataManager.returnBookToShelf(loan.CopyID))
+                if (DataManager.returnCopyToShelf(loan.CopyID))
                     MessageBox.Show($"הספר {loan.BookName} הוחזר למדף");
                 else
                 {

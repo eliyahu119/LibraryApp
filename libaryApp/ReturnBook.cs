@@ -47,7 +47,7 @@ namespace libaryApp
         /// <param name="e"></param>
         private void SubmitReturn_Click(object sender, EventArgs e)
         {
-            if (!Utils.AllowOnlyInRange(0, 1000000, BookCodeTxt))
+            if (!Utils.AllowOnlyInRange(0, 1000000, BookCodeTxt, "נא להכניס מספר עותק  עד 1000000"))
                 return;
             var BoocCopyID = Convert.ToInt32(BookCodeTxt.Text);
             bool IsReturned = DataManager.returnBookToShelf(BoocCopyID, out string bookName);
