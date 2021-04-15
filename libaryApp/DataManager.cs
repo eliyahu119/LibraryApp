@@ -51,8 +51,8 @@ namespace libaryApp
         {
 
             string query = @"SELECT COUNT(*) FROM Loans  l 
-              LEFT JOIN BooksCopies b on l.BooksCopyID=b.BooksCopyID
-              LEFT JOIN BOOKS on b.BookID=BOOKS.BookID
+              INNER JOIN BooksCopies b on l.BooksCopyID=b.BooksCopyID
+              INNER JOIN BOOKS on b.BookID=BOOKS.BookID
               WHERE l.BooksCopyID=@BooksCopyID AND l.memberID=@memberID;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -60,7 +60,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@memberID", memberID);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
-            return NumberOfRows > 0 ? true : false;
+            return NumberOfRows > 0;
 
         }
 
@@ -129,9 +129,9 @@ namespace libaryApp
                 SET BookName=@BookName,GenreID=@GenereID,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
                 OUTPUT inserted.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,inserted.PublicationYear, inserted.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
                 FROM Books b
-                LEFT JOIN Genres ON  b.GenreID = Genres.GenreID 
-                LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
-                LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID
+                INNER JOIN Genres ON  b.GenreID = Genres.GenreID 
+                INNER JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
+                INNER JOIN Authors ON Authors.AuthorID = b.AuthorID
                 WHERE b.BookID=@Bookid;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
@@ -356,7 +356,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
             var NumberOfRows = sqlCommand.ExecuteNonQuery();
             Connection.Close();
-            return NumberOfRows > 0 ? true : false;
+            return NumberOfRows > 0;
 
 
         }
@@ -406,7 +406,7 @@ namespace libaryApp
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
            
-                return NumberOfRows > 0? true:false;
+                return NumberOfRows > 0;
            
         }
 
@@ -424,7 +424,7 @@ namespace libaryApp
             sqlCommand.Parameters.AddWithValue("@ID", copyID);
             var NumberOfRows = (int)sqlCommand.ExecuteScalar();
             Connection.Close();
-            return NumberOfRows > 0 ? true : false;
+            return NumberOfRows > 0 ;
 
         }
 
@@ -457,9 +457,9 @@ namespace libaryApp
             //get the data from the sql
             string query = "SELECT b.bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,b.PublicationYear, b.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID "
                                                   + "FROM Books b "
-                                                  + "LEFT JOIN Genres ON  b.GenreID = Genres.GenreID "
-                                                  + "LEFT JOIN Publishers ON  Publishers.PublisherID = b.PublisherID "
-                                                  + "LEFT JOIN Authors ON Authors.AuthorID = b.AuthorID";
+                                                  + "INNER JOIN Genres ON  b.GenreID = Genres.GenreID "
+                                                  + "INNER JOIN Publishers ON  Publishers.PublisherID = b.PublisherID "
+                                                  + "INNER JOIN Authors ON Authors.AuthorID = b.AuthorID";
             query = $"{query} WHERE b.bookname LIKE N'%'+@c+'%'  OR Authors.Author LIKE N'%'+@c+'%'";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
