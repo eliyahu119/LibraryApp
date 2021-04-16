@@ -32,9 +32,11 @@ namespace libaryApp
             this.BookName = new System.Windows.Forms.Label();
             this.Author = new System.Windows.Forms.Label();
             this.CopiesGrid = new System.Windows.Forms.DataGridView();
-            this.availableBooks = new System.Windows.Forms.Label();
             this.EditBook = new System.Windows.Forms.Button();
             this.BackButton = new System.Windows.Forms.Button();
+            this.DeleteBook = new System.Windows.Forms.Button();
+            this.bookCodeLabel = new System.Windows.Forms.Label();
+            this.availableBooks = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.CopiesGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,16 +74,6 @@ namespace libaryApp
             this.CopiesGrid.Size = new System.Drawing.Size(203, 331);
             this.CopiesGrid.TabIndex = 2;
             // 
-            // availableBooks
-            // 
-            this.availableBooks.AutoSize = true;
-            this.availableBooks.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.availableBooks.Location = new System.Drawing.Point(31, 99);
-            this.availableBooks.Name = "availableBooks";
-            this.availableBooks.Size = new System.Drawing.Size(108, 17);
-            this.availableBooks.TabIndex = 3;
-            this.availableBooks.Text = "{0}: עותקים זמינים";
-            // 
             // EditBook
             // 
             this.EditBook.Location = new System.Drawing.Point(44, 142);
@@ -102,11 +94,46 @@ namespace libaryApp
             this.BackButton.UseVisualStyleBackColor = true;
             this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
+            // DeleteBook
+            // 
+            this.DeleteBook.BackColor = System.Drawing.SystemColors.Desktop;
+            this.DeleteBook.ForeColor = System.Drawing.SystemColors.Window;
+            this.DeleteBook.Location = new System.Drawing.Point(12, 362);
+            this.DeleteBook.Name = "DeleteBook";
+            this.DeleteBook.Size = new System.Drawing.Size(95, 45);
+            this.DeleteBook.TabIndex = 6;
+            this.DeleteBook.Text = "מחק ספר";
+            this.DeleteBook.UseVisualStyleBackColor = false;
+            this.DeleteBook.Click += new System.EventHandler(this.DeleteBook_Click);
+            // 
+            // bookCodeLabel
+            // 
+            this.bookCodeLabel.AutoSize = true;
+            this.bookCodeLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.bookCodeLabel.Location = new System.Drawing.Point(31, 76);
+            this.bookCodeLabel.Name = "bookCodeLabel";
+            this.bookCodeLabel.Size = new System.Drawing.Size(76, 17);
+            this.bookCodeLabel.TabIndex = 7;
+            this.bookCodeLabel.Text = "{0}: קוד ספר";
+            this.bookCodeLabel.Click += new System.EventHandler(this.bookCodeLabel_Click);
+            // 
+            // availableBooks
+            // 
+            this.availableBooks.AutoSize = true;
+            this.availableBooks.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.availableBooks.Location = new System.Drawing.Point(31, 102);
+            this.availableBooks.Name = "availableBooks";
+            this.availableBooks.Size = new System.Drawing.Size(108, 17);
+            this.availableBooks.TabIndex = 3;
+            this.availableBooks.Text = "{0}: עותקים זמינים";
+            // 
             // BookDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(502, 435);
+            this.Controls.Add(this.bookCodeLabel);
+            this.Controls.Add(this.DeleteBook);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.EditBook);
             this.Controls.Add(this.availableBooks);
@@ -127,8 +154,10 @@ namespace libaryApp
         private System.Windows.Forms.Label BookName;
         private System.Windows.Forms.Label Author;
         private System.Windows.Forms.DataGridView CopiesGrid;
-        private System.Windows.Forms.Label availableBooks;
         private System.Windows.Forms.Button EditBook;
         private System.Windows.Forms.Button BackButton;
+        private System.Windows.Forms.Button DeleteBook;
+        private System.Windows.Forms.Label bookCodeLabel;
+        private System.Windows.Forms.Label availableBooks;
     }
 }

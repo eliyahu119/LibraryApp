@@ -260,9 +260,11 @@ OUTPUT Source.*,INSERTED.BookID;", Connection);
             string query = @"DELETE FROM Loans WHERE BooksCopyID IN (SELECT BooksCopyID FROM BooksCopies WHERE BookID=@BookID)
                              DELETE FROM BooksCopies WHERE BookID=@BookID;
                              DELETE FROM Books WHERE BookID=@BookID;";
+            Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@BookID", bookID);
             sqlCommand.ExecuteNonQuery();
+            Connection.Close();
         }
 
         /// <summary>

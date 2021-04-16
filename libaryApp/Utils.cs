@@ -97,7 +97,7 @@ namespace libaryApp
 
             public static void AddText(object sender, EventArgs e)
             {
-                if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
+                if (string.IsNullOrEmpty(((TextBox)sender).Text))
                     ((TextBox)sender).Text = "שורת חיפוש";
             }
             /////////////

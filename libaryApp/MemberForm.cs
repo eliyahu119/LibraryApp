@@ -40,6 +40,8 @@ namespace libaryApp
         {
            
             setTextOfLabels();
+            UpdateLoanGrid();
+
         }
 
 
@@ -70,7 +72,6 @@ namespace libaryApp
 
         private void LoanForm_Load(object sender, EventArgs e)
         {
-            UpdateLoanGrid();
             Utils.ChangeColumnsNameOfGrid(ActiveLoanGrid,
                 new Tuple<string, string>[] {
                 new Tuple<string, string>("LoanID", "מספר השאלה"),

@@ -34,15 +34,14 @@ namespace libaryApp
             List<BookCopies> li = DataManager.getBookCopiesFromDB(book.getBookID());
             CopiesGrid.DataSource = li;
             int number = DataManager.GetNumberOfCopiesavailable(book.getBookID());
-            availableBooks.Text = string.Format(availableBooks.Text, number);
+            availableBooks.Text = string.Format("{0}: עותקים זמינים", number);
+            bookCodeLabel.Text = string.Format("{0}: קוד ספר", book.getBookID());
         }
 
         Book book;
         public BookDetails()
         {
             InitializeComponent();
-
-
         }
         private void BookDetails_Load(object sender, EventArgs e)
         {
@@ -70,6 +69,22 @@ namespace libaryApp
             Utils.SwitchBetweenWindows(this, BookForm.Instance());
         }
 
+        private void DeleteBook_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("האם אתה רוצה למחוק ספר זה\n? מחיקת הספר תמחק את כל ההשאלות וכל העותקים הקשורים לספר זה.", "מחיקת ספר", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+            {
+                return;
 
+            }
+            DataManager.DeleteBookFromDB(book.getBookID());
+            MessageBox.Show("הספר נמחק בהצלחה");
+            Utils.SwitchBetweenWindows(this, MainWindow.Instance());
+        }
+
+        private void bookCodeLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
