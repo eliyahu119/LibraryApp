@@ -32,6 +32,14 @@ namespace libaryApp
                 CodeMemberTxt.Text = member.MemberID.ToString();
                 CodeMemberTxt.ReadOnly = true;
             }
+            else
+            {
+                CodeMemberTxt.Text = "";
+                CodeMemberTxt.ReadOnly = false;
+
+            }
+            BookCodeTxt.Text = "";
+
         }
 
         Member member;

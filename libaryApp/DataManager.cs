@@ -16,7 +16,21 @@ namespace libaryApp
 
         private static SqlConnection Connection;
         const string DbLocation = @"..\..\..\libaryDb.mdf";
+        /// <summary>
+        /// private static costructor
+        /// </summary>
+        static DataManager()
+        {
+            string absPAth = Path.GetFullPath(DbLocation);
+            string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
+                                        AttachDbFilename={absPAth};
+                                        Integrated Security=True";
+            Connection = new SqlConnection(ConnectionString);
+        }
 
+
+
+        #region loan'sData
         public static List<Loan> getAllLoans(int memberID)
         {
 
@@ -64,144 +78,6 @@ namespace libaryApp
 
         }
 
-        /// <summary>
-        /// private static costructor
-        /// </summary>
-        static DataManager()
-        {
-            string absPAth = Path.GetFullPath(DbLocation);
-            string ConnectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;
-                                        AttachDbFilename={absPAth};
-                                        Integrated Security=True";
-            Connection = new SqlConnection(ConnectionString);
-        }
-
-
-        /// <summary>
-        /// add member to Db and returning his memberID and if added or not.
-        /// </summary>
-        /// <param name="memberName"></param>
-        /// <param name="personID"></param>
-        /// <param name="phoneNunber"></param>
-        /// <param name="Adress"></param>
-        /// <param name="isAdded"></param>
-        /// <returns></returns>
-        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded, string EmailtextBox = null)
-        {
-            bool IfExist = IfItemExist(personID, "Members", "PersonID");
-            if (IfExist)
-            {
-                isAdded = false;
-                return null;
-            }
-            string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID,Email) 
-                             OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID,Inserted.Email
-                             VALUES(@MemberName,@Phone,@Adress,@PersonID,@Email)";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@MemberName", memberName);
-            sqlCommand.Parameters.AddWithValue("@Phone", phoneNunber);
-            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
-            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
-            sqlCommand.Parameters.AddWithValue("@Email", EmailtextBox);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-
-
-            Member member = null;
-
-            while (reader.Read())
-            {
-                member = getMemberFromReader(reader);
-
-            }
-            
-                isAdded = member == null;
-
-
-            Connection.Close();
-            return member;
-        }
-
-        public static Book EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
-        {
-
-         string  query = @"UPDATE Books
-                SET BookName=@BookName,GenreID=@GenereID,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
-                OUTPUT inserted.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,inserted.PublicationYear, inserted.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
-                FROM Books b
-                INNER JOIN Genres ON  b.GenreID = Genres.GenreID 
-                INNER JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
-                INNER JOIN Authors ON Authors.AuthorID = b.AuthorID
-                WHERE b.BookID=@Bookid;";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@BookName", bookName);
-            sqlCommand.Parameters.AddWithValue("@GenereID", genere.ID);
-            sqlCommand.Parameters.AddWithValue("@AuthorID", author.ID);
-            sqlCommand.Parameters.AddWithValue("@PublisherID", publisher.ID);
-            sqlCommand.Parameters.AddWithValue("@PublicationYear", publicationYear);
-            sqlCommand.Parameters.AddWithValue("@Bookid", bookId);
-            Book Updated = null;
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            while (reader.Read())
-            {
-
-                Updated = getBookFromReader(reader);
-            }
-            Connection.Close();
-            return Updated;
-
-        }
-
-        /// <summary>
-        /// edit member query.
-        /// </summary>
-        /// <param name="member"></param>
-        /// <param name="FullName"></param>
-        /// <param name="personID"></param>
-        /// <param name="phone"></param>
-        /// <param name="Adress"></param>
-        /// <param name="isUpdate"></param>
-        /// <returns></returns>
-        public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, string Email, out bool isUpdate)
-        {
-
-            string query = @"UPDATE Members
-                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID,Email=@Email
-                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID,INSERTED.Email
-                            WHERE MemberID=@MemberID";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@MemberName", FullName);
-            sqlCommand.Parameters.AddWithValue("@Phone", phone);
-            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
-            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
-            sqlCommand.Parameters.AddWithValue("@MemberID", member.MemberID);
-            sqlCommand.Parameters.AddWithValue("@Email", Email);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-            Member UpdatedMember = null;
-            try
-            {
-                while (reader.Read())
-                {
-
-                    UpdatedMember = getMemberFromReader(reader);
-
-
-
-
-                }
-            }
-            catch
-            {
-
-            }
-            isUpdate = !(UpdatedMember == null);
-            Connection.Close();
-            return UpdatedMember;
-
-        }
-
 
         /// <summary>
         /// get the last member who loan this copy.
@@ -231,22 +107,23 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get member data from sqlReader.
+        /// creates  a loan.
+        /// the availability of the book is auto updated do to the trigger UpdateAvailability.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
-        private static Member getMemberFromReader(SqlDataReader reader)
+        /// <param name="memberID"></param>
+        /// <param name="copyID"></param>
+        static public void CreateLoan(int memberID, int copyID)
         {
+            string query = "INSERT INTO Loans(MemberID,BooksCopyID,LoanDate) VALUES (@memberID,@booksCopyID, GETDATE());";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            sqlCommand.Parameters.AddWithValue("@booksCopyID", copyID);
+            sqlCommand.ExecuteNonQuery();
+            Connection.Close();
 
-            var member = new Member();
-            member.MemberID = (int)reader["MemberID"];
-            member.memberName = reader["MemberName"].ToString();
-            member.Phone = reader["Phone"].ToString();
-            member.Adress = reader["Adress"].ToString();
-            member.PersonID = (long)reader["PersonID"];
-            member.Email = reader["Email"].ToString();
-            return member;
         }
+
 
         /// <summary>
         /// get the list of active loans base on memberID
@@ -290,161 +167,102 @@ namespace libaryApp
             Loan.dateOfLoan = (DateTime)reader["LoanDate"];
             return Loan;
         }
+        #endregion
 
+
+
+        #region book's Data
         /// <summary>
-        /// get Member base on his memberId
+        /// edit the book in the db
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public static Member GetMemberByMemberID(long ID)
-        {
-            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
-            query = $"{query} WHERE MemberID=@ID";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", ID);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-
-            //turn the data into list Of Books.
-            Member member = null;
-
-            while (reader.Read())
-            {
-                member = getMemberFromReader(reader);
-            }
-            Connection.Close();
-            return member;
-
-        }
-        /// <summary>
-        /// search by person id as well as member id
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        public static List<Member> GetMembersByID(long ID)
-        {
-            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
-            query = $"{query} WHERE MemberID=@ID OR PersonID=@ID ";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", ID);
-            SqlDataReader reader = sqlCommand.ExecuteReader();
-
-
-            var memberList = new List<Member>();
-            //turn the data into list Of members.
-            while (reader.Read())
-            {
-                var member = getMemberFromReader(reader);
-                memberList.Add(member);
-            }
-            Connection.Close();
-            return memberList;
-
-        }
-
-        /// <summary>
-        /// sets the availability of the book to true in DB.
-        /// </summary>
-        /// <param name="bookCopyID"></param>
-        /// <returns></returns>
-        public static bool returnCopyToShelf(int bookCopyID)
-        {
-            string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
-            var NumberOfRows = sqlCommand.ExecuteNonQuery();
-            Connection.Close();
-            return NumberOfRows > 0;
-
-
-        }
-
-        /// <summary>
-        /// sets the availability of the book to true in DB. and gets the book name.
-        /// </summary>
-        /// <param name="bookCopyID"></param>
+        /// <param name="bookId"></param>
         /// <param name="bookName"></param>
+        /// <param name="genere"></param>
+        /// <param name="author"></param>
+        /// <param name="publisher"></param>
+        /// <param name="publicationYear"></param>
         /// <returns></returns>
-        public static bool returnBookToShelf(int bookCopyID, out string bookName)
+        public static Book EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
         {
-            string query = @"UPDATE [BooksCopies] SET IsAvailable = 1  
-                            OUTPUT B.Bookname 
-                            FROM [BooksCopies] BC
-                            JOIN Books B ON B.BookID=BC.BookID WHERE BC.BooksCopyID = @ID AND IsAvailable = 0  ";
+
+            string query = @"UPDATE Books
+                SET BookName=@BookName,GenreID=@GenereID,AuthorID=@AuthorID,PublisherID=@PublisherID,PublicationYear=@PublicationYear
+                OUTPUT inserted.Bookname, Genres.Genre, Authors.Author, Publishers.Publisher ,inserted.PublicationYear, inserted.BookID, Genres.GenreID, Publishers.PublisherID, Authors.AuthorID
+                FROM Books b
+                INNER JOIN Genres ON  b.GenreID = Genres.GenreID 
+                INNER JOIN Publishers ON  Publishers.PublisherID = b.PublisherID 
+                INNER JOIN Authors ON Authors.AuthorID = b.AuthorID
+                WHERE b.BookID=@Bookid;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
+            sqlCommand.Parameters.AddWithValue("@BookName", bookName);
+            sqlCommand.Parameters.AddWithValue("@GenereID", genere.ID);
+            sqlCommand.Parameters.AddWithValue("@AuthorID", author.ID);
+            sqlCommand.Parameters.AddWithValue("@PublisherID", publisher.ID);
+            sqlCommand.Parameters.AddWithValue("@PublicationYear", publicationYear);
+            sqlCommand.Parameters.AddWithValue("@Bookid", bookId);
+            Book Updated = null;
             SqlDataReader reader = sqlCommand.ExecuteReader();
-            bookName = "";
-
             while (reader.Read())
             {
-                bookName = reader[0].ToString();
+
+                Updated = getBookFromReader(reader);
             }
             Connection.Close();
-            return bookName != "" ? true : false;
-            
+            return Updated;
+
         }
 
 
-
-        /// <summary>
-        /// check if item  exist in db
-        /// </summary>
-        /// <param name="Element"></param>
-        /// <param name="table"></param>
-        /// <param name="column"></param>
-        /// <returns></returns>
-        public static bool IfItemExist(object Element, string table, string column)
+        public static Book AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
         {
-            string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
+            Book book = null;
             Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", Element);
-            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            SqlCommand insertTODB = new SqlCommand(@"WITH Source
+     AS (SELECT v.Bookname,v.GenreID,v.AuthorID,v.PublisherID,v.PublicationYear,Genres.Genre,Publishers.Publisher,Authors.Author
+         FROM  (VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)) 
+                    V(Bookname,GenreID,AuthorID,PublisherID,PublicationYear)
+					INNER JOIN Genres ON  v.GenreID =Genres.GenreID 
+					INNER JOIN Publishers ON  Publishers.PublisherID = v.PublisherID 
+					INNER JOIN Authors ON Authors.AuthorID = v.AuthorID)
+MERGE INTO Books
+USING Source
+ON 1 = 0
+WHEN NOT MATCHED THEN
+  INSERT (Bookname,
+           GenreID,
+           AuthorID,
+		   PublisherID,
+		   PublicationYear)
+  VALUES (Bookname,
+		  GenreID,
+		  AuthorID,
+		  PublisherID,
+		  PublicationYear)
+
+OUTPUT Source.*,INSERTED.BookID;", Connection);
+            insertTODB.Parameters.AddWithValue("@Bookname", bookName);
+            insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
+            insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);
+            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.ID);
+            insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
+            var reader = insertTODB.ExecuteReader();
+            while (reader.Read())
+            {
+                book = getBookFromReader(reader);
+            }
             Connection.Close();
-           
-                return NumberOfRows > 0;
-           
+            return book;
         }
 
-
-        /// <summary>
-        /// check if book is avialbe base on  ISAvailable column
-        /// </summary>
-        /// <param name="copyID"></param>
-        /// <returns></returns>
-        public static bool IsCopyAvailable(int copyID)
+        public static void DeleteBookFromDB(int bookID)
         {
-            string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
-            Connection.Open();
+            string query = @"DELETE FROM Loans WHERE BooksCopyID IN (SELECT BooksCopyID FROM BooksCopies WHERE BookID=@BookID)
+                             DELETE FROM BooksCopies WHERE BookID=@BookID;
+                             DELETE FROM Books WHERE BookID=@BookID;";
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@ID", copyID);
-            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
-            Connection.Close();
-            return NumberOfRows > 0 ;
-
-        }
-
-
-        /// <summary>
-        /// creates  a loan.
-        /// the availability of the book is auto updated do to the trigger UpdateAvailability.
-        /// </summary>
-        /// <param name="memberID"></param>
-        /// <param name="copyID"></param>
-        static public void CreateLoan(int memberID, int copyID)
-        {
-            string query = "INSERT INTO Loans(MemberID,BooksCopyID,LoanDate) VALUES (@memberID,@booksCopyID, GETDATE());";
-            Connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(query, Connection);
-            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
-            sqlCommand.Parameters.AddWithValue("@booksCopyID", copyID);
+            sqlCommand.Parameters.AddWithValue("@BookID", bookID);
             sqlCommand.ExecuteNonQuery();
-            Connection.Close();
-
         }
 
         /// <summary>
@@ -496,6 +314,182 @@ namespace libaryApp
         }
 
 
+
+
+        #endregion
+
+
+        #region Member's Data
+
+        /// <summary>
+        /// add member to Db and returning his memberID and if added or not.
+        /// </summary>
+        /// <param name="memberName"></param>
+        /// <param name="personID"></param>
+        /// <param name="phoneNunber"></param>
+        /// <param name="Adress"></param>
+        /// <param name="isAdded"></param>
+        /// <returns></returns>
+        public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded, string EmailtextBox = null)
+        {
+            bool IfExist = IfItemExist(personID, "Members", "PersonID");
+            if (IfExist)
+            {
+                isAdded = false;
+                return null;
+            }
+            string query = @"INSERT INTO Members(MemberName,Phone,Adress,PersonID,Email) 
+                             OUTPUT Inserted.MemberID,Inserted.MemberName,Inserted.Phone,Inserted.Adress,Inserted.PersonID,Inserted.Email
+                             VALUES(@MemberName,@Phone,@Adress,@PersonID,@Email)";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@MemberName", memberName);
+            sqlCommand.Parameters.AddWithValue("@Phone", phoneNunber);
+            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
+            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            sqlCommand.Parameters.AddWithValue("@Email", EmailtextBox);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+
+            Member member = null;
+
+            while (reader.Read())
+            {
+                member = getMemberFromReader(reader);
+
+            }
+            
+                isAdded = member == null;
+
+
+            Connection.Close();
+            return member;
+        }
+        
+
+        /// <summary>
+        /// edit member query.
+        /// </summary>
+        /// <param name="member"></param>
+        /// <param name="FullName"></param>
+        /// <param name="personID"></param>
+        /// <param name="phone"></param>
+        /// <param name="Adress"></param>
+        /// <param name="isUpdate"></param>
+        /// <returns></returns>
+        public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, string Email, out bool isUpdate)
+        {
+
+            string query = @"UPDATE Members
+                            SET MemberName=@MemberName,Phone=@phone,Adress=@Adress,PersonID=@personID,Email=@Email
+                            OUTPUT INSERTED.MemberID,INSERTED.MemberName,INSERTED.Phone,INSERTED.Adress,INSERTED.PersonID,INSERTED.Email
+                            WHERE MemberID=@MemberID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@MemberName", FullName);
+            sqlCommand.Parameters.AddWithValue("@Phone", phone);
+            sqlCommand.Parameters.AddWithValue("@PersonID", personID);
+            sqlCommand.Parameters.AddWithValue("@Adress", Adress);
+            sqlCommand.Parameters.AddWithValue("@MemberID", member.MemberID);
+            sqlCommand.Parameters.AddWithValue("@Email", Email);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            Member UpdatedMember = null;
+            try
+            {
+                while (reader.Read())
+                {
+
+                    UpdatedMember = getMemberFromReader(reader);
+
+
+
+
+                }
+            }
+            catch
+            {
+
+            }
+            isUpdate = !(UpdatedMember == null);
+            Connection.Close();
+            return UpdatedMember;
+
+        }
+
+        /// <summary>
+        /// get member data from sqlReader.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static Member getMemberFromReader(SqlDataReader reader)
+        {
+
+            var member = new Member();
+            member.MemberID = (int)reader["MemberID"];
+            member.memberName = reader["MemberName"].ToString();
+            member.Phone = reader["Phone"].ToString();
+            member.Adress = reader["Adress"].ToString();
+            member.PersonID = (long)reader["PersonID"];
+            member.Email = reader["Email"].ToString();
+            return member;
+        }
+
+
+        /// <summary>
+        /// get Member base on his memberId
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static Member GetMemberByMemberID(long ID)
+        {
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
+            query = $"{query} WHERE MemberID=@ID";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            //turn the data into list Of Books.
+            Member member = null;
+
+            while (reader.Read())
+            {
+                member = getMemberFromReader(reader);
+            }
+            Connection.Close();
+            return member;
+
+        }
+
+        /// <summary>
+        /// search by person id as well as member id
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        public static List<Member> GetMembersByID(long ID)
+        {
+            string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
+            query = $"{query} WHERE MemberID=@ID OR PersonID=@ID ";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", ID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+
+            var memberList = new List<Member>();
+            //turn the data into list Of members.
+            while (reader.Read())
+            {
+                var member = getMemberFromReader(reader);
+                memberList.Add(member);
+            }
+            Connection.Close();
+            return memberList;
+
+        }
+
+
+
         /// <summary>
         /// search the Member base on the Member's name..
         /// </summary>
@@ -520,6 +514,91 @@ namespace libaryApp
             Connection.Close();
             return memberList;
         }
+        /// <summary>
+        /// delete the member from the db
+        /// </summary>
+        /// <param name="memberID"></param>
+        public static void DeleteMemberFromDB(int memberID)
+        {
+            string query = @"DELETE FROM Loans WHERE MemberID=@memberID;
+                             DELETE FROM Members WHERE MemberID=@memberID;";
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@memberID", memberID);
+            sqlCommand.ExecuteNonQuery();
+        }
+
+
+        #endregion
+
+
+        #region copy's data
+        /// <summary>
+        /// sets the availability of the book to true in DB.
+        /// </summary>
+        /// <param name="bookCopyID"></param>
+        /// <returns></returns>
+        public static bool returnCopyToShelf(int bookCopyID)
+        {
+            string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
+            var NumberOfRows = sqlCommand.ExecuteNonQuery();
+            Connection.Close();
+            return NumberOfRows > 0;
+
+
+        }
+
+        /// <summary>
+        /// sets the availability of the book to true in DB. and gets the book name.
+        /// </summary>
+        /// <param name="bookCopyID"></param>
+        /// <param name="bookName"></param>
+        /// <returns></returns>
+        public static bool returnCopyToShelf(int bookCopyID, out string bookName)
+        {
+            string query = @"UPDATE [BooksCopies] SET IsAvailable = 1  
+                            OUTPUT B.Bookname 
+                            FROM [BooksCopies] BC
+                            JOIN Books B ON B.BookID=BC.BookID WHERE BC.BooksCopyID = @ID AND IsAvailable = 0  ";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", bookCopyID);
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            bookName = "";
+
+            while (reader.Read())
+            {
+                bookName = reader[0].ToString();
+            }
+            Connection.Close();
+            return bookName != "" ? true : false;
+
+        }
+
+        /// <summary>
+        /// check if book is avialbe base on  ISAvailable column
+        /// </summary>
+        /// <param name="copyID"></param>
+        /// <returns></returns>
+        public static bool IsCopyAvailable(int copyID)
+        {
+            string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", copyID);
+            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            Connection.Close();
+            return !(NumberOfRows > 0);
+
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// get the number of book's copy available
@@ -538,24 +617,7 @@ namespace libaryApp
             return AvailableBooks;
         }
 
-
-        /// <summary>
-        /// adds the book to Db
-        /// </summary>
-        /// <param name="bookName"></param>
-        /// <param name="genere"></param>
-        /// <param name="author"></param>
-        /// <param name="publisher"></param>
-        /// <param name="publicationYear"></param>
-        /// <param name="numberOfCopies"></param>
-        public static Book AddBookToDBAndUpdateCopies(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
-        { 
-            Book book = AddBookToDB(bookName, genere, author, publisher, publicationYear);
-            AddCopiesToDb(numberOfCopies, book.getBookID());
-            return book;
-        }
-
-        public static void AddCopiesToDb(int numberOfCopies,  int bookid)
+        public static void AddCopiesToDb(int numberOfCopies, int bookid)
         {
             Connection.Open();
             ///add the copies to db
@@ -569,46 +631,6 @@ namespace libaryApp
             Connection.Close();
         }
 
-        public static Book AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
-        {
-            Book book=null;
-            Connection.Open();
-            SqlCommand insertTODB = new SqlCommand(@"WITH Source
-     AS (SELECT v.Bookname,v.GenreID,v.AuthorID,v.PublisherID,v.PublicationYear,Genres.Genre,Publishers.Publisher,Authors.Author
-         FROM  (VALUES(@Bookname,@GenreID,@AuthorID,@PublisherID,@PublicationYear)) 
-                    V(Bookname,GenreID,AuthorID,PublisherID,PublicationYear)
-					INNER JOIN Genres ON  v.GenreID =Genres.GenreID 
-					INNER JOIN Publishers ON  Publishers.PublisherID = v.PublisherID 
-					INNER JOIN Authors ON Authors.AuthorID = v.AuthorID)
-MERGE INTO Books
-USING Source
-ON 1 = 0
-WHEN NOT MATCHED THEN
-  INSERT (Bookname,
-           GenreID,
-           AuthorID,
-		   PublisherID,
-		   PublicationYear)
-  VALUES (Bookname,
-		  GenreID,
-		  AuthorID,
-		  PublisherID,
-		  PublicationYear)
-
-OUTPUT Source.*,INSERTED.BookID;", Connection);
-            insertTODB.Parameters.AddWithValue("@Bookname", bookName);
-            insertTODB.Parameters.AddWithValue("@GenreID", genere.ID);
-            insertTODB.Parameters.AddWithValue("@AuthorID", author.ID);
-            insertTODB.Parameters.AddWithValue("@PublisherID", publisher.ID);
-            insertTODB.Parameters.AddWithValue("@PublicationYear", publicationYear);
-            var reader = insertTODB.ExecuteReader();
-            while (reader.Read())
-            {
-                book = getBookFromReader(reader);
-            }
-            Connection.Close();
-            return book;
-        }
 
         /// <summary>
         /// makes a query to the db and get all the copies ralated to the book.
@@ -635,7 +657,54 @@ OUTPUT Source.*,INSERTED.BookID;", Connection);
             return bookCopiesList;
         }
 
+        #endregion
 
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// check if item  exist in db
+        /// </summary>
+        /// <param name="Element"></param>
+        /// <param name="table"></param>
+        /// <param name="column"></param>
+        /// <returns></returns>
+        public static bool IfItemExist(object Element, string table, string column)
+        {
+            string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
+            Connection.Open();
+            SqlCommand sqlCommand = new SqlCommand(query, Connection);
+            sqlCommand.Parameters.AddWithValue("@ID", Element);
+            var NumberOfRows = (int)sqlCommand.ExecuteScalar();
+            Connection.Close();
+           
+                return NumberOfRows > 0;
+           
+        }
+
+
+
+        /// <summary>
+        /// adds the book to Db
+        /// </summary>
+        /// <param name="bookName"></param>
+        /// <param name="genere"></param>
+        /// <param name="author"></param>
+        /// <param name="publisher"></param>
+        /// <param name="publicationYear"></param>
+        /// <param name="numberOfCopies"></param>
+        public static Book AddBookToDBAndUpdateCopies(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
+        { 
+            Book book = AddBookToDB(bookName, genere, author, publisher, publicationYear);
+            AddCopiesToDb(numberOfCopies, book.getBookID());
+            return book;
+        }
 
 
         /// <summary>
@@ -713,6 +782,8 @@ OUTPUT Source.*,INSERTED.BookID;", Connection);
                 valuecolumn = "Publisher";
             }
         }
+
+
     }
 
 }

@@ -127,7 +127,7 @@ namespace libaryApp
 
                 if (null == book)
                 {
-                    DataManager.AddBookToDBAndUpdateCopies(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
+                    book=DataManager.AddBookToDBAndUpdateCopies(BookName, Genere, author, Publisher, publicationYear, NumberOfCopies);
                     MessageBox.Show("הספר נוסף בהצלחה");
                     BackButton_Click();
                 }
