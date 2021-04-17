@@ -63,11 +63,11 @@ namespace libaryApp
         /// <returns></returns>
         internal static bool ifHadBeenLoanBefore(int copyID, int memberID)
         {
-
+           // l.BooksCopyID = @BooksCopyID AND
             string query = @"SELECT COUNT(*) FROM Loans  l 
               INNER JOIN BooksCopies b on l.BooksCopyID=b.BooksCopyID
               INNER JOIN BOOKS on b.BookID=BOOKS.BookID
-              WHERE l.BooksCopyID=@BooksCopyID AND l.memberID=@memberID;";
+              WHERE l.memberID=@memberID AND @BooksCopyID IN (SELECT BooksCopyID FROM BooksCopies WHERE BookID=b.BookID) ;";
             Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@BooksCopyID", copyID);
@@ -86,7 +86,7 @@ namespace libaryApp
         /// <returns></returns>
         public static Member getLastUserUseTheBook(int BoocCopyID)
         {
-            string query = @"SELECT  Members.MemberID,Members.MemberName,Members.Phone,Members.Adress,Members.PersonID  FROM Loans T1
+            string query = @"SELECT  Members.MemberID,Members.MemberName,Members.Phone,Members.Adress,Members.PersonID, Members.Email FROM Loans T1
                             INNER JOIN (SELECT  BooksCopyID , max(LoanDate) AS maxDate FROM Loans GROUP BY BooksCopyID ) tm ON T1.LoanDate=tm.maxDate  
                             INNER JOIN Members ON Members.MemberID=T1.MemberID
                             WHERE T1.BooksCopyID=@BoocCopyID;";
@@ -361,7 +361,7 @@ OUTPUT Source.*,INSERTED.BookID;", Connection);
 
             }
             
-                isAdded = member == null;
+                isAdded = member != null;
 
 
             Connection.Close();
@@ -524,9 +524,11 @@ OUTPUT Source.*,INSERTED.BookID;", Connection);
         {
             string query = @"DELETE FROM Loans WHERE MemberID=@memberID;
                              DELETE FROM Members WHERE MemberID=@memberID;";
+            Connection.Open();
             SqlCommand sqlCommand = new SqlCommand(query, Connection);
             sqlCommand.Parameters.AddWithValue("@memberID", memberID);
             sqlCommand.ExecuteNonQuery();
+            Connection.Close();
         }
 
 

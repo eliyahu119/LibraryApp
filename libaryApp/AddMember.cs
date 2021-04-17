@@ -98,7 +98,7 @@ namespace libaryApp
                     else
                     {
                         MessageBox.Show("מנוי זה כבר קיים");
-                        AdressTextBox.Text = "";
+                       AdressTextBox.Text = "";
                         PersonIDTextBox.Text = "";
                         phoneNumberTextBox.Text = "";
                         fullNameTextBox.Text = "";

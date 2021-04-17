@@ -134,6 +134,16 @@ namespace libaryApp
 
         }
 
-
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+         var result=  MessageBox.Show("האם למחוק מנוי זה?", "מחיקת מנוי", MessageBoxButtons.YesNo);
+            if (result==DialogResult.No)
+            {
+                return;
+            }
+            DataManager.DeleteMemberFromDB(member.MemberID);
+            MessageBox.Show("מנוי זה נמחק בהצלחה");
+            Utils.SwitchBetweenWindows(this, MainWindow.Instance());
+        }
     }
 }

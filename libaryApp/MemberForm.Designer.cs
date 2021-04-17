@@ -37,6 +37,7 @@ namespace libaryApp
             this.label1 = new System.Windows.Forms.Label();
             this.Memberlabel = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ActiveLoanGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -45,19 +46,18 @@ namespace libaryApp
             this.ActiveLoanGrid.AllowUserToAddRows = false;
             this.ActiveLoanGrid.AllowUserToDeleteRows = false;
             this.ActiveLoanGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ActiveLoanGrid.Location = new System.Drawing.Point(12, 109);
+            this.ActiveLoanGrid.Location = new System.Drawing.Point(12, 115);
             this.ActiveLoanGrid.Name = "ActiveLoanGrid";
             this.ActiveLoanGrid.ReadOnly = true;
             this.ActiveLoanGrid.RowHeadersWidth = 51;
             this.ActiveLoanGrid.RowTemplate.Height = 25;
             this.ActiveLoanGrid.Size = new System.Drawing.Size(629, 324);
             this.ActiveLoanGrid.TabIndex = 9;
-            this.ActiveLoanGrid.DataSource = loanList;
             this.ActiveLoanGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OnDoubleClickReturnBook);
             // 
             // loanBook
             // 
-            this.loanBook.Location = new System.Drawing.Point(193, 445);
+            this.loanBook.Location = new System.Drawing.Point(140, 448);
             this.loanBook.Name = "loanBook";
             this.loanBook.Size = new System.Drawing.Size(117, 55);
             this.loanBook.TabIndex = 8;
@@ -67,7 +67,7 @@ namespace libaryApp
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(316, 445);
+            this.button1.Location = new System.Drawing.Point(263, 448);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(110, 55);
             this.button1.TabIndex = 10;
@@ -87,7 +87,7 @@ namespace libaryApp
             // 
             // editMember
             // 
-            this.editMember.Location = new System.Drawing.Point(431, 445);
+            this.editMember.Location = new System.Drawing.Point(379, 448);
             this.editMember.Name = "editMember";
             this.editMember.Size = new System.Drawing.Size(110, 55);
             this.editMember.TabIndex = 12;
@@ -117,7 +117,7 @@ namespace libaryApp
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(67, 445);
+            this.button3.Location = new System.Drawing.Point(12, 445);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(121, 55);
             this.button3.TabIndex = 15;
@@ -125,11 +125,23 @@ namespace libaryApp
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // deleteButton
+            // 
+            this.deleteButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.deleteButton.Location = new System.Drawing.Point(495, 448);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(110, 55);
+            this.deleteButton.TabIndex = 16;
+            this.deleteButton.Text = "מחק מנוי זה";
+            this.deleteButton.UseVisualStyleBackColor = false;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
             // MemberForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(701, 515);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.Memberlabel);
             this.Controls.Add(this.label1);
@@ -157,5 +169,6 @@ namespace libaryApp
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label Memberlabel;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
