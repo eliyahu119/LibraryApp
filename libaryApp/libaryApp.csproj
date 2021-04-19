@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <Folder Include="managers\" />
+    <Folder Include="SqlCommands\ERRORS\" />
+    <Folder Include="SqlCommands\NewFolder\" />
   </ItemGroup>
 
 </Project>
