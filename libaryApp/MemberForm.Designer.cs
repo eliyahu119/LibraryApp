@@ -127,7 +127,7 @@ namespace libaryApp
             // 
             // deleteButton
             // 
-            this.deleteButton.BackColor = System.Drawing.SystemColors.Desktop;
+            this.deleteButton.BackColor = System.Drawing.Color.Crimson;
             this.deleteButton.Location = new System.Drawing.Point(495, 448);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(110, 55);

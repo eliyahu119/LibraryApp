@@ -96,10 +96,10 @@ namespace libaryApp
                         if (error.Message.Contains("BooksCopies"))
                         {
                             MessageBox.Show("עותק אינו קיים במערכת");
+                
                         }
-                        else if (error.Message.Contains("Members"))
+                        if (error.Message.Contains("Members"))
                         {
-
                             MessageBox.Show(" מספר מנוי זה אינו תקין ");
                             return;
                         }
@@ -108,12 +108,17 @@ namespace libaryApp
                         MessageBox.Show("שגיאה בהשאלה");
                         return;
                 }
-
-
-                Utils.SwitchBetweenWindows(this, MemberForm.Instance(MemberID));
+                if (DataManager.IfItemExist(MemberID, "Members", "MemberID"))
+                {
+                    Utils.SwitchBetweenWindows(this, MemberForm.Instance(MemberID));
+                }
+                else
+                {
+                    MessageBox.Show(" מספר מנוי זה אינו תקין ");
+                    
+                }
             }
         }
-
 
         private void backButton_Click(object sender, EventArgs e)
 
