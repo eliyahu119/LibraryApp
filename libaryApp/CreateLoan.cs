@@ -47,6 +47,8 @@ namespace libaryApp
         private CreateLoan()
         {
             InitializeComponent();
+            this.CodeMemberTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
+            this.BookCodeTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
 
         }
 
@@ -62,7 +64,7 @@ namespace libaryApp
             const int max = 1000000;
             if (!(Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt, $"נא הכנס מספר עד {max}")) || !(Utils.AllowOnlyInRange(0, 1000000, BookCodeTxt, $"נא הכנס מספר עד {max}")))
                 return;
-
+        
             int MemberID = Convert.ToInt32(CodeMemberTxt.Text);
             int CopyID = Convert.ToInt32(BookCodeTxt.Text);
             //if (DataManager.IfItemExist(CopyID, "BooksCopies", "BooksCopyID")) 
@@ -76,49 +78,22 @@ namespace libaryApp
 
                 }
             }
-            try
+            string err = DataManager.CreateLoan(MemberID, CopyID);
+            //because its a try the message will not show if there were an error on CreateLoan
+            if (err == "")
             {
-                DataManager.CreateLoan(MemberID, CopyID);
-                //because its a try the message will not show if there were an error on CreateLoan
                 MessageBox.Show("השאלה בוצעה בהצלחה");
+                Utils.SwitchBetweenWindows(this, MemberForm.Instance(MemberID));
             }
-            catch (SqlException error)
+            else
             {
-                switch (error.Number)
-                {
-                    case (int)SqlErrors.NOT_AVAILABLE:
-                        MessageBox.Show("עותק זה לא זמין להשאלה");
-                        break;
-                    case (int)SqlErrors.MAX_LOAN:
-                        MessageBox.Show("לא ניתן לבצע השאלה נוספת, מספר השאלות מקסימלי הגיע למנוי זה");
-                        break;
-                    case (int)SqlErrors.NOT_EXIST:
-                        if (error.Message.Contains("BooksCopies"))
-                        {
-                            MessageBox.Show("עותק אינו קיים במערכת");
-                
-                        }
-                        if (error.Message.Contains("Members"))
-                        {
-                            MessageBox.Show(" מספר מנוי זה אינו תקין ");
-                            return;
-                        }
-                        break;
-                    default:
-                        MessageBox.Show("שגיאה בהשאלה");
-                        return;
-                }
-                if (DataManager.IfItemExist(MemberID, "Members", "MemberID"))
-                {
-                    Utils.SwitchBetweenWindows(this, MemberForm.Instance(MemberID));
-                }
-                else
-                {
-                    MessageBox.Show(" מספר מנוי זה אינו תקין ");
-                    
-                }
+                MessageBox.Show(err);
             }
+
         }
+    
+          
+        
 
         private void backButton_Click(object sender, EventArgs e)
 
@@ -132,6 +107,10 @@ namespace libaryApp
             }
         }
 
+        private void CreateLoan_Load(object sender, EventArgs e)
+        {
+
+        }
 
     }
 }

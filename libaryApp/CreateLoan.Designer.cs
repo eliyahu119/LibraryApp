@@ -52,6 +52,7 @@ namespace libaryApp
             this.CodeMemberTxt.Name = "CodeMemberTxt";
             this.CodeMemberTxt.Size = new System.Drawing.Size(111, 23);
             this.CodeMemberTxt.TabIndex = 15;
+       
             // 
             // copiesLabel
             // 
@@ -104,6 +105,7 @@ namespace libaryApp
             this.Controls.Add(this.Booo);
             this.Name = "CreateLoan";
             this.Text = "CreateLoan";
+            this.Load += new System.EventHandler(this.CreateLoan_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
