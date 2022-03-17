@@ -1,6 +1,6 @@
 # libaryApp
-a libary  managemant application written in c# and sql as the database
-managing members, books and loans. with an interactive user experience.
+a libary  managemant application written in c# and sql.
+managing members, books and loans, with an interactive user experience.
 
 
 
