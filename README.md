@@ -10,7 +10,7 @@ Libraryapp is a desktop application that lets you the ability to manage your own
 
 **installation for dev**: 
   * download the project.
-  * install the sql using the installion.sql
-  * add the connection string to  connectionString in the dataManager.cs file
+  * install the sql using the installer.sql in the sqlCommands folder.
+  * add the connection string to  connectionString in the dataManager.cs file.
  
 start working on the project (:
