@@ -8,9 +8,17 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// A form for adding a new member or editing an existing one.
+    /// </summary>
     public partial class AddMember : Form
     {
         private Member member;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddMember"/> class.
+        /// </summary>
+        /// <param name="member">The member to edit. If null, a new member will be created.</param>
         public AddMember(Member member = null)
         {
             this.member = member;
@@ -28,15 +36,12 @@ namespace libaryApp
             }
         }
 
-
-
-
-
         /// <summary>
-        /// submit the form and opens the Member window
+        /// Handles the Click event of the SubmitButton control.
+        /// Submits the form and opens the Member window.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             if (
@@ -99,10 +104,6 @@ namespace libaryApp
             {
                 MessageBox.Show("נא למלא את כל הפרטים");
             }
-
-
-
-
         }
 
         private void BackButton_Click(object sender, EventArgs e)
@@ -118,6 +119,4 @@ namespace libaryApp
 
         }
     }
-
-
 }

@@ -7,19 +7,17 @@ using System.Windows.Forms;
 namespace libaryApp
 {
 
-    ////////////////////////////////////////////////
-    ///this class give utils functions for the entire project 
-    ////////////////////////////////////////////////
-
-
+    /// <summary>
+    /// This class provides utility functions for the entire project.
+    /// </summary>
     static class Utils
     {
 
         /// <summary>
-        /// switch between the 2 windows
+        /// Switches between two windows.
         /// </summary>
-        /// <param name="current"> the current window</param>
-        /// <param name="otherWindow">the next form</param>
+        /// <param name="current">The current window.</param>
+        /// <param name="otherWindow">The next form.</param>
         static public void SwitchBetweenWindows(Form current, Form otherWindow)
         {
 
@@ -30,8 +28,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        ///updates rowNumbers of the line the lines
+        /// Updates the row numbers of the lines.
         /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DataGridViewRowPostPaintEventArgs"/> instance containing the event data.</param>
         public static void Grid_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             using (SolidBrush b = new SolidBrush(((DataGridView)sender).RowHeadersDefaultCellStyle.ForeColor))
@@ -41,10 +41,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// allow numeric charchters  only in the Text object. and limits it 
+        /// Allows only numeric characters in the TextBox and limits it.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="KeyPressEventArgs"/> instance containing the event data.</param>
         public static void AllowOnlyNumeric(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -53,6 +53,14 @@ namespace libaryApp
             }
 
         }
+
+        /// <summary>
+        /// Allows only numbers in a given range.
+        /// </summary>
+        /// <param name="min">The minimum value.</param>
+        /// <param name="max">The maximum value.</param>
+        /// <param name="textbox">The TextBox to validate.</param>
+        /// <returns>True if the value is in the range, false otherwise.</returns>
         public static bool AllowOnlyInRange(int min, int max, TextBox textbox)
         {
             int val = 0;
@@ -67,6 +75,12 @@ namespace libaryApp
                 return false;
             }
         }
+
+        /// <summary>
+        /// Changes the column names of a DataGridView.
+        /// </summary>
+        /// <param name="grid">The DataGridView.</param>
+        /// <param name="pairs">An array of tuples containing the old and new column names.</param>
         public static void ChangeColumnsNameOfGrid(DataGridView grid, Tuple<string, string>[] pairs)
         {
             foreach (var pair in pairs)
@@ -75,8 +89,11 @@ namespace libaryApp
             }
         }
 
-        ///////////
-        //creating a place holder events
+        /// <summary>
+        /// Removes the placeholder text from a TextBox.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public static void RemoveText(object sender, EventArgs e)
         {
             if (((TextBox)sender).Text == "שורת חיפוש")
@@ -85,11 +102,15 @@ namespace libaryApp
             }
         }
 
+        /// <summary>
+        /// Adds placeholder text to a TextBox if it is empty.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public static void AddText(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(((TextBox)sender).Text))
                 ((TextBox)sender).Text = "שורת חיפוש";
         }
-        /////////////
     }
 }

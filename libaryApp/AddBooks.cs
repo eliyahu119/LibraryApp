@@ -11,10 +11,18 @@ using System.Linq;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form is for adding new books or editing existing ones.
+    /// </summary>
     public partial class AddBooks : Form
     {
 
         private Book book = null;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AddBooks"/> class.
+        /// </summary>
+        /// <param name="book">The book to be edited. If null, a new book will be created.</param>
         public AddBooks(Book book = null)
         {
             this.book = book;
@@ -23,15 +31,6 @@ namespace libaryApp
             publicationYearTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
             NumberOfCopiesTxt.KeyPress += new KeyPressEventHandler(Utils.AllowOnlyNumeric);
         }
-
-
-
-
-
-
-
-
-
 
         private void AddBooks_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -57,7 +56,7 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// set the comboBoxes and their attributes.
+        /// Sets the ComboBoxes and their attributes.
         /// </summary>
         private void setComboBoxes()
         {
@@ -77,11 +76,13 @@ namespace libaryApp
             comboBox.DataSource = list;
             comboBox.ValueMember = null;
         }
+
         /// <summary>
-        /// when the submit button is click the new book is added to the db.
+        /// Handles the Click event of the submit control.
+        /// When the submit button is clicked, the new book is added to the database.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void submit_Click(object sender, EventArgs e)
         {
             if (((AddBookTxt.Text != "") && (publicationYearTxt.Text != "")) && ((book != null) || (NumberOfCopiesTxt.Text != "")))
@@ -118,10 +119,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// when the selected item in combox have id of -1 (the Agreed sign for this Action) the add new book attirbute window is open.
+        /// When the selected item in ComboBox has an ID of -1, the "add new book attribute" window is opened.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBox comboBox = (ComboBox)sender;

@@ -8,8 +8,14 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form is for displaying and searching for members.
+    /// </summary>
     public partial class MembersForm : Form
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MembersForm"/> class.
+        /// </summary>
         public MembersForm()
         {
 
@@ -70,10 +76,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// search and display Members on member form, if user given PersonID or memberID loan window will auto open
-        /// /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// Searches for and displays members on the member form. If the user provides a PersonID or memberID, the loan window will open automatically.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SearchAndDisplayMember(object sender = null, EventArgs e = null)
         {
             if (searchTextBox.Text != "")

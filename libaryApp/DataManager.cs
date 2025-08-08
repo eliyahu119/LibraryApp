@@ -9,7 +9,7 @@ namespace libaryApp
 {
 
     /// <summary>
-    /// this class is the manager that connects between the DB and the entire project
+    /// This class is the manager that connects between the DB and the entire project.
     /// </summary>
     static public class DataManager
     {
@@ -17,6 +17,11 @@ namespace libaryApp
         private static SqlConnection Connection;
         const string DbLocation = @"..\..\..\libaryDb.mdf";
 
+        /// <summary>
+        /// Gets all loans for a specific member.
+        /// </summary>
+        /// <param name="memberID">The member's ID.</param>
+        /// <returns>A list of loans.</returns>
         public static List<Loan> getAllLoans(int memberID)
         {
 
@@ -42,11 +47,11 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// check if this book has been loaned  before.
+        /// Checks if this book has been loaned before by this member.
         /// </summary>
-        /// <param name="copyID"></param>
-        /// <param name="memberID"></param>
-        /// <returns></returns>
+        /// <param name="copyID">The copy's ID.</param>
+        /// <param name="memberID">The member's ID.</param>
+        /// <returns>True if the book has been loaned before, false otherwise.</returns>
         internal static bool ifHadBeenLoanBefore(int copyID, int memberID)
         {
 
@@ -68,7 +73,7 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// private static costructor
+        /// Initializes the <see cref="DataManager"/> class.
         /// </summary>
         static DataManager()
         {
@@ -81,14 +86,15 @@ namespace libaryApp
 
 
         /// <summary>
-        /// add member to Db and returning his memberID and if added or not.
+        /// Adds a member to the database and returns their member ID and whether they were added or not.
         /// </summary>
-        /// <param name="memberName"></param>
-        /// <param name="personID"></param>
-        /// <param name="phoneNunber"></param>
-        /// <param name="Adress"></param>
-        /// <param name="isAdded"></param>
-        /// <returns></returns>
+        /// <param name="memberName">The member's name.</param>
+        /// <param name="personID">The member's personal ID.</param>
+        /// <param name="phoneNunber">The member's phone number.</param>
+        /// <param name="Adress">The member's address.</param>
+        /// <param name="isAdded">Outputs whether the member was added.</param>
+        /// <param name="EmailtextBox">The member's email address.</param>
+        /// <returns>The new member.</returns>
         public static Member AddMember(string memberName, string personID, string phoneNunber, string Adress, out bool isAdded, string EmailtextBox = null)
         {
             bool IfExist = IfItemExist(personID, "Members", "PersonID");
@@ -129,6 +135,16 @@ namespace libaryApp
             return member;
         }
 
+        /// <summary>
+        /// Edits a book in the database.
+        /// </summary>
+        /// <param name="bookId">The book's ID.</param>
+        /// <param name="bookName">The book's name.</param>
+        /// <param name="genere">The book's genre.</param>
+        /// <param name="author">The book's author.</param>
+        /// <param name="publisher">The book's publisher.</param>
+        /// <param name="publicationYear">The book's publication year.</param>
+        /// <returns>The updated book.</returns>
         public static Book EditBookInDB(int bookId, string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear)
         {
 
@@ -161,15 +177,15 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// edit member query.
+        /// Edits a member's details in the database.
         /// </summary>
-        /// <param name="member"></param>
-        /// <param name="FullName"></param>
-        /// <param name="personID"></param>
-        /// <param name="phone"></param>
-        /// <param name="Adress"></param>
-        /// <param name="isUpdate"></param>
-        /// <returns></returns>
+        /// <param name="member">The member to edit.</param>
+        /// <param name="FullName">The member's full name.</param>
+        /// <param name="personID">The member's personal ID.</param>
+        /// <param name="phone">The member's phone number.</param>
+        /// <param name="Adress">The member's address.</param>
+        /// <param name="isUpdate">Outputs whether the member was updated.</param>
+        /// <returns>The updated member.</returns>
         public static Member EditMember(Member member, string FullName, long personID, string phone, string Adress, string Email, out bool isUpdate)
         {
 
@@ -218,10 +234,10 @@ namespace libaryApp
 
 
         /// <summary>
-        /// get the last member who loan this copy.
+        /// Gets the last member who loaned this copy.
         /// </summary>
-        /// <param name="BoocCopyID"></param>
-        /// <returns></returns>
+        /// <param name="BoocCopyID">The book copy's ID.</param>
+        /// <returns>The member who last loaned the book.</returns>
         public static Member getLastUserUseTheBook(int BoocCopyID)
         {
             string query = @"SELECT  Members.MemberID,Members.MemberName,Members.Phone,Members.Adress,Members.PersonID  FROM Loans T1
@@ -245,10 +261,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get member data from sqlReader.
+        /// Gets member data from a SqlDataReader.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="reader">The SqlDataReader.</param>
+        /// <returns>A member object.</returns>
         private static Member getMemberFromReader(SqlDataReader reader)
         {
 
@@ -263,10 +279,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get the list of active loans base on memberID
+        /// Gets the list of active loans based on member ID.
         /// </summary>
-        /// <param name="memberID"></param>
-        /// <returns></returns>
+        /// <param name="memberID">The member's ID.</param>
+        /// <returns>A list of active loans.</returns>
         public static List<Loan> GetActiveLoans(int memberID)
         {
 
@@ -291,10 +307,10 @@ namespace libaryApp
             return LoanList;
         }
         /// <summary>
-        /// get Loan From Reader
+        /// Gets a loan from a SqlDataReader.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="reader">The SqlDataReader.</param>
+        /// <returns>A loan object.</returns>
         private static Loan GetLoanFromReader(SqlDataReader reader)
         {
             var Loan = new Loan();
@@ -306,10 +322,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get Member base on his memberId
+        /// Gets a member based on their member ID.
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="ID">The member's ID.</param>
+        /// <returns>The member.</returns>
         public static Member GetMemberByID(long ID)
         {
             string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
@@ -331,10 +347,10 @@ namespace libaryApp
 
         }
         /// <summary>
-        /// search by person id as well as member id
+        /// Searches by person ID as well as member ID.
         /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
+        /// <param name="ID">The ID to search for.</param>
+        /// <returns>A list of members.</returns>
         public static List<Member> GetMembersByID(long ID)
         {
             string query = "SELECT MemberID,MemberName,Phone,Adress,PersonID,Email FROM Members";
@@ -358,10 +374,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// sets the availability of the book to true in DB.
+        /// Sets the availability of the book to true in the database.
         /// </summary>
-        /// <param name="bookCopyID"></param>
-        /// <returns></returns>
+        /// <param name="bookCopyID">The book copy's ID.</param>
+        /// <returns>True if the book was returned, false otherwise.</returns>
         public static bool returnBookToShelf(int bookCopyID)
         {
             string query = "UPDATE[BooksCopies] SET IsAvailable = 1 WHERE [BooksCopies].BooksCopyID = @ID AND IsAvailable = 0";
@@ -379,11 +395,11 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// sets the availability of the book to true in DB. and gets the book name.
+        /// Sets the availability of the book to true in the database and gets the book name.
         /// </summary>
-        /// <param name="bookCopyID"></param>
-        /// <param name="bookName"></param>
-        /// <returns></returns>
+        /// <param name="bookCopyID">The book copy's ID.</param>
+        /// <param name="bookName">Outputs the book's name.</param>
+        /// <returns>True if the book was returned, false otherwise.</returns>
         public static bool returnBookToShelf(int bookCopyID, out string bookName)
         {
             string query = @"UPDATE [BooksCopies] SET IsAvailable = 1  
@@ -411,12 +427,12 @@ namespace libaryApp
 
 
         /// <summary>
-        /// check if item  exist in db
+        /// Checks if an item exists in the database.
         /// </summary>
-        /// <param name="Element"></param>
-        /// <param name="table"></param>
-        /// <param name="column"></param>
-        /// <returns></returns>
+        /// <param name="Element">The element to check for.</param>
+        /// <param name="table">The table to check in.</param>
+        /// <param name="column">The column to check in.</param>
+        /// <returns>True if the item exists, false otherwise.</returns>
         public static bool IfItemExist(object Element, string table, string column)
         {
             string query = $"SELECT COUNT(*) FROM {table} WHERE {column}=@ID;";
@@ -434,10 +450,10 @@ namespace libaryApp
 
 
         /// <summary>
-        /// check if book is avialbe base on  ISAvailable column
+        /// Checks if a book is available based on the ISAvailable column.
         /// </summary>
-        /// <param name="copyID"></param>
-        /// <returns></returns>
+        /// <param name="copyID">The copy's ID.</param>
+        /// <returns>True if the book is available, false otherwise.</returns>
         public static bool IsBookAvailable(int copyID)
         {
             string query = $"SELECT COUNT(*) FROM BooksCopies WHERE BooksCopyID=@ID AND ISAvailable=0;";
@@ -455,11 +471,11 @@ namespace libaryApp
 
 
         /// <summary>
-        /// creates  a loan.
-        /// the availability of the book is auto updated do to the trigger UpdateAvailability.
+        /// Creates a loan.
+        /// The availability of the book is auto-updated due to the UpdateAvailability trigger.
         /// </summary>
-        /// <param name="memberID"></param>
-        /// <param name="copyID"></param>
+        /// <param name="memberID">The member's ID.</param>
+        /// <param name="copyID">The copy's ID.</param>
         static public void CreateLoan(int memberID, int copyID)
         {
             string query = "INSERT INTO Loans(MemberID,BooksCopyID,LoanDate) VALUES (@memberID,@booksCopyID, GETDATE());";
@@ -473,10 +489,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// search the books base on the Author or the name of the book.
+        /// Searches for books based on the author or the name of the book.
         /// </summary>
-        /// <param name="condition"></param>
-        /// <returns></returns>
+        /// <param name="condition">The search condition.</param>
+        /// <returns>A list of books.</returns>
         static public List<Book> GetBooksFromDB(string condition = "")
         {
             //get the data from the sql
@@ -504,10 +520,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// gets the book From the reader
+        /// Gets a book from a SqlDataReader.
         /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="reader">The SqlDataReader.</param>
+        /// <returns>A book object.</returns>
         private static Book getBookFromReader(SqlDataReader reader)
         {
             var Book = new Book();
@@ -522,10 +538,10 @@ namespace libaryApp
 
 
         /// <summary>
-        /// search the Member base on the Member's name..
+        /// Searches for a member based on the member's name.
         /// </summary>
-        /// <param name="condition"></param>
-        /// <returns></returns>
+        /// <param name="condition">The search condition.</param>
+        /// <returns>A list of members.</returns>
         static public List<Member> GetMembersFromDb(string condition = "")
         {
             //get the data from the sql
@@ -547,10 +563,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get the number of book's copy available
+        /// Gets the number of available copies of a book.
         /// </summary>
-        /// <param name="bookID"></param>
-        /// <returns></returns>
+        /// <param name="bookID">The book's ID.</param>
+        /// <returns>The number of available copies.</returns>
         static public int GetNumberOfCopiesavailable(int bookID)
         {
             Connection.Open();
@@ -565,14 +581,14 @@ namespace libaryApp
 
 
         /// <summary>
-        /// adds the book to Db
+        /// Adds a book to the database.
         /// </summary>
-        /// <param name="bookName"></param>
-        /// <param name="genere"></param>
-        /// <param name="author"></param>
-        /// <param name="publisher"></param>
-        /// <param name="publicationYear"></param>
-        /// <param name="numberOfCopies"></param>
+        /// <param name="bookName">The book's name.</param>
+        /// <param name="genere">The book's genre.</param>
+        /// <param name="author">The book's author.</param>
+        /// <param name="publisher">The book's publisher.</param>
+        /// <param name="publicationYear">The book's publication year.</param>
+        /// <param name="numberOfCopies">The number of copies to add.</param>
         internal static void AddBookToDB(string bookName, Generes genere, Authors author, Publishers publisher, short publicationYear, int numberOfCopies)
         {
             Connection.Open();
@@ -599,10 +615,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// makes a query to the db and get all the copies ralated to the book.
+        /// Makes a query to the database and gets all the copies related to the book.
         /// </summary>
-        /// <param name="bookID"></param>
-        /// <returns></returns>
+        /// <param name="bookID">The book's ID.</param>
+        /// <returns>A list of book copies.</returns>
         static public List<BookCopies> getBookCopiesFromDB(int bookID)
         {
 
@@ -627,9 +643,9 @@ namespace libaryApp
 
 
         /// <summary>
-        /// get BookAttributes classes's bindingList from DB
+        /// Gets a BindingList of BookAttributes classes from the database.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A BindingList of book attributes.</returns>
         static public BindingList<BookAttributes> GetAttributesFromDB<T>() where T : BookAttributes
         {
             //check which subClasses T is.
@@ -653,10 +669,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// insert bookAttirbute to the DB
+        /// Inserts a book attribute into the database.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
+        /// <typeparam name="T">The type of the book attribute.</typeparam>
+        /// <param name="value">The value of the book attribute.</param>
         static public void AddBookAttributesToDB(string value, Type t)
         {
             string table, idcolumn, valuecolumn;
@@ -671,12 +687,12 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// get db structure data like tableName based on the type.
+        /// Gets database structure data like table name based on the type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="table"></param>
-        /// <param name="idcolumn"></param>
-        /// <param name="valuecolumn"></param>
+        /// <param name="table">Outputs the table name.</param>
+        /// <param name="idcolumn">Outputs the ID column name.</param>
+        /// <param name="valuecolumn">Outputs the value column name.</param>
+        /// <param name="T">The type to get the database structure for.</param>
         private static void getDBStructureDataBaseOnType(out string table, out string idcolumn, out string valuecolumn, Type T)
         {
             table = "";

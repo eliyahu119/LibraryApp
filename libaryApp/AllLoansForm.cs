@@ -8,9 +8,17 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form displays all the loans of a specific member.
+    /// </summary>
     public partial class AllLoansForm : Form
     {
         Member member;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AllLoansForm"/> class.
+        /// </summary>
+        /// <param name="member">The member whose loans are to be displayed.</param>
         public AllLoansForm(Member member)
         {
             this.member = member;
@@ -26,10 +34,8 @@ namespace libaryApp
                });
 
         }
-       
-           
 
-            private void allLoanLabel_Click(object sender, EventArgs e)
+        private void allLoanLabel_Click(object sender, EventArgs e)
         {
 
         }

@@ -8,10 +8,18 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form is for creating a new loan.
+    /// </summary>
     public partial class CreateLoan : Form
     {
 
         Member member;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateLoan"/> class.
+        /// </summary>
+        /// <param name="member">The member for whom the loan is being created.</param>
         public CreateLoan(Member member = null)
         {
             this.member = member;
@@ -23,13 +31,11 @@ namespace libaryApp
             }
         }
 
-
-
         /// <summary>
-        /// submit the loan to the db
+        /// Submits the loan to the database.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void SubmitLoan_Click(object sender, EventArgs e)
         {
             if ((!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)) || (!Utils.AllowOnlyInRange(0, 1000000, CodeMemberTxt)))

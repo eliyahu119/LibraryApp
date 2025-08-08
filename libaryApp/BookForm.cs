@@ -8,10 +8,16 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form is for displaying and searching for books.
+    /// </summary>
     public partial class BookForm : Form
     {
    
         
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BookForm"/> class.
+        /// </summary>
         public BookForm()
         {
 
@@ -48,9 +54,6 @@ namespace libaryApp
 
         }
 
-
-
-
         private void BackButton_Click(object sender, EventArgs e)
         {
             Utils.SwitchBetweenWindows(this, new MainWindow());
@@ -58,7 +61,7 @@ namespace libaryApp
 
 
         /// <summary>
-        /// get the search  data from the DB.
+        /// Gets the search data from the database.
         /// </summary>
         private void SearchAndDisplayBooks(object sender=null, EventArgs e=null)
         {
@@ -67,10 +70,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// in case double click on cell the book detail form will open.
+        /// In case of a double click on a cell, the book detail form will open.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DataGridViewCellEventArgs"/> instance containing the event data.</param>
         private void BookGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
           
@@ -80,10 +83,10 @@ namespace libaryApp
         }
 
         /// <summary>
-        /// opens the singelton instance of addbook form
+        /// Opens the singleton instance of the AddBook form.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void AddBook_Click(object sender, EventArgs e)
         {
             AddBooks addBooks = new AddBooks() ;

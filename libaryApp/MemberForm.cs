@@ -8,10 +8,18 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form displays the details of a specific member.
+    /// </summary>
     public partial class MemberForm : Form
     {
         private List<Loan> loanList;
         Member member;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberForm"/> class.
+        /// </summary>
+        /// <param name="memberID">The ID of the member to display.</param>
         public MemberForm(int memberID)
         {
             this.member = DataManager.GetMemberByID(memberID);
@@ -25,6 +33,10 @@ namespace libaryApp
             Memberlabel.Text = $"קוד מנוי: {member.MemberID}";
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberForm"/> class.
+        /// </summary>
+        /// <param name="member">The member to display.</param>
         public MemberForm(Member member)
         {
             this.member = member;
@@ -65,10 +77,10 @@ namespace libaryApp
 
 
         /// <summary>
-        /// on double click in cell will show a dialog if return book and if yes the book will be reutrned.
+        /// On a double-click in a cell, a dialog will be shown to confirm returning the book. If "yes" is clicked, the book will be returned.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DataGridViewCellEventArgs"/> instance containing the event data.</param>
         private void OnDoubleClickReturnBook(object sender, DataGridViewCellEventArgs e)
         {
             Loan loan = (Loan)this.ActiveLoanGrid.CurrentRow.DataBoundItem;

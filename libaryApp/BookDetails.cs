@@ -8,8 +8,15 @@ using System.Windows.Forms;
 
 namespace libaryApp
 {
+    /// <summary>
+    /// This form displays the details of a specific book.
+    /// </summary>
     public partial class BookDetails : Form
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BookDetails"/> class.
+        /// </summary>
+        /// <param name="book">The book to display the details of.</param>
         public BookDetails(Book book)
         {
             InitializeComponent();
